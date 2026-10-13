@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>分布式 on 飞乐</title><link>https://www.feilewu.cn/tags/%E5%88%86%E5%B8%83%E5%BC%8F/</link><description>Recent content in 分布式 on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 27 Sep 2024 19:10:53 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/tags/%E5%88%86%E5%B8%83%E5%BC%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>Spark的运行原理</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</guid><description>&lt;h2 id="spark基本概念"&gt;Spark基本概念&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>分布式 on 飞乐</title><link>https://feilewu.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/</link><description>Recent content in 分布式 on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 27 Sep 2024 19:10:53 +0800</lastBuildDate><atom:link href="https://feilewu.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>Spark的运行原理</title><link>https://feilewu.github.io/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</guid><description>&lt;h2 id="spark基本概念"&gt;Spark基本概念&lt;/h2&gt;
 &lt;p&gt;RDD：是弹性分布式数据集（Resilient Distributed Dataset）的简称，是分布式内存的一个抽象概念，提供了一种高度受限的共享内存模型。
 &lt;img alt="2022-03-29-20-49-45" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-49-45.png"&gt;&lt;/p&gt;
 &lt;p&gt;DAGScheduler：有向无环图调度器基于DAG划分Stage并以TaskSet的形式提交Stage给TaskScheduler；负责将作业拆分成不同阶段的具有宽窄依赖关系的多批任务；最重要的任务之一就是：计算作业和任务的依赖关系，指定调度逻辑。在SparkContext初始化的过程中被实例化，一个SparkContext对应一个DAGScheduler。
@@ -55,7 +55,7 @@
 &lt;li&gt;
 &lt;p&gt;Task的执行速度是跟每个Executor进程的CPU core数量有直接关系的。一个CPU core同一时间只能执行一个线程。而每个Executor进程上分配到的多个Task，都是以每个Task一条线程的方式，多线程并发运行的。如果CPU core数量比较充足，而且分配到的Task数量比较合理，那么通常来说，可以比较快速和高效地执行完这些Task线程。&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>CAP定理</title><link>https://www.feilewu.cn/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</guid><description>&lt;h1 id="概述"&gt;概述&lt;/h1&gt;
+&lt;/ul&gt;</description></item><item><title>CAP定理</title><link>https://feilewu.github.io/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</guid><description>&lt;h1 id="概述"&gt;概述&lt;/h1&gt;
 &lt;p&gt;1998年，加州大学的计算机科学家 Eric Brewer 提出，分布式系统有三个指标。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Consistency&lt;/li&gt;
@@ -82,7 +82,7 @@
 &lt;p&gt;综上所述，G2 无法同时做到一致性和可用性。系统设计时只能选择一个目标。如果追求一致性，那么无法保证所有节点的可用性；如果追求所有节点的可用性，那就没法做到一致性。&lt;/p&gt;
 &lt;h1 id="参考"&gt;参考&lt;/h1&gt;
 &lt;p&gt;&lt;a href="https://www.zhihu.com/question/54105974"&gt;https://www.zhihu.com/question/54105974&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://www.ruanyifeng.com/blog/2018/07/cap.html"&gt;http://www.ruanyifeng.com/blog/2018/07/cap.html&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dubbo笔记-概述</title><link>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</guid><description>&lt;h1 id="dubbo-学习"&gt;dubbo 学习&lt;/h1&gt;
+&lt;p&gt;&lt;a href="http://www.ruanyifeng.com/blog/2018/07/cap.html"&gt;http://www.ruanyifeng.com/blog/2018/07/cap.html&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dubbo笔记-概述</title><link>https://feilewu.github.io/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</guid><description>&lt;h1 id="dubbo-学习"&gt;dubbo 学习&lt;/h1&gt;
 &lt;p&gt;Apache Dubbo 是一款高性能、轻量级的开源Java RPC框架，它提供了三大核心能力：面向接口的远程方法调用，智能容错和负载均衡，以及服务自动注册和发现。&lt;/p&gt;
 &lt;h2 id="背景"&gt;背景&lt;/h2&gt;
 &lt;h3 id="常见的架构"&gt;常见的架构&lt;/h3&gt;
@@ -134,7 +134,7 @@
 &lt;li&gt;服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。&lt;/li&gt;
 &lt;li&gt;服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="使用"&gt;使用&lt;/h2&gt;</description></item><item><title>Zookeeper概述与安装</title><link>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</guid><description>&lt;h2 id="特性"&gt;特性&lt;/h2&gt;
+&lt;h2 id="使用"&gt;使用&lt;/h2&gt;</description></item><item><title>Zookeeper概述与安装</title><link>https://feilewu.github.io/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</guid><description>&lt;h2 id="特性"&gt;特性&lt;/h2&gt;
 &lt;h3 id="zookeeper-解决的本质问题"&gt;ZooKeeper 解决的本质问题&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;消息传递：延迟性，先发送的消息，不一定先到达；&lt;/li&gt;

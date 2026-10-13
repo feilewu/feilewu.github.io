@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Java on 飞乐</title><link>https://www.feilewu.cn/tags/java/</link><description>Recent content in Java on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 27 Sep 2024 19:10:53 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/tags/java/index.xml" rel="self" type="application/rss+xml"/><item><title>JVM参数该如何配置</title><link>https://www.feilewu.cn/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</guid><description>&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Java on 飞乐</title><link>https://feilewu.github.io/tags/java/</link><description>Recent content in Java on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 27 Sep 2024 19:10:53 +0800</lastBuildDate><atom:link href="https://feilewu.github.io/tags/java/index.xml" rel="self" type="application/rss+xml"/><item><title>JVM参数该如何配置</title><link>https://feilewu.github.io/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</guid><description>&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
 &lt;p&gt;面试官经常会问：JVM参数该如何设置？&lt;/p&gt;
 &lt;p&gt;虽然线上项目的JVM参数在我加入团队后就没有动过了，但我们还是得学习下不是，万一后面需要了呢？&lt;/p&gt;
 &lt;h2 id="jvm内存模型参数"&gt;JVM内存模型参数&lt;/h2&gt;
@@ -71,7 +71,7 @@
 &lt;li&gt;PrintGCTimeStamps 垃圾收集发生时的时间戳&lt;/li&gt;
 &lt;li&gt;Xloggc:filename 将日志信息记录到文件中，便于后续分析&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;上述参数可以组合使用，输出易于分析的信息&lt;/p&gt;</description></item><item><title>SpringBoot配置文件——加载顺序</title><link>https://www.feilewu.cn/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</guid><description>&lt;h1 id="springboot配置文件加载顺序"&gt;SpringBoot配置文件——加载顺序&lt;/h1&gt;
+&lt;p&gt;上述参数可以组合使用，输出易于分析的信息&lt;/p&gt;</description></item><item><title>SpringBoot配置文件——加载顺序</title><link>https://feilewu.github.io/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</guid><description>&lt;h1 id="springboot配置文件加载顺序"&gt;SpringBoot配置文件——加载顺序&lt;/h1&gt;
 &lt;h3 id="配置文件所在目录"&gt;配置文件所在目录&lt;/h3&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/a9298a51-96ba-496a-9dbf-57337e30a218.png"&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -95,7 +95,7 @@
 &lt;p&gt;PS：&lt;/p&gt;
 &lt;p&gt;创建SpringBoot项目时，一般的配置文件放置在项目的resources目录下，因为配置文件的修改，通过热部署不用重新启动项目，而热部署的作用范围是classpath下&lt;/p&gt;
 &lt;p&gt;参考：&lt;/p&gt;
-&lt;p&gt;springboot官方文档：https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/html/spring-boot-features.html#boot-features-external-config&lt;/p&gt;</description></item><item><title>Spring的启动流程--注解方式启动</title><link>https://www.feilewu.cn/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</guid><description>&lt;h2 id="bean生命周期"&gt;Bean生命周期&lt;/h2&gt;
+&lt;p&gt;springboot官方文档：https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/html/spring-boot-features.html#boot-features-external-config&lt;/p&gt;</description></item><item><title>Spring的启动流程--注解方式启动</title><link>https://feilewu.github.io/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</guid><description>&lt;h2 id="bean生命周期"&gt;Bean生命周期&lt;/h2&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/05/16/20210516163404.png"&gt;&lt;/p&gt;
 &lt;h2 id="spring的启动流程注解方式启动"&gt;Spring的启动流程&amp;ndash;注解方式启动&lt;/h2&gt;
 &lt;h3 id="1-创建annotationconfigapplicationcontext"&gt;1. 创建AnnotationConfigApplicationContext&lt;/h3&gt;
@@ -173,7 +173,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="13-创建scancer"&gt;1.3 创建Scancer&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;scanner&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ClassPathBeanDefinitionScanner(&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;关注&lt;/p&gt;</description></item><item><title>利用Redisson快速实现分布式锁--Redisson的介绍与使用</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid><description>&lt;h2 id="什么是redisson"&gt;什么是Redisson&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;关注&lt;/p&gt;</description></item><item><title>利用Redisson快速实现分布式锁--Redisson的介绍与使用</title><link>https://feilewu.github.io/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid><description>&lt;h2 id="什么是redisson"&gt;什么是Redisson&lt;/h2&gt;
 &lt;p&gt;Redisson 是一个使用 Java编写的Redis 客户端。 其以Redis为基础，构建了一种内存数据网格（ &lt;strong&gt;in-memory data grid&lt;/strong&gt;），并提供了redis支持的分布式Java对象和服务。包括超过50中Java对象和若干服务（Set, Multimap, SortedSet, Map, List, Queue, Deque, Semaphore, Lock, AtomicLong, Map Reduce, Publish / Subscribe, Bloom filter, Spring Cache, Tomcat, Scheduler, JCache API, Hibernate, MyBatis, RPC, local cache&amp;hellip;）。&lt;/p&gt;
 &lt;p&gt;简单来讲，Redisson可以帮助我们集中精力处理业务，而不必将过多的精力投入到redis的用法上。在项目中我们常常用它来实现redis分布式锁，替代原生redis+lua脚本的方式。&lt;/p&gt;
 &lt;h2 id="maven依赖"&gt;Maven依赖&lt;/h2&gt;
@@ -200,7 +200,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;setAddress&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;redis://127.0.0.1:6379&amp;#34;&lt;/span&gt;);
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;RedissonClient client &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Redisson.&lt;span style="color:#a6e22e"&gt;create&lt;/span&gt;(config);
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;本文示例采用redis单机模式的配置，首先利用SingleServerConfig构建出单机模式下redis的配置对象，并使用setAddress 方法配置IP和端口信息，除此之外，还可以通过对应的setter方法设置retryAttempts、connectionTimeout 和 clientName等参数。然后，通过SingleServerConfig构建出Config对象，并将其传递给Redisson类的create静态方法，获得RedissonClient对象，后续我们便可以使用其进行各种业务操作。&lt;/p&gt;</description></item><item><title>当100个任务同时请求提交任务，线程池时如何工作的</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</guid><description>&lt;h2 id="问题"&gt;问题&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;本文示例采用redis单机模式的配置，首先利用SingleServerConfig构建出单机模式下redis的配置对象，并使用setAddress 方法配置IP和端口信息，除此之外，还可以通过对应的setter方法设置retryAttempts、connectionTimeout 和 clientName等参数。然后，通过SingleServerConfig构建出Config对象，并将其传递给Redisson类的create静态方法，获得RedissonClient对象，后续我们便可以使用其进行各种业务操作。&lt;/p&gt;</description></item><item><title>当100个任务同时请求提交任务，线程池时如何工作的</title><link>https://feilewu.github.io/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</guid><description>&lt;h2 id="问题"&gt;问题&lt;/h2&gt;
 &lt;p&gt;如果100个任务同时往线程池（最小线程5，最大线程10，队列时LinkedBlockingDeque）提交，线程池会发生什么？线程池如何处理这些任务?&lt;/p&gt;
 &lt;h2 id="线程池"&gt;线程池&lt;/h2&gt;
 &lt;p&gt;我们首先来看看线程池的工作流程。&lt;/p&gt;
@@ -243,7 +243,7 @@
 &lt;li&gt;如果时IO密集型，考虑到充分压榨CPU的计算能力，可以设置为2倍CPU核心数，具体根据业务情况而定&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id="超时时间"&gt;超时时间&lt;/h4&gt;
-&lt;p&gt;根据每一个任务执行所需的时间而定，避免频繁创建和销毁线程，提高线程利用率。&lt;/p&gt;</description></item><item><title>策略模式</title><link>https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h2 id="策略模式"&gt;策略模式&lt;/h2&gt;
+&lt;p&gt;根据每一个任务执行所需的时间而定，避免频繁创建和销毁线程，提高线程利用率。&lt;/p&gt;</description></item><item><title>策略模式</title><link>https://feilewu.github.io/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h2 id="策略模式"&gt;策略模式&lt;/h2&gt;
 &lt;p&gt;策略模式定义了一组算法，将它们逐个封装起来，并使它们可以相互替换。策略可以让算法独立于使用它们的客户而变化。&lt;/p&gt;
 &lt;h2 id="应用"&gt;应用&lt;/h2&gt;
 &lt;p&gt;在业务场景中，我们经常需要根据不同的条件而执行不同方法，这个时候便可以为每一种条件定制一类特定的方法。&lt;/p&gt;
@@ -378,7 +378,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>设计模式之观察者模式-谈谈你对观察者模式的理解</title><link>https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</guid><description>&lt;h2 id="定义"&gt;定义&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>设计模式之观察者模式-谈谈你对观察者模式的理解</title><link>https://feilewu.github.io/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</guid><description>&lt;h2 id="定义"&gt;定义&lt;/h2&gt;
 &lt;p&gt;先来段wiki上面的定义：观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。简单来讲，就是定义了一组一对多的关系。当被观察者的状态改变，会通知观察者做出相应的动作。&lt;/p&gt;
 &lt;p&gt;在开发过程中，常常会遇到如下的场景：&lt;/p&gt;
 &lt;ul&gt;
@@ -445,7 +445,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Demo测试&lt;/p&gt;</description></item><item><title>限流的方式-几种限流算法的介绍与对比</title><link>https://www.feilewu.cn/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</guid><description>&lt;h2 id="简述"&gt;简述&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Demo测试&lt;/p&gt;</description></item><item><title>限流的方式-几种限流算法的介绍与对比</title><link>https://feilewu.github.io/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</guid><description>&lt;h2 id="简述"&gt;简述&lt;/h2&gt;
 &lt;p&gt;java限流大体可以分为3个方面。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;合法性
@@ -505,7 +505,7 @@
 &lt;li&gt;
 &lt;p&gt;固定时间窗口不能实现高精度的控制&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Dubbo笔记-概述</title><link>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</guid><description>&lt;h1 id="dubbo-学习"&gt;dubbo 学习&lt;/h1&gt;
+&lt;/ul&gt;</description></item><item><title>Dubbo笔记-概述</title><link>https://feilewu.github.io/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</guid><description>&lt;h1 id="dubbo-学习"&gt;dubbo 学习&lt;/h1&gt;
 &lt;p&gt;Apache Dubbo 是一款高性能、轻量级的开源Java RPC框架，它提供了三大核心能力：面向接口的远程方法调用，智能容错和负载均衡，以及服务自动注册和发现。&lt;/p&gt;
 &lt;h2 id="背景"&gt;背景&lt;/h2&gt;
 &lt;h3 id="常见的架构"&gt;常见的架构&lt;/h3&gt;
@@ -557,7 +557,7 @@
 &lt;li&gt;服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。&lt;/li&gt;
 &lt;li&gt;服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="使用"&gt;使用&lt;/h2&gt;</description></item><item><title>Java注解-元注解</title><link>https://www.feilewu.cn/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</guid><description>&lt;h2 id="元注解"&gt;元注解&lt;/h2&gt;
+&lt;h2 id="使用"&gt;使用&lt;/h2&gt;</description></item><item><title>Java注解-元注解</title><link>https://feilewu.github.io/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</guid><description>&lt;h2 id="元注解"&gt;元注解&lt;/h2&gt;
 &lt;h3 id="retention"&gt;@Retention&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;@interface&lt;/span&gt; Retention {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;/**
@@ -588,7 +588,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; */&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RUNTIME
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有三种，分别是源代码、字节码、和运行时&lt;/p&gt;</description></item><item><title>spring boot运行非web项目</title><link>https://www.feilewu.cn/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有三种，分别是源代码、字节码、和运行时&lt;/p&gt;</description></item><item><title>spring boot运行非web项目</title><link>https://feilewu.github.io/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
 &lt;p&gt;一直以来，一直使用springboot来创建基于web的项目，今天突然想到，springboot是否可以用于非web项目的使用。&lt;/p&gt;
 &lt;h2 id="非web运行办法"&gt;非web运行办法&lt;/h2&gt;
 &lt;h3 id="启动类main方法后面执行"&gt;启动类main方法后面执行&lt;/h3&gt;

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on 飞乐</title><link>https://www.feilewu.cn/posts/</link><description>Recent content in Posts on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 01 Oct 2026 22:29:53 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>github创建action部署用户</title><link>https://www.feilewu.cn/posts/2026/10/github%E5%88%9B%E5%BB%BAaction%E9%83%A8%E7%BD%B2%E7%94%A8%E6%88%B7/</link><pubDate>Thu, 01 Oct 2026 22:29:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/2026/10/github%E5%88%9B%E5%BB%BAaction%E9%83%A8%E7%BD%B2%E7%94%A8%E6%88%B7/</guid><description>&lt;h1 id="账户准备"&gt;账户准备&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on 飞乐</title><link>https://feilewu.github.io/posts/</link><description>Recent content in Posts on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 01 Oct 2026 22:29:53 +0800</lastBuildDate><atom:link href="https://feilewu.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>github创建action部署用户</title><link>https://feilewu.github.io/posts/2026/10/github%E5%88%9B%E5%BB%BAaction%E9%83%A8%E7%BD%B2%E7%94%A8%E6%88%B7/</link><pubDate>Thu, 01 Oct 2026 22:29:53 +0800</pubDate><guid>https://feilewu.github.io/posts/2026/10/github%E5%88%9B%E5%BB%BAaction%E9%83%A8%E7%BD%B2%E7%94%A8%E6%88%B7/</guid><description>&lt;h1 id="账户准备"&gt;账户准备&lt;/h1&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;# 1. 创建 git 用户（禁用密码登录，更安全）
 sudo adduser git --disabled-password --gecos &amp;#34;&amp;#34;
 # 2. 一键创建 .ssh 目录并生成 Ed25519 密钥对
@@ -12,7 +12,7 @@ sudo -u git sh -c &amp;#39;cat /home/git/.ssh/github_actions.pub &amp;gt;&amp;gt
 sudo chmod 600 /home/git/.ssh/authorized_keys
 sudo chmod 644 /home/git/.ssh/github_actions.pub
 &lt;/code&gt;&lt;/pre&gt;&lt;h1 id="目录赋权"&gt;目录赋权&lt;/h1&gt;
-&lt;p&gt;用acl权限控制&lt;/p&gt;</description></item><item><title>腾讯COS对象存储申请API访问</title><link>https://www.feilewu.cn/posts/halo-posts/%E8%85%BE%E8%AE%AFcos%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%94%B3%E8%AF%B7api%E8%AE%BF%E9%97%AE/</link><pubDate>Mon, 14 Oct 2024 23:00:02 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E8%85%BE%E8%AE%AFcos%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%94%B3%E8%AF%B7api%E8%AE%BF%E9%97%AE/</guid><description>&lt;h1 id="创建子账号"&gt;创建子账号&lt;/h1&gt;
+&lt;p&gt;用acl权限控制&lt;/p&gt;</description></item><item><title>腾讯COS对象存储申请API访问</title><link>https://feilewu.github.io/posts/halo-posts/%E8%85%BE%E8%AE%AFcos%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%94%B3%E8%AF%B7api%E8%AE%BF%E9%97%AE/</link><pubDate>Mon, 14 Oct 2024 23:00:02 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E8%85%BE%E8%AE%AFcos%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%94%B3%E8%AF%B7api%E8%AE%BF%E9%97%AE/</guid><description>&lt;h1 id="创建子账号"&gt;创建子账号&lt;/h1&gt;
 &lt;p&gt;&lt;a href="https://console.cloud.tencent.com/cam/user/create?systemType=FastCreateV2"&gt;https://console.cloud.tencent.com/cam/user/create?systemType=FastCreateV2&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/14/4f8cf7cc-c467-4cbe-aeb2-9839c665529b.png"&gt;&lt;/p&gt;
 &lt;p&gt;点击权限&lt;/p&gt;
@@ -22,14 +22,14 @@ sudo chmod 644 /home/git/.ssh/github_actions.pub
 &lt;p&gt;点击API创建，保存下key和secret&lt;/p&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/14/da567e2b-160f-4519-a3d2-d589bd8ef99a.png"&gt;&lt;/p&gt;
 &lt;h1 id="创建cos桶"&gt;创建COS桶&lt;/h1&gt;
-&lt;p&gt;后续便可以通过API访问COS桶了&lt;/p&gt;</description></item><item><title>宝塔面板使用腾讯云COS自动备份</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91cos%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD/</link><pubDate>Sun, 06 Oct 2024 22:04:54 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91cos%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD/</guid><description>&lt;h1 id="腾讯云cos自动备份"&gt;腾讯云COS自动备份&lt;/h1&gt;
+&lt;p&gt;后续便可以通过API访问COS桶了&lt;/p&gt;</description></item><item><title>宝塔面板使用腾讯云COS自动备份</title><link>https://feilewu.github.io/posts/halo-posts/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91cos%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD/</link><pubDate>Sun, 06 Oct 2024 22:04:54 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91cos%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD/</guid><description>&lt;h1 id="腾讯云cos自动备份"&gt;腾讯云COS自动备份&lt;/h1&gt;
 &lt;h3 id="软件仓库搜索腾讯云cos并安装"&gt;软件仓库搜索腾讯云COS并安装&lt;/h3&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/06/4edbb9bd-f4ff-424f-a336-191a557f9947.png"&gt;&lt;/p&gt;
 &lt;h2 id="配置访问存储桶的相关api信息"&gt;配置访问存储桶的相关API信息&lt;/h2&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/06/c3c0943c-ec0c-41ba-9d15-55b47f71e7da.png"&gt;&lt;/p&gt;
 &lt;p&gt;具体配置关联&lt;a href="../%E5%85%AC%E6%9C%89%E4%BA%91%E4%BD%BF%E7%94%A8/%E8%85%BE%E8%AE%AFCOS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%94%B3%E8%AF%B7API%E8%AE%BF%E9%97%AE.md"&gt;腾讯COS对象存储申请API访问&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id="配置计划任务"&gt;配置计划任务&lt;/h2&gt;
-&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/06/21996886-9563-4778-b8bd-882e7000be56.png"&gt;&lt;/p&gt;</description></item><item><title>centos7编译安装python3.11</title><link>https://www.feilewu.cn/posts/halo-posts/centos7%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python3.11/</link><pubDate>Sun, 06 Oct 2024 22:00:46 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/centos7%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python3.11/</guid><description>&lt;pre tabindex="0"&gt;&lt;code&gt;sudo yum install gcc openssl-devel bzip2-devel libffi-devel wget
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/06/21996886-9563-4778-b8bd-882e7000be56.png"&gt;&lt;/p&gt;</description></item><item><title>centos7编译安装python3.11</title><link>https://feilewu.github.io/posts/halo-posts/centos7%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python3.11/</link><pubDate>Sun, 06 Oct 2024 22:00:46 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/centos7%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python3.11/</guid><description>&lt;pre tabindex="0"&gt;&lt;code&gt;sudo yum install gcc openssl-devel bzip2-devel libffi-devel wget
 &lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;wget https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tgz
 tar -xvf Python-3.11.4.tgz
 &lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;# 安装源码编译需要的编译环境
@@ -52,7 +52,7 @@ sudo rm -f /usr/bin/pip
 sudo ln -s /home/hadoop/opt/python3.11.4/bin/pip3 /usr/bin/pip3
 sudo ln -s /home/hadoop/opt/python3.11.4/bin/python3 /usr/bin/python
 sudo ln -s /home/hadoop/opt/python3.11.4/bin/pip3 /usr/bin/pip
-&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>Rust工具链安装</title><link>https://www.feilewu.cn/posts/halo-posts/rust%E5%B7%A5%E5%85%B7%E9%93%BE%E5%AE%89%E8%A3%85/</link><pubDate>Tue, 01 Oct 2024 13:46:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/rust%E5%B7%A5%E5%85%B7%E9%93%BE%E5%AE%89%E8%A3%85/</guid><description>&lt;h1 id="windows"&gt;Windows&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>Rust工具链安装</title><link>https://feilewu.github.io/posts/halo-posts/rust%E5%B7%A5%E5%85%B7%E9%93%BE%E5%AE%89%E8%A3%85/</link><pubDate>Tue, 01 Oct 2024 13:46:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/rust%E5%B7%A5%E5%85%B7%E9%93%BE%E5%AE%89%E8%A3%85/</guid><description>&lt;h1 id="windows"&gt;Windows&lt;/h1&gt;
 &lt;h2 id="安装msys2"&gt;安装MSYS2&lt;/h2&gt;
 &lt;p&gt;&lt;a href="https://www.msys2.org/"&gt;https://www.msys2.org/&lt;/a&gt;
 &lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/01/3d4baffe-c22f-41ce-9f1b-44227a2332a1.png"&gt;&lt;/p&gt;
@@ -96,7 +96,7 @@ modify PATH variable: yes
 3) Cancel installation
 &amp;gt;1
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id="检验安装结果"&gt;检验安装结果&lt;/h3&gt;
-&lt;p&gt;windows终端执行&lt;/p&gt;</description></item><item><title>openwrt通过frp代理后外网无法访问</title><link>https://www.feilewu.cn/posts/halo-posts/openwrt%E9%80%9A%E8%BF%87frp%E4%BB%A3%E7%90%86%E5%90%8E%E5%A4%96%E7%BD%91%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE/</link><pubDate>Tue, 01 Oct 2024 13:40:29 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/openwrt%E9%80%9A%E8%BF%87frp%E4%BB%A3%E7%90%86%E5%90%8E%E5%A4%96%E7%BD%91%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE/</guid><description>&lt;p&gt;外网（frp）访问openwrt，报错request entity too large&lt;/p&gt;
+&lt;p&gt;windows终端执行&lt;/p&gt;</description></item><item><title>openwrt通过frp代理后外网无法访问</title><link>https://feilewu.github.io/posts/halo-posts/openwrt%E9%80%9A%E8%BF%87frp%E4%BB%A3%E7%90%86%E5%90%8E%E5%A4%96%E7%BD%91%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE/</link><pubDate>Tue, 01 Oct 2024 13:40:29 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/openwrt%E9%80%9A%E8%BF%87frp%E4%BB%A3%E7%90%86%E5%90%8E%E5%A4%96%E7%BD%91%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE/</guid><description>&lt;p&gt;外网（frp）访问openwrt，报错request entity too large&lt;/p&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/01/a403621c-a246-414c-bfca-c604a8153ff1.png"&gt;&lt;/p&gt;
 &lt;p&gt;错误原因：通常是指请求的数量超过服务器的限制&lt;/p&gt;
 &lt;p&gt;解决方法：修改配置文件，登录到opnwrt的ssh页面输入&lt;/p&gt;
@@ -105,7 +105,7 @@ modify PATH variable: yes
 &lt;p&gt;&lt;code&gt;option max_requests '50'&lt;/code&gt;的意思是设置最大请求数为500。&lt;/p&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/01/922be141-442e-4f81-90be-078131a1997f.png"&gt;&lt;/p&gt;
 &lt;p&gt;重启&lt;/p&gt;
-&lt;p&gt;切换浏览器&lt;/p&gt;</description></item><item><title>IDEA搭建Scala项目-helloworld</title><link>https://www.feilewu.cn/posts/halo-posts/idea%E6%90%AD%E5%BB%BAscala%E9%A1%B9%E7%9B%AE-helloworld/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/idea%E6%90%AD%E5%BB%BAscala%E9%A1%B9%E7%9B%AE-helloworld/</guid><description>&lt;h2 id="安装scala插件"&gt;安装Scala插件&lt;/h2&gt;
+&lt;p&gt;切换浏览器&lt;/p&gt;</description></item><item><title>IDEA搭建Scala项目-helloworld</title><link>https://feilewu.github.io/posts/halo-posts/idea%E6%90%AD%E5%BB%BAscala%E9%A1%B9%E7%9B%AE-helloworld/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/idea%E6%90%AD%E5%BB%BAscala%E9%A1%B9%E7%9B%AE-helloworld/</guid><description>&lt;h2 id="安装scala插件"&gt;安装Scala插件&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;打开idea的settings&lt;/li&gt;
 &lt;li&gt;进入plugins，搜索Scala&lt;/li&gt;
@@ -135,7 +135,7 @@ modify PATH variable: yes
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;hello world
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>JVM参数该如何配置</title><link>https://www.feilewu.cn/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</guid><description>&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>JVM参数该如何配置</title><link>https://feilewu.github.io/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</guid><description>&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
 &lt;p&gt;面试官经常会问：JVM参数该如何设置？&lt;/p&gt;
 &lt;p&gt;虽然线上项目的JVM参数在我加入团队后就没有动过了，但我们还是得学习下不是，万一后面需要了呢？&lt;/p&gt;
 &lt;h2 id="jvm内存模型参数"&gt;JVM内存模型参数&lt;/h2&gt;
@@ -208,7 +208,7 @@ modify PATH variable: yes
 &lt;li&gt;PrintGCTimeStamps 垃圾收集发生时的时间戳&lt;/li&gt;
 &lt;li&gt;Xloggc:filename 将日志信息记录到文件中，便于后续分析&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;上述参数可以组合使用，输出易于分析的信息&lt;/p&gt;</description></item><item><title>LRU算法</title><link>https://www.feilewu.cn/posts/halo-posts/lru%E7%AE%97%E6%B3%95/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/lru%E7%AE%97%E6%B3%95/</guid><description>&lt;h2 id="lru算法"&gt;LRU算法&lt;/h2&gt;
+&lt;p&gt;上述参数可以组合使用，输出易于分析的信息&lt;/p&gt;</description></item><item><title>LRU算法</title><link>https://feilewu.github.io/posts/halo-posts/lru%E7%AE%97%E6%B3%95/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/lru%E7%AE%97%E6%B3%95/</guid><description>&lt;h2 id="lru算法"&gt;LRU算法&lt;/h2&gt;
 &lt;h3 id="简述"&gt;简述&lt;/h3&gt;
 &lt;p&gt;LRU是Least Recently Used的缩写，即最近最少使用，是一种常用的页面置换算法，选择最近最久未使用的页面予以淘汰。 该算法赋予每个页面一个访问字段，用来记录一个页面自上次被访问以来所经历的时间t，当须淘汰一个页面时，选择现有页面中其t 值最大的，即最近最少使用的页面予以淘汰。&lt;/p&gt;
 &lt;h3 id="需求"&gt;需求&lt;/h3&gt;
@@ -227,7 +227,7 @@ modify PATH variable: yes
 &lt;p&gt;删除：将节点从链表中移除&lt;/p&gt;
 &lt;p&gt;增加：将节点移动到head处&lt;/p&gt;
 &lt;p&gt;修改：将节点移动到head处&lt;/p&gt;
-&lt;p&gt;查询：将节点移动到head处&lt;/p&gt;</description></item><item><title>MySQL的MVVC是个什么东东</title><link>https://www.feilewu.cn/posts/halo-posts/mysql%E7%9A%84mvvc%E6%98%AF%E4%B8%AA%E4%BB%80%E4%B9%88%E4%B8%9C%E4%B8%9C/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/mysql%E7%9A%84mvvc%E6%98%AF%E4%B8%AA%E4%BB%80%E4%B9%88%E4%B8%9C%E4%B8%9C/</guid><description>&lt;h2 id="mvvc是什么"&gt;MVVC是什么&lt;/h2&gt;
+&lt;p&gt;查询：将节点移动到head处&lt;/p&gt;</description></item><item><title>MySQL的MVVC是个什么东东</title><link>https://feilewu.github.io/posts/halo-posts/mysql%E7%9A%84mvvc%E6%98%AF%E4%B8%AA%E4%BB%80%E4%B9%88%E4%B8%9C%E4%B8%9C/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/mysql%E7%9A%84mvvc%E6%98%AF%E4%B8%AA%E4%BB%80%E4%B9%88%E4%B8%9C%E4%B8%9C/</guid><description>&lt;h2 id="mvvc是什么"&gt;MVVC是什么&lt;/h2&gt;
 &lt;p&gt;MVVC，全称Multi-Version Concurrency Control&lt;/p&gt;
 &lt;p&gt;多版本的并发控制，Multi-Version Concurrency Control，是一个可以提升数据库并发读写性能的技术。&lt;/p&gt;
 &lt;p&gt;一般的，如果对数据的库表的一行记录进行读写操作，为了保证数据的一致性，往往需要对这一行记录进行加锁操作。而加锁带来的问题就是开销变大，性能降低。而MVVC便是对这一问题提出的一种改进策略。&lt;/p&gt;
@@ -290,7 +290,7 @@ modify PATH variable: yes
 &lt;p&gt;&lt;img alt="img" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/16/20210616171829.image"&gt;&lt;/p&gt;
 &lt;h3 id="mvcc和事务隔离级别的关系"&gt;MVCC和事务隔离级别的关系&lt;/h3&gt;
 &lt;h4 id="mvcc如何实现rr和rc的隔离级别"&gt;MVCC如何实现RR和RC的隔离级别&lt;/h4&gt;
-&lt;p&gt;在RC的隔离级别下，只要提交了都可以被其他事务读取到，每一个快照读均会生成一个最新的read view&lt;/p&gt;</description></item><item><title>picgo插件代码示例</title><link>https://www.feilewu.cn/posts/halo-posts/picgo%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/picgo%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B/</guid><description>&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;picgo&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;picgo&amp;#39;&lt;/span&gt;
+&lt;p&gt;在RC的隔离级别下，只要提交了都可以被其他事务读取到，每一个快照读均会生成一个最新的read view&lt;/p&gt;</description></item><item><title>picgo插件代码示例</title><link>https://feilewu.github.io/posts/halo-posts/picgo%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/picgo%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B/</guid><description>&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;picgo&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;picgo&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// @ts-ignore
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;PluginConfig&lt;/span&gt; } &lt;span style="color:#a6e22e"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;picgo/dist/utils/interfaces&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
@@ -383,7 +383,7 @@ modify PATH variable: yes
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Scala基础--关键字，数据类型，函数</title><link>https://www.feilewu.cn/posts/halo-posts/scala%E5%9F%BA%E7%A1%80--%E5%85%B3%E9%94%AE%E5%AD%97%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/scala%E5%9F%BA%E7%A1%80--%E5%85%B3%E9%94%AE%E5%AD%97%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0/</guid><description>&lt;h2 id="基础语法"&gt;基础语法&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Scala基础--关键字，数据类型，函数</title><link>https://feilewu.github.io/posts/halo-posts/scala%E5%9F%BA%E7%A1%80--%E5%85%B3%E9%94%AE%E5%AD%97%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/scala%E5%9F%BA%E7%A1%80--%E5%85%B3%E9%94%AE%E5%AD%97%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0/</guid><description>&lt;h2 id="基础语法"&gt;基础语法&lt;/h2&gt;
 &lt;h3 id="注意点"&gt;注意点&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Scala 区分大小写&lt;/li&gt;
@@ -484,7 +484,7 @@ modify PATH variable: yes
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h3 id="注释"&gt;注释&lt;/h3&gt;
-&lt;p&gt;注释也和Java类似&lt;/p&gt;</description></item><item><title>shell学习笔记</title><link>https://www.feilewu.cn/posts/halo-posts/shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid><description>&lt;h2 id="变量"&gt;变量&lt;/h2&gt;
+&lt;p&gt;注释也和Java类似&lt;/p&gt;</description></item><item><title>shell学习笔记</title><link>https://feilewu.github.io/posts/halo-posts/shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid><description>&lt;h2 id="变量"&gt;变量&lt;/h2&gt;
 &lt;h3 id="使用和创建变量"&gt;使用和创建变量&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;your_name&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;qinjx&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo $your_name
@@ -686,7 +686,7 @@ modify PATH variable: yes
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&amp;hellip;&lt;/p&gt;</description></item><item><title>Spark在Standalone运行架构中的运行流程</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E5%9C%A8standalone%E8%BF%90%E8%A1%8C%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E5%9C%A8standalone%E8%BF%90%E8%A1%8C%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/</guid><description>&lt;h2 id="standalone"&gt;Standalone&lt;/h2&gt;
+&lt;p&gt;&amp;hellip;&lt;/p&gt;</description></item><item><title>Spark在Standalone运行架构中的运行流程</title><link>https://feilewu.github.io/posts/halo-posts/spark%E5%9C%A8standalone%E8%BF%90%E8%A1%8C%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/spark%E5%9C%A8standalone%E8%BF%90%E8%A1%8C%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/</guid><description>&lt;h2 id="standalone"&gt;Standalone&lt;/h2&gt;
 &lt;p&gt;Standalone模式是Spark实现的资源调度框架，其主要的节点有Client节点、Master节点和Worker节点。其中Driver既可以运行在Master节点上中， 也可以运行在本地Client端。当用spark-shell交互式工具提交Spark的Job时，Driver在Master节点上运行； 当使用spark-submit工具提交Job或者在Eclips、IDEA等开发平台上使用”new SparkConf().setMaster(“spark://master:7077”)”方式运行Spark任务时， Driver是运行在本地Client端上的。&lt;/p&gt;
 &lt;h3 id="具体流程"&gt;具体流程&lt;/h3&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/13c6323e-901a-456e-9c45-f1b29f30ac6e.png"&gt;&lt;/p&gt;
@@ -704,7 +704,7 @@ modify PATH variable: yes
 &lt;li&gt;对接收过来的task进行反序列化，把task封装成一个线程&lt;/li&gt;
 &lt;li&gt;开始执行Task，并向SparkContext报告，直至Task完成。&lt;/li&gt;
 &lt;li&gt;资源注销&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Spark学习之Spark简述</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E5%AD%A6%E4%B9%A0%E4%B9%8Bspark%E7%AE%80%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E5%AD%A6%E4%B9%A0%E4%B9%8Bspark%E7%AE%80%E8%BF%B0/</guid><description>&lt;h2 id="spark生态"&gt;Spark生态&lt;/h2&gt;
+&lt;/ul&gt;</description></item><item><title>Spark学习之Spark简述</title><link>https://feilewu.github.io/posts/halo-posts/spark%E5%AD%A6%E4%B9%A0%E4%B9%8Bspark%E7%AE%80%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/spark%E5%AD%A6%E4%B9%A0%E4%B9%8Bspark%E7%AE%80%E8%BF%B0/</guid><description>&lt;h2 id="spark生态"&gt;Spark生态&lt;/h2&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2026/10/09/fcb444ea-c498-4e99-b20b-7d5b64c6a90e.png"&gt;
 Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以及这两者上的动作。其他Spark的库都是构建在RDD和Spark Core之上的&lt;/p&gt;
 &lt;p&gt;Spark SQL：提供通过Apache Hive的SQL变体Hive查询语言（HiveQL）与Spark进行交互的API。每个数据库表被当做一个RDD，Spark SQL查询被转换为Spark操作。&lt;/p&gt;
@@ -721,7 +721,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;p&gt;Task在Executor上运行，运行完释放所有资源&lt;/p&gt;
 &lt;h2 id="spark与hadoop"&gt;Spark与Hadoop&lt;/h2&gt;
 &lt;p&gt;MapReduce采用硬盘保存临时数据，而Spark采用内存保存临时数据&lt;/p&gt;
-&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2026/10/09/1a902c9f-e51b-4b9f-86f1-8613188fc1f6.png"&gt;&lt;/p&gt;</description></item><item><title>Spark的运行原理</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</guid><description>&lt;h2 id="spark基本概念"&gt;Spark基本概念&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2026/10/09/1a902c9f-e51b-4b9f-86f1-8613188fc1f6.png"&gt;&lt;/p&gt;</description></item><item><title>Spark的运行原理</title><link>https://feilewu.github.io/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</guid><description>&lt;h2 id="spark基本概念"&gt;Spark基本概念&lt;/h2&gt;
 &lt;p&gt;RDD：是弹性分布式数据集（Resilient Distributed Dataset）的简称，是分布式内存的一个抽象概念，提供了一种高度受限的共享内存模型。
 &lt;img alt="2022-03-29-20-49-45" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-49-45.png"&gt;&lt;/p&gt;
 &lt;p&gt;DAGScheduler：有向无环图调度器基于DAG划分Stage并以TaskSet的形式提交Stage给TaskScheduler；负责将作业拆分成不同阶段的具有宽窄依赖关系的多批任务；最重要的任务之一就是：计算作业和任务的依赖关系，指定调度逻辑。在SparkContext初始化的过程中被实例化，一个SparkContext对应一个DAGScheduler。
@@ -778,7 +778,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;li&gt;
 &lt;p&gt;Task的执行速度是跟每个Executor进程的CPU core数量有直接关系的。一个CPU core同一时间只能执行一个线程。而每个Executor进程上分配到的多个Task，都是以每个Task一条线程的方式，多线程并发运行的。如果CPU core数量比较充足，而且分配到的Task数量比较合理，那么通常来说，可以比较快速和高效地执行完这些Task线程。&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Spark的运行模式</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h2 id="standalone模式"&gt;Standalone模式&lt;/h2&gt;
+&lt;/ul&gt;</description></item><item><title>Spark的运行模式</title><link>https://feilewu.github.io/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h2 id="standalone模式"&gt;Standalone模式&lt;/h2&gt;
 &lt;h3 id="架构"&gt;架构&lt;/h3&gt;
 &lt;p&gt;&lt;img alt="2021-09-21-19-47-21" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-47-21.png"&gt;&lt;/p&gt;
 &lt;h3 id="standalone运行过程"&gt;Standalone运行过程&lt;/h3&gt;
@@ -844,7 +844,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;li&gt;Executor一旦启动后，将一直运行，且它的资源可以一直被Task复用，直到Spark程序运行完成后才释放退出。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id="总结"&gt;总结&lt;/h3&gt;
-&lt;p&gt;总体上看，Spark采用的是经典的scheduler/workers模式，每个Spark应用程序运行的第一步是构建一个可重用的资源池，然后在这个资源池里运行所有的ShuffleMap Task和Reduce Task（注意，尽管Spark引擎内部只用两类Task便可表示出一个复杂的应用程序，即ShuffleMap Task和Reduce Task），而MapReduce应用程序则不同，它不会构建一个可重用的资源池，而是让每个Task动态申请资源，且运行完后马上释放资源。&lt;/p&gt;</description></item><item><title>SpringBoot配置文件——加载顺序</title><link>https://www.feilewu.cn/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</guid><description>&lt;h1 id="springboot配置文件加载顺序"&gt;SpringBoot配置文件——加载顺序&lt;/h1&gt;
+&lt;p&gt;总体上看，Spark采用的是经典的scheduler/workers模式，每个Spark应用程序运行的第一步是构建一个可重用的资源池，然后在这个资源池里运行所有的ShuffleMap Task和Reduce Task（注意，尽管Spark引擎内部只用两类Task便可表示出一个复杂的应用程序，即ShuffleMap Task和Reduce Task），而MapReduce应用程序则不同，它不会构建一个可重用的资源池，而是让每个Task动态申请资源，且运行完后马上释放资源。&lt;/p&gt;</description></item><item><title>SpringBoot配置文件——加载顺序</title><link>https://feilewu.github.io/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</guid><description>&lt;h1 id="springboot配置文件加载顺序"&gt;SpringBoot配置文件——加载顺序&lt;/h1&gt;
 &lt;h3 id="配置文件所在目录"&gt;配置文件所在目录&lt;/h3&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/a9298a51-96ba-496a-9dbf-57337e30a218.png"&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -868,7 +868,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;p&gt;PS：&lt;/p&gt;
 &lt;p&gt;创建SpringBoot项目时，一般的配置文件放置在项目的resources目录下，因为配置文件的修改，通过热部署不用重新启动项目，而热部署的作用范围是classpath下&lt;/p&gt;
 &lt;p&gt;参考：&lt;/p&gt;
-&lt;p&gt;springboot官方文档：https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/html/spring-boot-features.html#boot-features-external-config&lt;/p&gt;</description></item><item><title>Spring的启动流程--注解方式启动</title><link>https://www.feilewu.cn/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</guid><description>&lt;h2 id="bean生命周期"&gt;Bean生命周期&lt;/h2&gt;
+&lt;p&gt;springboot官方文档：https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/html/spring-boot-features.html#boot-features-external-config&lt;/p&gt;</description></item><item><title>Spring的启动流程--注解方式启动</title><link>https://feilewu.github.io/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</guid><description>&lt;h2 id="bean生命周期"&gt;Bean生命周期&lt;/h2&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/05/16/20210516163404.png"&gt;&lt;/p&gt;
 &lt;h2 id="spring的启动流程注解方式启动"&gt;Spring的启动流程&amp;ndash;注解方式启动&lt;/h2&gt;
 &lt;h3 id="1-创建annotationconfigapplicationcontext"&gt;1. 创建AnnotationConfigApplicationContext&lt;/h3&gt;
@@ -946,7 +946,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="13-创建scancer"&gt;1.3 创建Scancer&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;scanner&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ClassPathBeanDefinitionScanner(&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;关注&lt;/p&gt;</description></item><item><title>分布式锁的几种常见实现方式</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/</guid><description>&lt;h2 id="数据库乐观锁"&gt;数据库乐观锁&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;关注&lt;/p&gt;</description></item><item><title>分布式锁的几种常见实现方式</title><link>https://feilewu.github.io/posts/halo-posts/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/</guid><description>&lt;h2 id="数据库乐观锁"&gt;数据库乐观锁&lt;/h2&gt;
 &lt;h3 id="实现方式"&gt;实现方式&lt;/h3&gt;
 &lt;p&gt;用表中一行记录来表示锁，其中表示锁的字段采用唯一约束&lt;/p&gt;
 &lt;p&gt;当多个线程同时执行插入语句时，只有一个能插入成功，可以认为获得到了锁，其他则会报错：ERROR 1062 (23000): Duplicate entry ‘1’ for key ‘uiq_idx_resource’），这种情况可以认为没有获得到锁&lt;/p&gt;
@@ -984,7 +984,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这里并没有直接使用delete命令，是为了防止删除其他线程的key。、&lt;/p&gt;</description></item><item><title>利用Redisson快速实现分布式锁--Redisson的介绍与使用</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid><description>&lt;h2 id="什么是redisson"&gt;什么是Redisson&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这里并没有直接使用delete命令，是为了防止删除其他线程的key。、&lt;/p&gt;</description></item><item><title>利用Redisson快速实现分布式锁--Redisson的介绍与使用</title><link>https://feilewu.github.io/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid><description>&lt;h2 id="什么是redisson"&gt;什么是Redisson&lt;/h2&gt;
 &lt;p&gt;Redisson 是一个使用 Java编写的Redis 客户端。 其以Redis为基础，构建了一种内存数据网格（ &lt;strong&gt;in-memory data grid&lt;/strong&gt;），并提供了redis支持的分布式Java对象和服务。包括超过50中Java对象和若干服务（Set, Multimap, SortedSet, Map, List, Queue, Deque, Semaphore, Lock, AtomicLong, Map Reduce, Publish / Subscribe, Bloom filter, Spring Cache, Tomcat, Scheduler, JCache API, Hibernate, MyBatis, RPC, local cache&amp;hellip;）。&lt;/p&gt;
 &lt;p&gt;简单来讲，Redisson可以帮助我们集中精力处理业务，而不必将过多的精力投入到redis的用法上。在项目中我们常常用它来实现redis分布式锁，替代原生redis+lua脚本的方式。&lt;/p&gt;
 &lt;h2 id="maven依赖"&gt;Maven依赖&lt;/h2&gt;
@@ -1011,7 +1011,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;setAddress&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;redis://127.0.0.1:6379&amp;#34;&lt;/span&gt;);
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;RedissonClient client &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Redisson.&lt;span style="color:#a6e22e"&gt;create&lt;/span&gt;(config);
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;本文示例采用redis单机模式的配置，首先利用SingleServerConfig构建出单机模式下redis的配置对象，并使用setAddress 方法配置IP和端口信息，除此之外，还可以通过对应的setter方法设置retryAttempts、connectionTimeout 和 clientName等参数。然后，通过SingleServerConfig构建出Config对象，并将其传递给Redisson类的create静态方法，获得RedissonClient对象，后续我们便可以使用其进行各种业务操作。&lt;/p&gt;</description></item><item><title>当100个任务同时请求提交任务，线程池时如何工作的</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</guid><description>&lt;h2 id="问题"&gt;问题&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;本文示例采用redis单机模式的配置，首先利用SingleServerConfig构建出单机模式下redis的配置对象，并使用setAddress 方法配置IP和端口信息，除此之外，还可以通过对应的setter方法设置retryAttempts、connectionTimeout 和 clientName等参数。然后，通过SingleServerConfig构建出Config对象，并将其传递给Redisson类的create静态方法，获得RedissonClient对象，后续我们便可以使用其进行各种业务操作。&lt;/p&gt;</description></item><item><title>当100个任务同时请求提交任务，线程池时如何工作的</title><link>https://feilewu.github.io/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</guid><description>&lt;h2 id="问题"&gt;问题&lt;/h2&gt;
 &lt;p&gt;如果100个任务同时往线程池（最小线程5，最大线程10，队列时LinkedBlockingDeque）提交，线程池会发生什么？线程池如何处理这些任务?&lt;/p&gt;
 &lt;h2 id="线程池"&gt;线程池&lt;/h2&gt;
 &lt;p&gt;我们首先来看看线程池的工作流程。&lt;/p&gt;
@@ -1054,11 +1054,11 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;li&gt;如果时IO密集型，考虑到充分压榨CPU的计算能力，可以设置为2倍CPU核心数，具体根据业务情况而定&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id="超时时间"&gt;超时时间&lt;/h4&gt;
-&lt;p&gt;根据每一个任务执行所需的时间而定，避免频繁创建和销毁线程，提高线程利用率。&lt;/p&gt;</description></item><item><title>无法将交换文件 /vmfs/volumes/.../XXXXX.vswp 从 0 KB 扩展到 6291456 KB : No space left on device</title><link>https://www.feilewu.cn/posts/halo-posts/wu-fa-jiang-jiao-huan-wen-jian-vmfsvolumesxxxxxvswpcong-0kbkuo-zhan-dao-6291456kbnospaceleftondevice/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/wu-fa-jiang-jiao-huan-wen-jian-vmfsvolumesxxxxxvswpcong-0kbkuo-zhan-dao-6291456kbnospaceleftondevice/</guid><description>&lt;p&gt;在编辑虚拟机，增加内存时，出现如下的错误&lt;/p&gt;
+&lt;p&gt;根据每一个任务执行所需的时间而定，避免频繁创建和销毁线程，提高线程利用率。&lt;/p&gt;</description></item><item><title>无法将交换文件 /vmfs/volumes/.../XXXXX.vswp 从 0 KB 扩展到 6291456 KB : No space left on device</title><link>https://feilewu.github.io/posts/halo-posts/wu-fa-jiang-jiao-huan-wen-jian-vmfsvolumesxxxxxvswpcong-0kbkuo-zhan-dao-6291456kbnospaceleftondevice/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/wu-fa-jiang-jiao-huan-wen-jian-vmfsvolumesxxxxxvswpcong-0kbkuo-zhan-dao-6291456kbnospaceleftondevice/</guid><description>&lt;p&gt;在编辑虚拟机，增加内存时，出现如下的错误&lt;/p&gt;
 &lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/5334e50b-0f1d-4011-a9d8-4aa4ae865253.png"&gt;
 解决方案：&lt;/p&gt;
 &lt;p&gt;在编辑虚拟机，增加内存时，将预留内存也一并分配&lt;/p&gt;
-&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/35e46a35-213b-4853-86e4-4022c399d675.png"&gt;&lt;/p&gt;</description></item><item><title>策略模式</title><link>https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h2 id="策略模式"&gt;策略模式&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/35e46a35-213b-4853-86e4-4022c399d675.png"&gt;&lt;/p&gt;</description></item><item><title>策略模式</title><link>https://feilewu.github.io/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h2 id="策略模式"&gt;策略模式&lt;/h2&gt;
 &lt;p&gt;策略模式定义了一组算法，将它们逐个封装起来，并使它们可以相互替换。策略可以让算法独立于使用它们的客户而变化。&lt;/p&gt;
 &lt;h2 id="应用"&gt;应用&lt;/h2&gt;
 &lt;p&gt;在业务场景中，我们经常需要根据不同的条件而执行不同方法，这个时候便可以为每一种条件定制一类特定的方法。&lt;/p&gt;
@@ -1193,7 +1193,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>设计模式之观察者模式-谈谈你对观察者模式的理解</title><link>https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</guid><description>&lt;h2 id="定义"&gt;定义&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>设计模式之观察者模式-谈谈你对观察者模式的理解</title><link>https://feilewu.github.io/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</guid><description>&lt;h2 id="定义"&gt;定义&lt;/h2&gt;
 &lt;p&gt;先来段wiki上面的定义：观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。简单来讲，就是定义了一组一对多的关系。当被观察者的状态改变，会通知观察者做出相应的动作。&lt;/p&gt;
 &lt;p&gt;在开发过程中，常常会遇到如下的场景：&lt;/p&gt;
 &lt;ul&gt;
@@ -1260,7 +1260,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Demo测试&lt;/p&gt;</description></item><item><title>限流的方式-几种限流算法的介绍与对比</title><link>https://www.feilewu.cn/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</guid><description>&lt;h2 id="简述"&gt;简述&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Demo测试&lt;/p&gt;</description></item><item><title>限流的方式-几种限流算法的介绍与对比</title><link>https://feilewu.github.io/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</guid><description>&lt;h2 id="简述"&gt;简述&lt;/h2&gt;
 &lt;p&gt;java限流大体可以分为3个方面。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;合法性
@@ -1320,7 +1320,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;li&gt;
 &lt;p&gt;固定时间窗口不能实现高精度的控制&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>CAP定理</title><link>https://www.feilewu.cn/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</guid><description>&lt;h1 id="概述"&gt;概述&lt;/h1&gt;
+&lt;/ul&gt;</description></item><item><title>CAP定理</title><link>https://feilewu.github.io/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</guid><description>&lt;h1 id="概述"&gt;概述&lt;/h1&gt;
 &lt;p&gt;1998年，加州大学的计算机科学家 Eric Brewer 提出，分布式系统有三个指标。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Consistency&lt;/li&gt;
@@ -1347,7 +1347,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;p&gt;综上所述，G2 无法同时做到一致性和可用性。系统设计时只能选择一个目标。如果追求一致性，那么无法保证所有节点的可用性；如果追求所有节点的可用性，那就没法做到一致性。&lt;/p&gt;
 &lt;h1 id="参考"&gt;参考&lt;/h1&gt;
 &lt;p&gt;&lt;a href="https://www.zhihu.com/question/54105974"&gt;https://www.zhihu.com/question/54105974&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://www.ruanyifeng.com/blog/2018/07/cap.html"&gt;http://www.ruanyifeng.com/blog/2018/07/cap.html&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dubbo笔记-概述</title><link>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</guid><description>&lt;h1 id="dubbo-学习"&gt;dubbo 学习&lt;/h1&gt;
+&lt;p&gt;&lt;a href="http://www.ruanyifeng.com/blog/2018/07/cap.html"&gt;http://www.ruanyifeng.com/blog/2018/07/cap.html&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dubbo笔记-概述</title><link>https://feilewu.github.io/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</guid><description>&lt;h1 id="dubbo-学习"&gt;dubbo 学习&lt;/h1&gt;
 &lt;p&gt;Apache Dubbo 是一款高性能、轻量级的开源Java RPC框架，它提供了三大核心能力：面向接口的远程方法调用，智能容错和负载均衡，以及服务自动注册和发现。&lt;/p&gt;
 &lt;h2 id="背景"&gt;背景&lt;/h2&gt;
 &lt;h3 id="常见的架构"&gt;常见的架构&lt;/h3&gt;
@@ -1399,7 +1399,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;li&gt;服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。&lt;/li&gt;
 &lt;li&gt;服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="使用"&gt;使用&lt;/h2&gt;</description></item><item><title>Java注解-元注解</title><link>https://www.feilewu.cn/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</guid><description>&lt;h2 id="元注解"&gt;元注解&lt;/h2&gt;
+&lt;h2 id="使用"&gt;使用&lt;/h2&gt;</description></item><item><title>Java注解-元注解</title><link>https://feilewu.github.io/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</guid><description>&lt;h2 id="元注解"&gt;元注解&lt;/h2&gt;
 &lt;h3 id="retention"&gt;@Retention&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;@interface&lt;/span&gt; Retention {
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;/**
@@ -1430,7 +1430,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; */&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RUNTIME
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有三种，分别是源代码、字节码、和运行时&lt;/p&gt;</description></item><item><title>Mysql查询优化</title><link>https://www.feilewu.cn/posts/halo-posts/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</guid><description>&lt;h2 id="查询执行流程"&gt;查询执行流程&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有三种，分别是源代码、字节码、和运行时&lt;/p&gt;</description></item><item><title>Mysql查询优化</title><link>https://feilewu.github.io/posts/halo-posts/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</guid><description>&lt;h2 id="查询执行流程"&gt;查询执行流程&lt;/h2&gt;
 &lt;p&gt;&lt;img alt="1627131-20190326142945691-999174680" loading="lazy" src="https://pic.feilewu.cn/uploads/img/1627131-20190326142945691-999174680_1619025212512.png"&gt;
 如图所示，mysql的查询一般分为如下步骤：&lt;/p&gt;
 &lt;ol&gt;
@@ -1475,7 +1475,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;li&gt;尽量避免在WHERE子句中使用!=或&amp;lt;&amp;gt;操作符，否则将引擎放弃使用索引而进行全表扫描&lt;/li&gt;
 &lt;li&gt;对于连续数值，使用BETWEEN不用IN：SELECT id FROM t WHERE num BETWEEN 1 AND 5&lt;/li&gt;
 &lt;li&gt;列表数据不要拿全表，要使用LIMIT来分页，每页数量也不要太大&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Redis笔记-数据类型</title><link>https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</guid><description>&lt;h2 id="基本数据类型及应用场景"&gt;基本数据类型及应用场景&lt;/h2&gt;
+&lt;/ul&gt;</description></item><item><title>Redis笔记-数据类型</title><link>https://feilewu.github.io/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</guid><description>&lt;h2 id="基本数据类型及应用场景"&gt;基本数据类型及应用场景&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -1560,7 +1560,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;pre tabindex="0"&gt;&lt;code&gt;decr key
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;decrby命令:用于对键的值进行指定值进行减值操作.&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;decrby key
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;append命令:用于对键的值进行追加操作,返回追加后的值的得长度.&lt;/p&gt;</description></item><item><title>spring boot运行非web项目</title><link>https://www.feilewu.cn/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;append命令:用于对键的值进行追加操作,返回追加后的值的得长度.&lt;/p&gt;</description></item><item><title>spring boot运行非web项目</title><link>https://feilewu.github.io/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
 &lt;p&gt;一直以来，一直使用springboot来创建基于web的项目，今天突然想到，springboot是否可以用于非web项目的使用。&lt;/p&gt;
 &lt;h2 id="非web运行办法"&gt;非web运行办法&lt;/h2&gt;
 &lt;h3 id="启动类main方法后面执行"&gt;启动类main方法后面执行&lt;/h3&gt;
@@ -1699,7 +1699,7 @@ Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以�
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; IllegalStateException(&lt;span style="color:#e6db74"&gt;&amp;#34;Failed to execute CommandLineRunner&amp;#34;&lt;/span&gt;, ex);
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其实就是在执行容器初始化后再调用实现的run方法而已。&lt;/p&gt;</description></item><item><title>Zookeeper概述与安装</title><link>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</guid><description>&lt;h2 id="特性"&gt;特性&lt;/h2&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其实就是在执行容器初始化后再调用实现的run方法而已。&lt;/p&gt;</description></item><item><title>Zookeeper概述与安装</title><link>https://feilewu.github.io/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://feilewu.github.io/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</guid><description>&lt;h2 id="特性"&gt;特性&lt;/h2&gt;
 &lt;h3 id="zookeeper-解决的本质问题"&gt;ZooKeeper 解决的本质问题&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;消息传递：延迟性，先发送的消息，不一定先到达；&lt;/li&gt;
