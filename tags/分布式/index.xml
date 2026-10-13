@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>分布式 on 飞乐</title><link>https://www.feilewu.cn/tags/%E5%88%86%E5%B8%83%E5%BC%8F/</link><description>Recent content in 分布式 on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 27 Sep 2024 19:10:53 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/tags/%E5%88%86%E5%B8%83%E5%BC%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>Spark的运行原理</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</guid><description>&lt;h2 id="spark基本概念"&gt;Spark基本概念&lt;/h2&gt;
+&lt;p&gt;RDD：是弹性分布式数据集（Resilient Distributed Dataset）的简称，是分布式内存的一个抽象概念，提供了一种高度受限的共享内存模型。
+&lt;img alt="2022-03-29-20-49-45" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-49-45.png"&gt;&lt;/p&gt;
+&lt;p&gt;DAGScheduler：有向无环图调度器基于DAG划分Stage并以TaskSet的形式提交Stage给TaskScheduler；负责将作业拆分成不同阶段的具有宽窄依赖关系的多批任务；最重要的任务之一就是：计算作业和任务的依赖关系，指定调度逻辑。在SparkContext初始化的过程中被实例化，一个SparkContext对应一个DAGScheduler。
+&lt;img alt="2022-03-29-20-50-13" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-50-13.png"&gt;&lt;/p&gt;
+&lt;p&gt;DAG：是Directed Acyclic Graph（有向无环图）的简称，反映RDD之间的依赖关系。
+&lt;img alt="2022-03-29-20-48-38" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-48-38.png"&gt;
+窄依赖：父RDD每一个分区最多被一个子RDD的分区所用；表现为一个父RDD的分区对应于一个子RDD的分区，或两个父RDD的分区对应于一个子RDD的分区。
+&lt;img alt="2021-09-21-19-40-39" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-40-39.png"&gt;&lt;/p&gt;
+&lt;p&gt;宽依赖：父RDD的每个分区都可能被多个子RDD分区所使用，子RDD分区通常对应所有的父RDD分区
+&lt;img alt="2021-09-21-19-41-36" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-41-36.png"&gt;&lt;/p&gt;
+&lt;p&gt;常见的宽窄依赖有：map、filter、union、mapPartitions、mapValues、join（父RDD是hash-partitioned：如果joinAPI之前被调用的RDD API是宽依赖【存在shuffle】，而且两个join的RDD的分区数量一致，join结果的RDD分区数量也一样，这个时候join API是窄依赖）。&lt;/p&gt;
+&lt;p&gt;常见的宽依赖有：groupByKey、partitionBy、reduceByKey、join（父RDD不是hash-partitioned：除此之外的，RDD的join API都是宽依赖）。&lt;/p&gt;
+&lt;p&gt;Driver Program：控制程序，负责为Application构建DAG图。
+&lt;img alt="2022-03-29-20-50-31" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-50-31.png"&gt;&lt;/p&gt;
+&lt;p&gt;Cluster Manager：集群资源管理中心，负责分配计算资源。&lt;/p&gt;
+&lt;p&gt;Worker Node：工作节点，负责完成具体计算。
+&lt;img alt="2022-03-29-20-50-45" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-50-45.png"&gt;&lt;/p&gt;
+&lt;p&gt;Executor：是运行在工作节点（Worker Node）上的一个进程，负责运行Task，并为应用程序存储数据。
+&lt;img alt="2022-03-29-20-51-01" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-51-01.png"&gt;&lt;/p&gt;
+&lt;p&gt;Application：用户编写的Spark应用程序，一个Application包含多个Job。
+&lt;img alt="2022-03-29-20-51-13" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-51-13.png"&gt;&lt;/p&gt;
+&lt;p&gt;Job：作业，一个Job包含多个RDD及作用于相应RDD上的各种操作。
+&lt;img alt="2022-03-29-20-51-26" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-51-26.png"&gt;&lt;/p&gt;
+&lt;p&gt;Stage：阶段，是作业的基本调度单位，一个作业会分为多组任务，每组任务被称为“阶段”。&lt;/p&gt;
+&lt;p&gt;TaskScheduler：任务调度器 将TaskSet提交给Worker（集群）运行并汇报结果；负责每个具体任务的实际物理调度。
+&lt;img alt="2022-03-29-20-51-45" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-51-45.png"&gt;&lt;/p&gt;
+&lt;p&gt;Task：任务，运行在Executor上的工作单元，是Executor中的一个线程。&lt;/p&gt;
+&lt;p&gt;TaskSet：任务集 由一组关联的，但相互之间没有Shuffle依赖关系的任务所组成的任务集。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1） 一个Stage创建一个TaskSet；&lt;/li&gt;
+&lt;li&gt;2） 为Stage的每个RDD分区创建一个Task，多个Task分装成TaskSet。
+&lt;img alt="2021-09-21-19-34-22" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-34-22.png"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总结：Application由多个Job组成，Job由多个Stage组成，Stage由多个Task组成。Stage是作业调度的基本单位。&lt;/p&gt;
+&lt;p&gt;整体结构
+&lt;img alt="2021-09-21-19-39-09" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-39-09.png"&gt;&lt;/p&gt;
+&lt;h2 id="spark作业执行过程"&gt;Spark作业执行过程&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;我们使用spark-submit提交一个Spark作业之后，这个作业就会启动一个对应的Driver进程。根据你使用的部署模式（deploy-mode）不同，Driver进程可能在本地启动，也可能在集群中某个工作节点上启动。而Driver进程要做的第一件事情，就是向集群管理器（可以是Spark Standalone集群，也可以是其他的资源管理集群，美团•大众点评使用的是YARN作为资源管理集群）申请运行Spark作业需要使用的资源，这里的资源指的就是Executor进程。YARN集群管理器会根据我们为Spark作业设置的资源参数，在各个工作节点上，启动一定数量的Executor进程，每个Executor进程都占有一定数量的内存和CPU core。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在申请到了作业执行所需的资源之后，Driver进程就会开始调度和执行我们编写的作业代码了。Driver进程会将我们编写的Spark作业代码分拆为多个stage，每个stage执行一部分代码片段，并为每个stage创建一批Task，然后将这些Task分配到各个Executor进程中执行。Task是最小的计算单元，负责执行一模一样的计算逻辑（也就是我们自己编写的某个代码片段），只是每个Task处理的数据不同而已。一个stage的所有Task都执行完毕之后，会在各个节点本地的磁盘文件中写入计算中间结果，然后Driver就会调度运行下一个stage。下一个stage的Task的输入数据就是上一个stage输出的中间结果。如此循环往复，直到将我们自己编写的代码逻辑全部执行完，并且计算完所有的数据，得到我们想要的结果为止。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Spark是根据shuffle类算子来进行stage的划分。如果我们的代码中执行了某个shuffle类算子（比如reduceByKey、join等），那么就会在该算子处，划分出一个stage界限来。可以大致理解为，shuffle算子执行之前的代码会被划分为一个stage，shuffle算子执行以及之后的代码会被划分为下一个stage。因此一个stage刚开始执行的时候，它的每个Task可能都会从上一个stage的Task所在的节点，去通过网络传输拉取需要自己处理的所有key，然后对拉取到的所有相同的key使用我们自己编写的算子函数执行聚合操作（比如reduceByKey()算子接收的函数）。这个过程就是shuffle。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当我们在代码中执行了cache/persist等持久化操作时，根据我们选择的持久化级别的不同，每个Task计算出来的数据也会保存到Executor进程的内存或者所在节点的磁盘文件中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;因此Executor的内存主要分为三块：第一块是让Task执行我们自己编写的代码时使用，默认是占Executor总内存的20%；第二块是让Task通过shuffle过程拉取了上一个stage的Task的输出后，进行聚合等操作时使用，默认也是占Executor总内存的20%；第三块是让RDD持久化时使用，默认占Executor总内存的60%。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Task的执行速度是跟每个Executor进程的CPU core数量有直接关系的。一个CPU core同一时间只能执行一个线程。而每个Executor进程上分配到的多个Task，都是以每个Task一条线程的方式，多线程并发运行的。如果CPU core数量比较充足，而且分配到的Task数量比较合理，那么通常来说，可以比较快速和高效地执行完这些Task线程。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>CAP定理</title><link>https://www.feilewu.cn/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</guid><description>&lt;h1 id="概述"&gt;概述&lt;/h1&gt;
+&lt;p&gt;1998年，加州大学的计算机科学家 Eric Brewer 提出，分布式系统有三个指标。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Consistency&lt;/li&gt;
+&lt;li&gt;Availability&lt;/li&gt;
+&lt;li&gt;Partition tolerance&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这三个指标不可能全部做到。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="bg2018071607" loading="lazy" src="https://pic.feilewu.cn/uploads/img/bg2018071607_1618843236535.jpg"&gt;&lt;/p&gt;
+&lt;h2 id="partition-tolerance"&gt;Partition tolerance&lt;/h2&gt;
+&lt;p&gt;分区容错性&lt;/p&gt;
+&lt;p&gt;大多数分布式系统都分布在多个子网络。每个子网络就叫做一个区（partition）。分区容错的意思是，区间通信可能失败。&lt;/p&gt;
+&lt;p&gt;（数据同步失败）&lt;/p&gt;
+&lt;p&gt;&lt;img alt="bg2018071601" loading="lazy" src="https://pic.feilewu.cn/uploads/img/bg2018071601_1618843236538.png"&gt;&lt;/p&gt;
+&lt;h2 id="consistency"&gt;Consistency&lt;/h2&gt;
+&lt;p&gt;一致性&lt;/p&gt;
+&lt;p&gt;不管客户端向哪个节点发送请求，得到的结果应该是一致的。&lt;/p&gt;
+&lt;h2 id="availability"&gt;Availability&lt;/h2&gt;
+&lt;p&gt;可用性&lt;/p&gt;
+&lt;p&gt;用户只要向集群中任一节点发送了请求，就必须收到响应，否则就不满足可用性。&lt;/p&gt;
+&lt;h1 id="为什么三者不能同时满足"&gt;为什么三者不能同时满足&lt;/h1&gt;
+&lt;p&gt;一致性和可用性，为什么不可能同时成立？答案很简单，因为可能通信失败（即出现分区容错）。&lt;/p&gt;
+&lt;p&gt;如果保证 G2 的一致性，那么 G1 必须在写操作时，锁定 G2 的读操作和写操作。只有数据同步后，才能重新开放读写。锁定期间，G2 不能读写，没有可用性。&lt;/p&gt;
+&lt;p&gt;如果保证 G2 的可用性，那么势必不能锁定 G2，所以一致性不成立。&lt;/p&gt;
+&lt;p&gt;综上所述，G2 无法同时做到一致性和可用性。系统设计时只能选择一个目标。如果追求一致性，那么无法保证所有节点的可用性；如果追求所有节点的可用性，那就没法做到一致性。&lt;/p&gt;
+&lt;h1 id="参考"&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://www.zhihu.com/question/54105974"&gt;https://www.zhihu.com/question/54105974&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.ruanyifeng.com/blog/2018/07/cap.html"&gt;http://www.ruanyifeng.com/blog/2018/07/cap.html&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dubbo笔记-概述</title><link>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</guid><description>&lt;h1 id="dubbo-学习"&gt;dubbo 学习&lt;/h1&gt;
+&lt;p&gt;Apache Dubbo 是一款高性能、轻量级的开源Java RPC框架，它提供了三大核心能力：面向接口的远程方法调用，智能容错和负载均衡，以及服务自动注册和发现。&lt;/p&gt;
+&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
+&lt;h3 id="常见的架构"&gt;常见的架构&lt;/h3&gt;
+&lt;p&gt;随着互联网的发展，网站应用的规模不断扩大，应用的架构也在不断的迭代发展。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;单一应用架构&lt;/p&gt;
+&lt;p&gt;当网站流量很小时，只需一个应用，将所有功能都部署在一起，以减少部署节点和成本。此时，用于简化增删改查工作量的数据访问框架(ORM)是关键。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;垂直应用架构&lt;/p&gt;
+&lt;p&gt;当访问量逐渐增大，单一应用增加机器带来的加速度越来越小，提升效率的方法之一是将应用拆成互不相干的几个应用，以提升效率。此时，用于加速前端页面开发的Web框架(MVC)是关键。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;分布式服务架构&lt;/p&gt;
+&lt;p&gt;当垂直应用越来越多，应用之间交互不可避免，将核心业务抽取出来，作为独立的服务，逐渐形成稳定的服务中心，使前端应用能更快速的响应多变的市场需求。此时，用于提高业务复用及整合的分布式服务框架(RPC)是关键。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;流动计算架构&lt;/p&gt;
+&lt;p&gt;当服务越来越多，容量的评估，小服务资源的浪费等问题逐渐显现，此时需增加一个调度中心基于访问压力实时管理集群容量，提高集群利用率。此时，用于提高机器利用率的资源调度和治理中心(SOA)是关键。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="需求"&gt;需求&lt;/h2&gt;
+&lt;p&gt;随着服务的不断增多，暴露出诸多的问题。如服务URL配置管理变得非常困难、服务间依赖关系错踪复杂、服务的容量无法快速准确估计等。&lt;/p&gt;
+&lt;p&gt;dubbo服务的诞生便是应对如上的几个需求。
+&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/2fb5b125-4974-4578-bbaf-892ff9d905cf.png"&gt;&lt;/p&gt;
+&lt;h2 id="dubbo架构"&gt;dubbo架构&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/7f0d10b6-fa00-4c73-8819-c357013c2727.png"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;服务提供者（Provider）：暴露服务的服务提供方，服务提供者在启动时，向注册中心注册自己提供的服务。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;服务消费者（Consumer）: 调用远程服务的服务消费方，服务消费者在启动时，向注册中心订阅自己所需的服务，服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;注册中心（Registry）：注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;监控中心（Monitor）：服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;调用关系&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务容器负责启动，加载，运行服务提供者。&lt;/li&gt;
+&lt;li&gt;服务提供者在启动时，向注册中心注册自己提供的服务。&lt;/li&gt;
+&lt;li&gt;服务消费者在启动时，向注册中心订阅自己所需的服务。&lt;/li&gt;
+&lt;li&gt;注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。&lt;/li&gt;
+&lt;li&gt;服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。&lt;/li&gt;
+&lt;li&gt;服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="使用"&gt;使用&lt;/h2&gt;</description></item><item><title>Zookeeper概述与安装</title><link>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</guid><description>&lt;h2 id="特性"&gt;特性&lt;/h2&gt;
+&lt;h3 id="zookeeper-解决的本质问题"&gt;ZooKeeper 解决的本质问题&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;消息传递：延迟性，先发送的消息，不一定先到达；&lt;/li&gt;
+&lt;li&gt;消息传递：丢失性，发送的消息，可能丢失；&lt;/li&gt;
+&lt;li&gt;节点崩溃：分布式系统内，任何一个节点都可能崩溃。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="如何保证分布式一致性"&gt;如何保证分布式一致性&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;顺序一致性：同一个 Client 发起的事务请求，严格按照发起顺序执行&lt;/li&gt;
+&lt;li&gt;原子性：事务请求，要么应用到所有节点，要么一个节点都没有应用&lt;/li&gt;
+&lt;li&gt;单一视图：Client 无论连接到哪个节点，看到的服务端数据都是一致的（Note：不准确，其实是最终一致性）&lt;/li&gt;
+&lt;li&gt;可靠性：事务一旦执行成功，状态永久保留&lt;/li&gt;
+&lt;li&gt;实时性：事务一旦执行成功，Client 并不能立即看到最新数据，但 ZooKeeper 保证最终一致性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;官方文档：&lt;a href="https://zookeeper.apache.org/doc/r3.6.2/zookeeperStarted.html"&gt;https://zookeeper.apache.org/doc/r3.6.2/zookeeperStarted.html&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="安装centos-7"&gt;安装（centos 7）&lt;/h2&gt;
+&lt;h3 id="下载"&gt;下载&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.6.2/apache-zookeeper-3.6.2-bin.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tar zvxf apache-zookeeper-3.6.2-bin.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd apache-zookeeper-3.6.2-bin
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="配置"&gt;配置&lt;/h3&gt;
+&lt;h4 id="单机模式"&gt;单机模式&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;创建配置文件 conf/zoo.cfg&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;vi conf/zoo.cfg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;写入配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tickTime&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2000&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataDir&lt;span style="color:#f92672"&gt;=&lt;/span&gt;/var/lib/zookeeper
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;clientPort&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2181&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;em&gt;tickTime&lt;/em&gt;&lt;/strong&gt; : the basic time unit in milliseconds used by ZooKeeper. It is used to do heartbeats and the minimum session timeout will be twice the tickTime.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;em&gt;dataDir&lt;/em&gt;&lt;/strong&gt; : the location to store the in-memory database snapshots and, unless specified otherwise, the transaction log of updates to the database.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;em&gt;clientPort&lt;/em&gt;&lt;/strong&gt; : the port to listen for client connections&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;启动&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bin/zkServer.sh start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="4"&gt;
+&lt;li&gt;连接&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bin/zkCli.sh -server 127.0.0.1:2181
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Connecting to localhost:2181
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;log4j:WARN No appenders could be found &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; logger &lt;span style="color:#f92672"&gt;(&lt;/span&gt;org.apache.zookeeper.ZooKeeper&lt;span style="color:#f92672"&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;log4j:WARN Please initialize the log4j system properly.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Welcome to ZooKeeper!
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;JLine support is enabled
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;[&lt;/span&gt;zkshell: 0&lt;span style="color:#f92672"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>

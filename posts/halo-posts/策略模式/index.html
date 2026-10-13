@@ -1,0 +1,261 @@
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>策略模式 | 飞乐</title><meta name=keywords content="java"><meta name=description content='策略模式
+策略模式定义了一组算法，将它们逐个封装起来，并使它们可以相互替换。策略可以让算法独立于使用它们的客户而变化。
+应用
+在业务场景中，我们经常需要根据不同的条件而执行不同方法，这个时候便可以为每一种条件定制一类特定的方法。
+类图
+
+如图所示
+
+Strategy: 策略接口或者策略抽象类，并且策略执行的接口
+ConcreateStrategyA、ConcreateStrategyB、ConcreateStrategyC：实现策略接口的具体策略类
+Context：上下文类，持有具体策略类的实例，并负责调用相关的算法
+
+示例
+普通实现
+定义接口
+public interface PrintStrategy {
+
+    boolean support(String code);
+
+    void print(Message message);
+
+}
+实现类
+public class OnePrintStrategy implements PrintStrategy {
+
+    @Override
+    public boolean support(String code) {
+        return "1".equals(code);
+    }
+
+    @Override
+    public void print(Message message) {
+        System.out.println(message.toString());
+    }
+}
+public class TwoPrintStrategy implements PrintStrategy{
+    @Override
+    public boolean support(String code) {
+        return "2".equals(code);
+    }
+
+    @Override
+    public void print(Message message) {
+        System.out.println(message.toString());
+    }
+}
+策略实例持有类
+public class StrategyContext{
+
+    private final List<PrintStrategy> strategies;
+
+    public StrategyContext(){
+        strategies = new ArrayList<>();
+        strategies.add(new OnePrintStrategy());
+        strategies.add(new TwoPrintStrategy());
+    }
+
+    public PrintStrategy getStrategy(String code){
+        for(PrintStrategy printStrategy:strategies){
+            if(printStrategy.support(code)){
+                return printStrategy;
+            }
+        }
+        throw new RuntimeException("unsupported code");
+    }
+
+}
+测试
+@Data
+@AllArgsConstructor
+public class Message {
+
+    private String code;
+
+    private String body;
+
+}
+public class Demo {
+    public static void main(String[] args) {
+        StrategyContext strategyContext = new StrategyContext();
+        Message message = new Message("2","打印策略2");
+        strategyContext.getStrategy(message.getCode()).print(message);
+    }
+}
+Message(code=2, body=打印策略2)
+
+Process finished with exit code 0
+枚举实现
+枚举
+public enum PrintStrategyEnum {
+
+    ONE("1"){
+        @Override
+        protected void print(Message message) {
+            System.out.println("枚举类策略1 "+message.toString());
+        }
+    },
+    TWO("2") {
+        @Override
+        protected void print(Message message) {
+            System.out.println("枚举类策略2 "+message.toString());
+        }
+    };
+
+    private final String code;
+
+    PrintStrategyEnum(String code) {
+        this.code = code;
+    }
+
+
+    protected abstract void print(Message message);
+
+    public String getCode() {
+        return code;
+    }
+}
+测试
+public class Demo {
+    public static void main(String[] args) {
+        StrategyContext strategyContext = new StrategyContext();
+        Message message = new Message("2","打印策略2");
+        strategyContext.getStrategy(message.getCode()).print(message);
+
+
+        for(PrintStrategyEnum printStrategyEnum: PrintStrategyEnum.values()){
+            if(printStrategyEnum.getCode().equals(message.getCode())){
+                printStrategyEnum.print(message);
+            }
+        }
+
+
+
+    }
+}
+'><meta name=author content><link rel=canonical href=https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/><link crossorigin=anonymous href=/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as=style><link rel=icon href=https://www.feilewu.cn/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://www.feilewu.cn/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://www.feilewu.cn/favicon-32x32.png><link rel=apple-touch-icon href=https://www.feilewu.cn/apple-touch-icon.png><link rel=mask-icon href=https://www.feilewu.cn/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/"><meta property="og:site_name" content="飞乐"><meta property="og:title" content="策略模式"><meta property="og:description" content='策略模式 策略模式定义了一组算法，将它们逐个封装起来，并使它们可以相互替换。策略可以让算法独立于使用它们的客户而变化。
+应用 在业务场景中，我们经常需要根据不同的条件而执行不同方法，这个时候便可以为每一种条件定制一类特定的方法。
+类图 如图所示
+Strategy: 策略接口或者策略抽象类，并且策略执行的接口 ConcreateStrategyA、ConcreateStrategyB、ConcreateStrategyC：实现策略接口的具体策略类 Context：上下文类，持有具体策略类的实例，并负责调用相关的算法 示例 普通实现 定义接口 public interface PrintStrategy { boolean support(String code); void print(Message message); } 实现类 public class OnePrintStrategy implements PrintStrategy { @Override public boolean support(String code) { return "1".equals(code); } @Override public void print(Message message) { System.out.println(message.toString()); } } public class TwoPrintStrategy implements PrintStrategy{ @Override public boolean support(String code) { return "2".equals(code); } @Override public void print(Message message) { System.out.println(message.toString()); } } 策略实例持有类 public class StrategyContext{ private final List<PrintStrategy> strategies; public StrategyContext(){ strategies = new ArrayList<>(); strategies.add(new OnePrintStrategy()); strategies.add(new TwoPrintStrategy()); } public PrintStrategy getStrategy(String code){ for(PrintStrategy printStrategy:strategies){ if(printStrategy.support(code)){ return printStrategy; } } throw new RuntimeException("unsupported code"); } } 测试 @Data @AllArgsConstructor public class Message { private String code; private String body; } public class Demo { public static void main(String[] args) { StrategyContext strategyContext = new StrategyContext(); Message message = new Message("2","打印策略2"); strategyContext.getStrategy(message.getCode()).print(message); } } Message(code=2, body=打印策略2) Process finished with exit code 0 枚举实现 枚举 public enum PrintStrategyEnum { ONE("1"){ @Override protected void print(Message message) { System.out.println("枚举类策略1 "+message.toString()); } }, TWO("2") { @Override protected void print(Message message) { System.out.println("枚举类策略2 "+message.toString()); } }; private final String code; PrintStrategyEnum(String code) { this.code = code; } protected abstract void print(Message message); public String getCode() { return code; } } 测试 public class Demo { public static void main(String[] args) { StrategyContext strategyContext = new StrategyContext(); Message message = new Message("2","打印策略2"); strategyContext.getStrategy(message.getCode()).print(message); for(PrintStrategyEnum printStrategyEnum: PrintStrategyEnum.values()){ if(printStrategyEnum.getCode().equals(message.getCode())){ printStrategyEnum.print(message); } } } }'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-09-27T19:10:53+08:00"><meta property="article:modified_time" content="2024-09-27T19:10:53+08:00"><meta property="article:tag" content="Java"><meta name=twitter:card content="summary"><meta name=twitter:title content="策略模式"><meta name=twitter:description content='策略模式 策略模式定义了一组算法，将它们逐个封装起来，并使它们可以相互替换。策略可以让算法独立于使用它们的客户而变化。
+应用 在业务场景中，我们经常需要根据不同的条件而执行不同方法，这个时候便可以为每一种条件定制一类特定的方法。
+类图 如图所示
+Strategy: 策略接口或者策略抽象类，并且策略执行的接口 ConcreateStrategyA、ConcreateStrategyB、ConcreateStrategyC：实现策略接口的具体策略类 Context：上下文类，持有具体策略类的实例，并负责调用相关的算法 示例 普通实现 定义接口 public interface PrintStrategy { boolean support(String code); void print(Message message); } 实现类 public class OnePrintStrategy implements PrintStrategy { @Override public boolean support(String code) { return "1".equals(code); } @Override public void print(Message message) { System.out.println(message.toString()); } } public class TwoPrintStrategy implements PrintStrategy{ @Override public boolean support(String code) { return "2".equals(code); } @Override public void print(Message message) { System.out.println(message.toString()); } } 策略实例持有类 public class StrategyContext{ private final List<PrintStrategy> strategies; public StrategyContext(){ strategies = new ArrayList<>(); strategies.add(new OnePrintStrategy()); strategies.add(new TwoPrintStrategy()); } public PrintStrategy getStrategy(String code){ for(PrintStrategy printStrategy:strategies){ if(printStrategy.support(code)){ return printStrategy; } } throw new RuntimeException("unsupported code"); } } 测试 @Data @AllArgsConstructor public class Message { private String code; private String body; } public class Demo { public static void main(String[] args) { StrategyContext strategyContext = new StrategyContext(); Message message = new Message("2","打印策略2"); strategyContext.getStrategy(message.getCode()).print(message); } } Message(code=2, body=打印策略2) Process finished with exit code 0 枚举实现 枚举 public enum PrintStrategyEnum { ONE("1"){ @Override protected void print(Message message) { System.out.println("枚举类策略1 "+message.toString()); } }, TWO("2") { @Override protected void print(Message message) { System.out.println("枚举类策略2 "+message.toString()); } }; private final String code; PrintStrategyEnum(String code) { this.code = code; } protected abstract void print(Message message); public String getCode() { return code; } } 测试 public class Demo { public static void main(String[] args) { StrategyContext strategyContext = new StrategyContext(); Message message = new Message("2","打印策略2"); strategyContext.getStrategy(message.getCode()).print(message); for(PrintStrategyEnum printStrategyEnum: PrintStrategyEnum.values()){ if(printStrategyEnum.getCode().equals(message.getCode())){ printStrategyEnum.print(message); } } } }'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://www.feilewu.cn/posts/"},{"@type":"ListItem","position":2,"name":"策略模式","item":"https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"策略模式","name":"策略模式","description":"策略模式 策略模式定义了一组算法，将它们逐个封装起来，并使它们可以相互替换。策略可以让算法独立于使用它们的客户而变化。\n应用 在业务场景中，我们经常需要根据不同的条件而执行不同方法，这个时候便可以为每一种条件定制一类特定的方法。\n类图 如图所示\nStrategy: 策略接口或者策略抽象类，并且策略执行的接口 ConcreateStrategyA、ConcreateStrategyB、ConcreateStrategyC：实现策略接口的具体策略类 Context：上下文类，持有具体策略类的实例，并负责调用相关的算法 示例 普通实现 定义接口 public interface PrintStrategy { boolean support(String code); void print(Message message); } 实现类 public class OnePrintStrategy implements PrintStrategy { @Override public boolean support(String code) { return \u0026#34;1\u0026#34;.equals(code); } @Override public void print(Message message) { System.out.println(message.toString()); } } public class TwoPrintStrategy implements PrintStrategy{ @Override public boolean support(String code) { return \u0026#34;2\u0026#34;.equals(code); } @Override public void print(Message message) { System.out.println(message.toString()); } } 策略实例持有类 public class StrategyContext{ private final List\u0026lt;PrintStrategy\u0026gt; strategies; public StrategyContext(){ strategies = new ArrayList\u0026lt;\u0026gt;(); strategies.add(new OnePrintStrategy()); strategies.add(new TwoPrintStrategy()); } public PrintStrategy getStrategy(String code){ for(PrintStrategy printStrategy:strategies){ if(printStrategy.support(code)){ return printStrategy; } } throw new RuntimeException(\u0026#34;unsupported code\u0026#34;); } } 测试 @Data @AllArgsConstructor public class Message { private String code; private String body; } public class Demo { public static void main(String[] args) { StrategyContext strategyContext = new StrategyContext(); Message message = new Message(\u0026#34;2\u0026#34;,\u0026#34;打印策略2\u0026#34;); strategyContext.getStrategy(message.getCode()).print(message); } } Message(code=2, body=打印策略2) Process finished with exit code 0 枚举实现 枚举 public enum PrintStrategyEnum { ONE(\u0026#34;1\u0026#34;){ @Override protected void print(Message message) { System.out.println(\u0026#34;枚举类策略1 \u0026#34;+message.toString()); } }, TWO(\u0026#34;2\u0026#34;) { @Override protected void print(Message message) { System.out.println(\u0026#34;枚举类策略2 \u0026#34;+message.toString()); } }; private final String code; PrintStrategyEnum(String code) { this.code = code; } protected abstract void print(Message message); public String getCode() { return code; } } 测试 public class Demo { public static void main(String[] args) { StrategyContext strategyContext = new StrategyContext(); Message message = new Message(\u0026#34;2\u0026#34;,\u0026#34;打印策略2\u0026#34;); strategyContext.getStrategy(message.getCode()).print(message); for(PrintStrategyEnum printStrategyEnum: PrintStrategyEnum.values()){ if(printStrategyEnum.getCode().equals(message.getCode())){ printStrategyEnum.print(message); } } } } ","keywords":["java"],"articleBody":"策略模式 策略模式定义了一组算法，将它们逐个封装起来，并使它们可以相互替换。策略可以让算法独立于使用它们的客户而变化。\n应用 在业务场景中，我们经常需要根据不同的条件而执行不同方法，这个时候便可以为每一种条件定制一类特定的方法。\n类图 如图所示\nStrategy: 策略接口或者策略抽象类，并且策略执行的接口 ConcreateStrategyA、ConcreateStrategyB、ConcreateStrategyC：实现策略接口的具体策略类 Context：上下文类，持有具体策略类的实例，并负责调用相关的算法 示例 普通实现 定义接口 public interface PrintStrategy { boolean support(String code); void print(Message message); } 实现类 public class OnePrintStrategy implements PrintStrategy { @Override public boolean support(String code) { return \"1\".equals(code); } @Override public void print(Message message) { System.out.println(message.toString()); } } public class TwoPrintStrategy implements PrintStrategy{ @Override public boolean support(String code) { return \"2\".equals(code); } @Override public void print(Message message) { System.out.println(message.toString()); } } 策略实例持有类 public class StrategyContext{ private final List\u003cPrintStrategy\u003e strategies; public StrategyContext(){ strategies = new ArrayList\u003c\u003e(); strategies.add(new OnePrintStrategy()); strategies.add(new TwoPrintStrategy()); } public PrintStrategy getStrategy(String code){ for(PrintStrategy printStrategy:strategies){ if(printStrategy.support(code)){ return printStrategy; } } throw new RuntimeException(\"unsupported code\"); } } 测试 @Data @AllArgsConstructor public class Message { private String code; private String body; } public class Demo { public static void main(String[] args) { StrategyContext strategyContext = new StrategyContext(); Message message = new Message(\"2\",\"打印策略2\"); strategyContext.getStrategy(message.getCode()).print(message); } } Message(code=2, body=打印策略2) Process finished with exit code 0 枚举实现 枚举 public enum PrintStrategyEnum { ONE(\"1\"){ @Override protected void print(Message message) { System.out.println(\"枚举类策略1 \"+message.toString()); } }, TWO(\"2\") { @Override protected void print(Message message) { System.out.println(\"枚举类策略2 \"+message.toString()); } }; private final String code; PrintStrategyEnum(String code) { this.code = code; } protected abstract void print(Message message); public String getCode() { return code; } } 测试 public class Demo { public static void main(String[] args) { StrategyContext strategyContext = new StrategyContext(); Message message = new Message(\"2\",\"打印策略2\"); strategyContext.getStrategy(message.getCode()).print(message); for(PrintStrategyEnum printStrategyEnum: PrintStrategyEnum.values()){ if(printStrategyEnum.getCode().equals(message.getCode())){ printStrategyEnum.print(message); } } } } ","wordCount":"237","inLanguage":"en","datePublished":"2024-09-27T19:10:53+08:00","dateModified":"2024-09-27T19:10:53+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/"},"publisher":{"@type":"Organization","name":"飞乐","logo":{"@type":"ImageObject","url":"https://www.feilewu.cn/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://www.feilewu.cn/ accesskey=h title="飞乐 (Alt + H)">飞乐</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://www.feilewu.cn/ title=home><span>home</span></a></li><li><a href=https://www.feilewu.cn/categories/ title=categories><span>categories</span></a></li><li><a href=https://www.feilewu.cn/tags/ title=tags><span>tags</span></a></li><li><a href=https://www.feilewu.cn/contact/ title=contact><span>contact</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">策略模式</h1><div class=post-meta><span title='2024-09-27 19:10:53 +0800 CST'>September 27, 2024</span></div></header><details class=toc open><summary accesskey=c title="(Alt + C)"><span class=title>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#策略模式>策略模式</a></li><li><a href=#应用>应用</a></li><li><a href=#类图>类图</a></li><li><a href=#示例>示例</a><ul><li><a href=#普通实现>普通实现</a></li><li><a href=#枚举实现>枚举实现</a></li></ul></li></ul></nav></div></details><div class="post-content md-content"><h2 id=策略模式>策略模式<a hidden class=anchor aria-hidden=true href=#策略模式>#</a></h2><p>策略模式定义了一组算法，将它们逐个封装起来，并使它们可以相互替换。策略可以让算法独立于使用它们的客户而变化。</p><h2 id=应用>应用<a hidden class=anchor aria-hidden=true href=#应用>#</a></h2><p>在业务场景中，我们经常需要根据不同的条件而执行不同方法，这个时候便可以为每一种条件定制一类特定的方法。</p><h2 id=类图>类图<a hidden class=anchor aria-hidden=true href=#类图>#</a></h2><p><img alt=img loading=lazy src=https://pic.feilewu.cn/uploads/2021/04/26/1151595-a728940d055ea772.jpg></p><p>如图所示</p><ul><li>Strategy: 策略接口或者策略抽象类，并且策略执行的接口</li><li>ConcreateStrategyA、ConcreateStrategyB、ConcreateStrategyC：实现策略接口的具体策略类</li><li>Context：上下文类，持有具体策略类的实例，并负责调用相关的算法</li></ul><h2 id=示例>示例<a hidden class=anchor aria-hidden=true href=#示例>#</a></h2><h3 id=普通实现>普通实现<a hidden class=anchor aria-hidden=true href=#普通实现>#</a></h3><h4 id=定义接口>定义接口<a hidden class=anchor aria-hidden=true href=#定义接口>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>PrintStrategy</span> {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>support</span>(String code);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(Message message);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=实现类>实现类<a hidden class=anchor aria-hidden=true href=#实现类>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>OnePrintStrategy</span> <span style=color:#66d9ef>implements</span> PrintStrategy {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>support</span>(String code) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;1&#34;</span>.<span style=color:#a6e22e>equals</span>(code);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(Message message) {
+</span></span><span style=display:flex><span>        System.<span style=color:#a6e22e>out</span>.<span style=color:#a6e22e>println</span>(message.<span style=color:#a6e22e>toString</span>());
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>TwoPrintStrategy</span> <span style=color:#66d9ef>implements</span> PrintStrategy{
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>support</span>(String code) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;2&#34;</span>.<span style=color:#a6e22e>equals</span>(code);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(Message message) {
+</span></span><span style=display:flex><span>        System.<span style=color:#a6e22e>out</span>.<span style=color:#a6e22e>println</span>(message.<span style=color:#a6e22e>toString</span>());
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=策略实例持有类>策略实例持有类<a hidden class=anchor aria-hidden=true href=#策略实例持有类>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>StrategyContext</span>{
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> List<span style=color:#f92672>&lt;</span>PrintStrategy<span style=color:#f92672>&gt;</span> strategies;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>StrategyContext</span>(){
+</span></span><span style=display:flex><span>        strategies <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>&lt;&gt;</span>();
+</span></span><span style=display:flex><span>        strategies.<span style=color:#a6e22e>add</span>(<span style=color:#66d9ef>new</span> OnePrintStrategy());
+</span></span><span style=display:flex><span>        strategies.<span style=color:#a6e22e>add</span>(<span style=color:#66d9ef>new</span> TwoPrintStrategy());
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> PrintStrategy <span style=color:#a6e22e>getStrategy</span>(String code){
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span>(PrintStrategy printStrategy:strategies){
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span>(printStrategy.<span style=color:#a6e22e>support</span>(code)){
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>return</span> printStrategy;
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> RuntimeException(<span style=color:#e6db74>&#34;unsupported code&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=测试>测试<a hidden class=anchor aria-hidden=true href=#测试>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#a6e22e>@Data</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@AllArgsConstructor</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Message</span> {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span> String code;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span> String body;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Demo</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span>(String<span style=color:#f92672>[]</span> args) {
+</span></span><span style=display:flex><span>        StrategyContext strategyContext <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> StrategyContext();
+</span></span><span style=display:flex><span>        Message message <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Message(<span style=color:#e6db74>&#34;2&#34;</span>,<span style=color:#e6db74>&#34;打印策略2&#34;</span>);
+</span></span><span style=display:flex><span>        strategyContext.<span style=color:#a6e22e>getStrategy</span>(message.<span style=color:#a6e22e>getCode</span>()).<span style=color:#a6e22e>print</span>(message);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-shell data-lang=shell><span style=display:flex><span>Message<span style=color:#f92672>(</span>code<span style=color:#f92672>=</span>2, body<span style=color:#f92672>=</span>打印策略2<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Process finished with exit code <span style=color:#ae81ff>0</span>
+</span></span></code></pre></div><h3 id=枚举实现>枚举实现<a hidden class=anchor aria-hidden=true href=#枚举实现>#</a></h3><h4 id=枚举>枚举<a hidden class=anchor aria-hidden=true href=#枚举>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>enum</span> PrintStrategyEnum {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ONE(<span style=color:#e6db74>&#34;1&#34;</span>){
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>protected</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(Message message) {
+</span></span><span style=display:flex><span>            System.<span style=color:#a6e22e>out</span>.<span style=color:#a6e22e>println</span>(<span style=color:#e6db74>&#34;枚举类策略1 &#34;</span><span style=color:#f92672>+</span>message.<span style=color:#a6e22e>toString</span>());
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    TWO(<span style=color:#e6db74>&#34;2&#34;</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>protected</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(Message message) {
+</span></span><span style=display:flex><span>            System.<span style=color:#a6e22e>out</span>.<span style=color:#a6e22e>println</span>(<span style=color:#e6db74>&#34;枚举类策略2 &#34;</span><span style=color:#f92672>+</span>message.<span style=color:#a6e22e>toString</span>());
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    };
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> String code;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    PrintStrategyEnum(String code) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>code</span> <span style=color:#f92672>=</span> code;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>protected</span> <span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(Message message);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>getCode</span>() {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> code;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=测试-1>测试<a hidden class=anchor aria-hidden=true href=#测试-1>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Demo</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span>(String<span style=color:#f92672>[]</span> args) {
+</span></span><span style=display:flex><span>        StrategyContext strategyContext <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> StrategyContext();
+</span></span><span style=display:flex><span>        Message message <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Message(<span style=color:#e6db74>&#34;2&#34;</span>,<span style=color:#e6db74>&#34;打印策略2&#34;</span>);
+</span></span><span style=display:flex><span>        strategyContext.<span style=color:#a6e22e>getStrategy</span>(message.<span style=color:#a6e22e>getCode</span>()).<span style=color:#a6e22e>print</span>(message);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span>(PrintStrategyEnum printStrategyEnum: PrintStrategyEnum.<span style=color:#a6e22e>values</span>()){
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span>(printStrategyEnum.<span style=color:#a6e22e>getCode</span>().<span style=color:#a6e22e>equals</span>(message.<span style=color:#a6e22e>getCode</span>())){
+</span></span><span style=display:flex><span>                printStrategyEnum.<span style=color:#a6e22e>print</span>(message);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://www.feilewu.cn/tags/java/>Java</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://www.feilewu.cn/>飞乐</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg></a><div class=feian style=text-align:center;font-size:13px;margin-top:2px;opacity:.8;line-height:1.2><a href=https://beian.miit.gov.cn/ target=_blank style=color:var(--secondary);text-decoration:none>苏ICP备2021016520号-1</a></div><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

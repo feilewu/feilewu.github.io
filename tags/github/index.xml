@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Github on 飞乐</title><link>https://www.feilewu.cn/tags/github/</link><description>Recent content in Github on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 01 Oct 2026 22:29:53 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/tags/github/index.xml" rel="self" type="application/rss+xml"/><item><title>github创建action部署用户</title><link>https://www.feilewu.cn/posts/2026/10/github%E5%88%9B%E5%BB%BAaction%E9%83%A8%E7%BD%B2%E7%94%A8%E6%88%B7/</link><pubDate>Thu, 01 Oct 2026 22:29:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/2026/10/github%E5%88%9B%E5%BB%BAaction%E9%83%A8%E7%BD%B2%E7%94%A8%E6%88%B7/</guid><description>&lt;h1 id="账户准备"&gt;账户准备&lt;/h1&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;# 1. 创建 git 用户（禁用密码登录，更安全）
+sudo adduser git --disabled-password --gecos &amp;#34;&amp;#34;
+# 2. 一键创建 .ssh 目录并生成 Ed25519 密钥对
+# (利用 -u git 确保生成的文件直接属于 git 用户，无需后续 chown)
+sudo -u git mkdir -p /home/git/.ssh
+sudo chmod 700 /home/git/.ssh
+sudo -u git ssh-keygen -t ed25519 -C &amp;#34;github-actions-deploy-key&amp;#34; -f /home/git/.ssh/github_actions -N &amp;#34;&amp;#34;
+# 3. 将公钥加入授权列表
+sudo -u git sh -c &amp;#39;cat /home/git/.ssh/github_actions.pub &amp;gt;&amp;gt; /home/git/.ssh/authorized_keys&amp;#39;
+# 4. 严格设置规范的权限
+sudo chmod 600 /home/git/.ssh/authorized_keys
+sudo chmod 644 /home/git/.ssh/github_actions.pub
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id="目录赋权"&gt;目录赋权&lt;/h1&gt;
+&lt;p&gt;用acl权限控制&lt;/p&gt;</description></item></channel></rss>

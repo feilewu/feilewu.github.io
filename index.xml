@@ -1,0 +1,1767 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>飞乐</title><link>https://www.feilewu.cn/</link><description>Recent content on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 01 Oct 2026 22:29:53 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/index.xml" rel="self" type="application/rss+xml"/><item><title>github创建action部署用户</title><link>https://www.feilewu.cn/posts/2026/10/github%E5%88%9B%E5%BB%BAaction%E9%83%A8%E7%BD%B2%E7%94%A8%E6%88%B7/</link><pubDate>Thu, 01 Oct 2026 22:29:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/2026/10/github%E5%88%9B%E5%BB%BAaction%E9%83%A8%E7%BD%B2%E7%94%A8%E6%88%B7/</guid><description>&lt;h1 id="账户准备"&gt;账户准备&lt;/h1&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;# 1. 创建 git 用户（禁用密码登录，更安全）
+sudo adduser git --disabled-password --gecos &amp;#34;&amp;#34;
+# 2. 一键创建 .ssh 目录并生成 Ed25519 密钥对
+# (利用 -u git 确保生成的文件直接属于 git 用户，无需后续 chown)
+sudo -u git mkdir -p /home/git/.ssh
+sudo chmod 700 /home/git/.ssh
+sudo -u git ssh-keygen -t ed25519 -C &amp;#34;github-actions-deploy-key&amp;#34; -f /home/git/.ssh/github_actions -N &amp;#34;&amp;#34;
+# 3. 将公钥加入授权列表
+sudo -u git sh -c &amp;#39;cat /home/git/.ssh/github_actions.pub &amp;gt;&amp;gt; /home/git/.ssh/authorized_keys&amp;#39;
+# 4. 严格设置规范的权限
+sudo chmod 600 /home/git/.ssh/authorized_keys
+sudo chmod 644 /home/git/.ssh/github_actions.pub
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id="目录赋权"&gt;目录赋权&lt;/h1&gt;
+&lt;p&gt;用acl权限控制&lt;/p&gt;</description></item><item><title>腾讯COS对象存储申请API访问</title><link>https://www.feilewu.cn/posts/halo-posts/%E8%85%BE%E8%AE%AFcos%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%94%B3%E8%AF%B7api%E8%AE%BF%E9%97%AE/</link><pubDate>Mon, 14 Oct 2024 23:00:02 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E8%85%BE%E8%AE%AFcos%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%94%B3%E8%AF%B7api%E8%AE%BF%E9%97%AE/</guid><description>&lt;h1 id="创建子账号"&gt;创建子账号&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://console.cloud.tencent.com/cam/user/create?systemType=FastCreateV2"&gt;https://console.cloud.tencent.com/cam/user/create?systemType=FastCreateV2&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/14/4f8cf7cc-c467-4cbe-aeb2-9839c665529b.png"&gt;&lt;/p&gt;
+&lt;p&gt;点击权限&lt;/p&gt;
+&lt;p&gt;输入对象存储，搜索并选择策略
+&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/14/604a204d-6945-4a17-ad24-22496bcefe7e.png"&gt;&lt;/p&gt;
+&lt;h1 id="创建api"&gt;创建API&lt;/h1&gt;
+&lt;p&gt;点击API创建，保存下key和secret&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/14/da567e2b-160f-4519-a3d2-d589bd8ef99a.png"&gt;&lt;/p&gt;
+&lt;h1 id="创建cos桶"&gt;创建COS桶&lt;/h1&gt;
+&lt;p&gt;后续便可以通过API访问COS桶了&lt;/p&gt;</description></item><item><title>宝塔面板使用腾讯云COS自动备份</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91cos%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD/</link><pubDate>Sun, 06 Oct 2024 22:04:54 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91cos%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD/</guid><description>&lt;h1 id="腾讯云cos自动备份"&gt;腾讯云COS自动备份&lt;/h1&gt;
+&lt;h3 id="软件仓库搜索腾讯云cos并安装"&gt;软件仓库搜索腾讯云COS并安装&lt;/h3&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/06/4edbb9bd-f4ff-424f-a336-191a557f9947.png"&gt;&lt;/p&gt;
+&lt;h2 id="配置访问存储桶的相关api信息"&gt;配置访问存储桶的相关API信息&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/06/c3c0943c-ec0c-41ba-9d15-55b47f71e7da.png"&gt;&lt;/p&gt;
+&lt;p&gt;具体配置关联&lt;a href="../%E5%85%AC%E6%9C%89%E4%BA%91%E4%BD%BF%E7%94%A8/%E8%85%BE%E8%AE%AFCOS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%94%B3%E8%AF%B7API%E8%AE%BF%E9%97%AE.md"&gt;腾讯COS对象存储申请API访问&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="配置计划任务"&gt;配置计划任务&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/06/21996886-9563-4778-b8bd-882e7000be56.png"&gt;&lt;/p&gt;</description></item><item><title>centos7编译安装python3.11</title><link>https://www.feilewu.cn/posts/halo-posts/centos7%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python3.11/</link><pubDate>Sun, 06 Oct 2024 22:00:46 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/centos7%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python3.11/</guid><description>&lt;pre tabindex="0"&gt;&lt;code&gt;sudo yum install gcc openssl-devel bzip2-devel libffi-devel wget
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;wget https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tgz
+tar -xvf Python-3.11.4.tgz
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;# 安装源码编译需要的编译环境
+yum -y install gcc zlib zlib-devel libffi libffi-devel readline-devel
+# 安装openssl11，后期的pip3安装网络相关模块需要用到ssl模块
+yum install openssl-devel openssl11 openssl11-devel
+# 设置编译FLAG，以便使用最新的openssl库
+export CFLAGS=$(pkg-config --cflags openssl11)
+export LDFLAGS=$(pkg-config --libs openssl11)
+# 进入刚解压缩的目录
+cd /home/hadoop/opt/Python-3.11.4
+#指定python3的安装目录为 /usr/python 并使用ssl模块，指定目录好处是后期删除此文件夹就可以完全删除软件了。
+./configure --prefix=/usr/local/python3.11.4/python3.11.4 --with-ssl # 源码编译并安装,时间会持续几分钟
+make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;sudo ln -s /usr/local/python3.11.4/bin/python3.11 /usr/bin/python3.11
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;# 以下可选
+# 可以删除，也可备份，按需操作即可
+sudo rm -f /usr/bin/python
+sudo rm -f /usr/bin/pip
+sudo ln -s /home/hadoop/opt/python3.11.4/bin/pip3 /usr/bin/pip3
+sudo ln -s /home/hadoop/opt/python3.11.4/bin/python3 /usr/bin/python
+sudo ln -s /home/hadoop/opt/python3.11.4/bin/pip3 /usr/bin/pip
+&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>Rust工具链安装</title><link>https://www.feilewu.cn/posts/halo-posts/rust%E5%B7%A5%E5%85%B7%E9%93%BE%E5%AE%89%E8%A3%85/</link><pubDate>Tue, 01 Oct 2024 13:46:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/rust%E5%B7%A5%E5%85%B7%E9%93%BE%E5%AE%89%E8%A3%85/</guid><description>&lt;h1 id="windows"&gt;Windows&lt;/h1&gt;
+&lt;h2 id="安装msys2"&gt;安装MSYS2&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://www.msys2.org/"&gt;https://www.msys2.org/&lt;/a&gt;
+&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/01/3d4baffe-c22f-41ce-9f1b-44227a2332a1.png"&gt;&lt;/p&gt;
+&lt;p&gt;安装工具链&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pacman -S mingw-w64-ucrt-x86_64-gcc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;查看gcc版本&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;gcc --version
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="安装rust"&gt;安装Rust&lt;/h2&gt;
+&lt;h3 id="配置windows环境变量"&gt;配置windows环境变量&lt;/h3&gt;
+&lt;p&gt;将下面述地址配置到windows系统环境变量&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;C:\msys64\ucrt64\bin
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="执行安装rust"&gt;执行安装Rust&lt;/h3&gt;
+&lt;p&gt;MSYS2终端内执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl https://sh.rustup.rs -sSf | sh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一些选择&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;Current installation options:
+default host triple: x86_64-pc-windows-msvc
+default toolchain: stable (default)
+profile: default
+modify PATH variable: yes
+1) Proceed with standard installation (default - just press enter)
+2) Customize installation
+3) Cancel installation
+&amp;gt;2
+I&amp;#39;m going to ask you the value of each of these installation options.
+You may simply press the Enter key to leave unchanged.
+Default host triple? [x86_64-pc-windows-msvc]
+# 手动填写
+x86_64-pc-windows-gnu
+Default toolchain? (stable/beta/nightly/none) [stable]
+Profile (which tools and data to install)? (minimal/default/complete) [default]
+Modify PATH variable? (Y/n)
+y
+Current installation options:
+default host triple: x86_64-pc-windows-gnu
+default toolchain: stable
+profile: default
+modify PATH variable: yes
+1) Proceed with selected options (default - just press enter)
+2) Customize installation
+3) Cancel installation
+&amp;gt;1
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="检验安装结果"&gt;检验安装结果&lt;/h3&gt;
+&lt;p&gt;windows终端执行&lt;/p&gt;</description></item><item><title>openwrt通过frp代理后外网无法访问</title><link>https://www.feilewu.cn/posts/halo-posts/openwrt%E9%80%9A%E8%BF%87frp%E4%BB%A3%E7%90%86%E5%90%8E%E5%A4%96%E7%BD%91%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE/</link><pubDate>Tue, 01 Oct 2024 13:40:29 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/openwrt%E9%80%9A%E8%BF%87frp%E4%BB%A3%E7%90%86%E5%90%8E%E5%A4%96%E7%BD%91%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE/</guid><description>&lt;p&gt;外网（frp）访问openwrt，报错request entity too large&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/01/a403621c-a246-414c-bfca-c604a8153ff1.png"&gt;&lt;/p&gt;
+&lt;p&gt;错误原因：通常是指请求的数量超过服务器的限制&lt;/p&gt;
+&lt;p&gt;解决方法：修改配置文件，登录到opnwrt的ssh页面输入&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;vi /etc/config/uhttpd
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;修改 &lt;code&gt;option max_requests '50'&lt;/code&gt;改成500&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;option max_requests '50'&lt;/code&gt;的意思是设置最大请求数为500。&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/01/922be141-442e-4f81-90be-078131a1997f.png"&gt;&lt;/p&gt;
+&lt;p&gt;重启&lt;/p&gt;
+&lt;p&gt;切换浏览器&lt;/p&gt;</description></item><item><title>IDEA搭建Scala项目-helloworld</title><link>https://www.feilewu.cn/posts/halo-posts/idea%E6%90%AD%E5%BB%BAscala%E9%A1%B9%E7%9B%AE-helloworld/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/idea%E6%90%AD%E5%BB%BAscala%E9%A1%B9%E7%9B%AE-helloworld/</guid><description>&lt;h2 id="安装scala插件"&gt;安装Scala插件&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;打开idea的settings&lt;/li&gt;
+&lt;li&gt;进入plugins，搜索Scala&lt;/li&gt;
+&lt;li&gt;安装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/833f38d6-4e80-4a2e-90cb-b2983dd88fa6.png"&gt;&lt;/p&gt;
+&lt;h2 id="安装scala-sdk"&gt;安装Scala sdk&lt;/h2&gt;
+&lt;h3 id="官网"&gt;官网&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://www.scala-lang.org/download/scala2.html"&gt;https://www.scala-lang.org/download/scala2.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;根据环境自由选择&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/5bab8a4f-0075-4788-9aca-df28a4a801d0.png"&gt;&lt;/p&gt;
+&lt;h3 id="idea自动下载"&gt;IDEA自动下载&lt;/h3&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/2cd9c3d8-1be8-403a-96d3-8f93c3a69879.png"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;项目模块上右键，选择 add framework support，选择Scala，然后下载适当的SDK&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/a7256b53-3c98-4442-ad04-dbaabb3f93f7.png"&gt;&lt;/p&gt;
+&lt;h2 id="hello-word"&gt;Hello word&lt;/h2&gt;
+&lt;h3 id="新建scala源码目录新建scala-class类型选object"&gt;新建Scala源码目录，新建Scala class，类型选Object&lt;/h3&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/84f99319-e504-44a7-a6c9-d992bcff632b.png"&gt;&lt;/p&gt;
+&lt;h3 id="编写代码"&gt;编写代码&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-scala" data-lang="scala"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;object&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Demo&lt;/span&gt; &lt;span style="color:#f92672"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; main&lt;span style="color:#f92672"&gt;(&lt;/span&gt;args&lt;span style="color:#66d9ef"&gt;:&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;Array&lt;/span&gt;&lt;span style="color:#f92672"&gt;[&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;String&lt;/span&gt;&lt;span style="color:#f92672"&gt;])&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;:&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;Unit&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#f92672"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; println&lt;span style="color:#f92672"&gt;(&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;hello world&amp;#34;&lt;/span&gt;&lt;span style="color:#f92672"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;hello world
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>JVM参数该如何配置</title><link>https://www.feilewu.cn/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/jvm%E5%8F%82%E6%95%B0%E8%AF%A5%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</guid><description>&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
+&lt;p&gt;面试官经常会问：JVM参数该如何设置？&lt;/p&gt;
+&lt;p&gt;虽然线上项目的JVM参数在我加入团队后就没有动过了，但我们还是得学习下不是，万一后面需要了呢？&lt;/p&gt;
+&lt;h2 id="jvm内存模型参数"&gt;JVM内存模型参数&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="image" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/09/14-05-11-78f8eb4e67f1bf3d93cfd257be090683-jvm%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE-4e9fc7.png"&gt;&lt;/p&gt;
+&lt;p&gt;从图中可以很清晰的看出JVM运行时内存的分布及每一个部分对应的参数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Xmx表示最大堆内存&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Xms表示最小堆内存&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;MaxNewSize表示最大新生代大小&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;NewSize表示最小新生代大小&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Xmn 可同时对MaxNewSize和NewSize两个参数进行配置（1.4后才有，不过现在企业一般都采用1.8以上的版本了）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Xss表示线程栈大小，可以控制JVM可以生成的最大线程数&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;MaxPermSize表示最大永生代大小&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;PermSize表示最小永生代大小&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们可以看到，没有直接设置老年代的参数，但是可以通过新生代参数和堆空间大小来控制&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/09/14-05-14-0935aa7ab6982d9be69b1e863b7e0476-jvm%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE-2-86dbe3.png"&gt;&lt;/p&gt;
+&lt;p&gt;再来张简化版的图片。&lt;/p&gt;
+&lt;p&gt;可以看到JVM大体分为heap区和非heap区，其中heap区包括新生代、老年代；非heap区包括永生代、虚拟机栈和本地方法栈等&lt;/p&gt;
+&lt;h2 id="为什么要将一块堆内存分为新生代和老年代"&gt;为什么要将一块堆内存分为新生代和老年代？&lt;/h2&gt;
+&lt;p&gt;将内存区域划分为新生代和老年代，是为了使用不同垃圾回收算法，提高整个系统的垃圾回收效率。&lt;/p&gt;
+&lt;p&gt;JVM在运行过程中，产生对象的生命周期时不同的，有些对象的存活时间长，有些对象的存货时间短，如果每次垃圾回收，都把所有对象都扫描一遍，势必会造成不必要的性能开销。而将堆内存分为新生代和老年代，可针对不同的区域采用不同的垃圾回收算法，比如新生代中的对象存活时间短，可以采用复制算法完成垃圾收集，而老年代中对象存活时间长，对象数量比较多，适合采用标记清楚和标记整理算法。&lt;/p&gt;
+&lt;p&gt;而复制算法需要一块对象的暂存区域，所以将新生代分为Eden和2个Survivor区，每一次垃圾收集使用Eden和一个Survivor区。&lt;/p&gt;
+&lt;p&gt;Eden和Survivor区的大小可以通过XXSurvivorRatio参数来进行设置，其表示Eden大小和survivor区大小的比例&lt;/p&gt;
+&lt;p&gt;比如有参数-Xmx1024m -Xms1024m -Xmn128m -XXSurvivorRatio=2&lt;/p&gt;
+&lt;p&gt;我可以分析得到，新生代为128M，Eden和Survivor比例为2，那么可以计算得出Eden大小为64M，两个Survivor区均是32M&lt;/p&gt;
+&lt;h2 id="jvm参数设置"&gt;JVM参数设置&lt;/h2&gt;
+&lt;h3 id="堆大小配置"&gt;堆大小配置&lt;/h3&gt;
+&lt;p&gt;堆大小一般与操作系统、物理内存、虚拟内存的大小有关&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Xmx 一般不得大于物理内存&lt;/li&gt;
+&lt;li&gt;Xms 初始内存，如果想要增大程序的启动性能，可以增大此参数，一般可以设置为和Xmx持平，防止垃圾收集后重新分配内存&lt;/li&gt;
+&lt;li&gt;Xmn 年轻代大小，这个参数控制年轻代和老年代的大小，对性能的影响比较大，sun推荐新生代和老年代的比例为3:5&lt;/li&gt;
+&lt;li&gt;Xss 线程堆栈大小，一般默认1M，这个参数设置的越小，JVM就能生成更多的线程（不能超过操作系统的限制）&lt;/li&gt;
+&lt;li&gt;NewRatio 老年代和新生代的比值&lt;/li&gt;
+&lt;li&gt;SurvivorRatio Eden大小和survivor区大小的比例&lt;/li&gt;
+&lt;li&gt;MaxTenuringThreshold 设置对象的年龄，可以控制对象在新生代中的存活次数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="垃圾回收器的选择及其参数配置"&gt;垃圾回收器的选择及其参数配置&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;UseSerialGC 使用串行收集器&lt;/li&gt;
+&lt;li&gt;UseParallelGC 使用并行收集器&lt;/li&gt;
+&lt;li&gt;UseParalledlOldGC 使用并行年老代收集器&lt;/li&gt;
+&lt;li&gt;UseConcMarkSweepGC 使用并发收集器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="其他配置"&gt;其他配置&lt;/h3&gt;
+&lt;p&gt;此外，JVM提供了不少辅助信息获取到的配置&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PrintGC&lt;/li&gt;
+&lt;li&gt;PrintGCDetails&lt;/li&gt;
+&lt;li&gt;PrintGCApplicationStoppedTime 垃圾收集期间程序暂停运行的时间&lt;/li&gt;
+&lt;li&gt;PrintGCApplicationConcurrentTime 垃圾收集期间，应用程序未中断执行的时间&lt;/li&gt;
+&lt;li&gt;PrintHeapAtGC 打印出垃圾收集前后的堆栈信息&lt;/li&gt;
+&lt;li&gt;PrintGCTimeStamps 垃圾收集发生时的时间戳&lt;/li&gt;
+&lt;li&gt;Xloggc:filename 将日志信息记录到文件中，便于后续分析&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上述参数可以组合使用，输出易于分析的信息&lt;/p&gt;</description></item><item><title>LRU算法</title><link>https://www.feilewu.cn/posts/halo-posts/lru%E7%AE%97%E6%B3%95/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/lru%E7%AE%97%E6%B3%95/</guid><description>&lt;h2 id="lru算法"&gt;LRU算法&lt;/h2&gt;
+&lt;h3 id="简述"&gt;简述&lt;/h3&gt;
+&lt;p&gt;LRU是Least Recently Used的缩写，即最近最少使用，是一种常用的页面置换算法，选择最近最久未使用的页面予以淘汰。 该算法赋予每个页面一个访问字段，用来记录一个页面自上次被访问以来所经历的时间t，当须淘汰一个页面时，选择现有页面中其t 值最大的，即最近最少使用的页面予以淘汰。&lt;/p&gt;
+&lt;h3 id="需求"&gt;需求&lt;/h3&gt;
+&lt;p&gt;实现一个缓存功能，使得插入、删除、修改的操作都是O(1)的，并且当需要清除缓存时，需要从最少使用的开始清除。&lt;/p&gt;
+&lt;h3 id="实现"&gt;实现&lt;/h3&gt;
+&lt;p&gt;思考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一般的，要实现O(1)的时间复杂度，考虑使用hash来实现&lt;/li&gt;
+&lt;li&gt;需要从最少的元素开始删起，一种朴素的想法就是将每个元素使用时间记录下来，按时间顺序排好序，然后需要删除时，从最久未使用的元素开始删除&lt;/li&gt;
+&lt;li&gt;进而可以想到，使用链表将哈希表串联起来，头部表示使用最近使用的，尾部表示最久未使用的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img alt="image-20210527220814816" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/05/27/20210527221138.png"&gt;&lt;/p&gt;
+&lt;p&gt;如图所示：&lt;/p&gt;
+&lt;p&gt;最左边为Head，表示最近使用的；最右边未Tail，表示最久未使用的&lt;/p&gt;
+&lt;p&gt;当对节点进行操作：&lt;/p&gt;
+&lt;p&gt;删除：将节点从链表中移除&lt;/p&gt;
+&lt;p&gt;增加：将节点移动到head处&lt;/p&gt;
+&lt;p&gt;修改：将节点移动到head处&lt;/p&gt;
+&lt;p&gt;查询：将节点移动到head处&lt;/p&gt;</description></item><item><title>MySQL的MVVC是个什么东东</title><link>https://www.feilewu.cn/posts/halo-posts/mysql%E7%9A%84mvvc%E6%98%AF%E4%B8%AA%E4%BB%80%E4%B9%88%E4%B8%9C%E4%B8%9C/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/mysql%E7%9A%84mvvc%E6%98%AF%E4%B8%AA%E4%BB%80%E4%B9%88%E4%B8%9C%E4%B8%9C/</guid><description>&lt;h2 id="mvvc是什么"&gt;MVVC是什么&lt;/h2&gt;
+&lt;p&gt;MVVC，全称Multi-Version Concurrency Control&lt;/p&gt;
+&lt;p&gt;多版本的并发控制，Multi-Version Concurrency Control，是一个可以提升数据库并发读写性能的技术。&lt;/p&gt;
+&lt;p&gt;一般的，如果对数据的库表的一行记录进行读写操作，为了保证数据的一致性，往往需要对这一行记录进行加锁操作。而加锁带来的问题就是开销变大，性能降低。而MVVC便是对这一问题提出的一种改进策略。&lt;/p&gt;
+&lt;h3 id="快照读和当前读"&gt;快照读和当前读&lt;/h3&gt;
+&lt;p&gt;首先，我们先了解一下两个概念——快照读和当前读。&lt;/p&gt;
+&lt;h4 id="当前读"&gt;当前读&lt;/h4&gt;
+&lt;p&gt;当前读可以理解为，所有的当前读操作都是针对的数据库最新版本的数据，在操作的时候会对资源加悲观锁，防止其他事务对数据进行修改。&lt;/p&gt;
+&lt;p&gt;如delete、update、insert、select for update、select lock in share mode等操作均是当前读&lt;/p&gt;
+&lt;p&gt;需要注意的时，在串行化的事务隔离级别下，所有的操作均是当前读&lt;/p&gt;
+&lt;h4 id="快照读"&gt;快照读&lt;/h4&gt;
+&lt;p&gt;快照读的实现是基于MVVC的，读取的可能是某个版本的快照数据。&lt;/p&gt;
+&lt;h3 id="mvcc"&gt;MVCC&lt;/h3&gt;
+&lt;h4 id="数据库中有哪些并发场景"&gt;数据库中有哪些并发场景？&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;读-读 读操作不会造成数据一致性问题，也没有并发控制的需要&lt;/li&gt;
+&lt;li&gt;读-写 可能造成数据不一致，需要对线程安全进行控制，否则会造成脏读、幻读、不可重复读的错误&lt;/li&gt;
+&lt;li&gt;写-写 多线程存在问题，可能会造成数据丢失&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id="mvcc能解决什么场景下的问题"&gt;MVCC能解决什么场景下的问题？&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;解决读-写场景下的并发问题，可以实现读写均不会阻塞，解决脏读、幻读、不可重复读的问题&lt;/li&gt;
+&lt;li&gt;不可解决写-写场景下的并发控制问题，一般可结合乐观锁或者悲观锁来实现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id="mvcc如何实现并发控制的"&gt;MVCC如何实现并发控制的？&lt;/h5&gt;
+&lt;p&gt;其实现主要依靠undo日志，版本链，Read View三个技术手段。&lt;/p&gt;
+&lt;h6 id="undo日志"&gt;undo日志&lt;/h6&gt;
+&lt;p&gt;undo可以理解为每次针对记录行修改时，原数据的备份。每一次针对原纪录的修改都会生成一个undo日志，将原数据拷贝到日志中记录起来&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用于事务回滚&lt;/li&gt;
+&lt;li&gt;是的每个事务均有自己特有的日志记录集合&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;undo日志一般分为插入日志和更新日志。插入日志是执行insert操作生成的日志，在事务回滚时需要使用，在事务提交后可以丢弃掉；更新日志不仅在事务回滚的时候需要，在快照读的时候也需要，不能随便删除&lt;/p&gt;
+&lt;h6 id="版本链"&gt;版本链&lt;/h6&gt;
+&lt;p&gt;数据表记录的每一行均有3个隐藏列&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;db_trx_id 事务id&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;db_roll_pointer 回滚指针，指向上一个版本&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;db_row_id 隐藏的自增主键&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img alt="img" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/16/20210616171819.image"&gt;&lt;/p&gt;
+&lt;p&gt;这是一个简单的示例图。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="img" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/16/20210616171824.image"&gt;&lt;/p&gt;
+&lt;p&gt;很容易理解，每次修改都会undo日志，通过版本指针将这些日志串联起来，形成版本链。&lt;/p&gt;
+&lt;h6 id="read-view"&gt;Read View&lt;/h6&gt;
+&lt;p&gt;读视图可以理解为快照读是生成的整个数据库系统的一个快照。其可以用来做可见性判断。因为每一个事务均有唯一的id，可以用此id来控制此事务可以看到的数据，可以是最新版本的，也可以是历史版本的。&lt;/p&gt;
+&lt;p&gt;其有如下几个参数：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;trx_ids 目前系统中未提交的事务id集合&lt;/li&gt;
+&lt;li&gt;low_limit_id 最大事务版本号加1&lt;/li&gt;
+&lt;li&gt;up_limit_id 处于活跃状态中的最好事务版本号&lt;/li&gt;
+&lt;li&gt;creator_trx_id 创建read view的事务版本号&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可见性判断代码&lt;/p&gt;
+&lt;p&gt;&lt;img alt="img" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/16/20210616171829.image"&gt;&lt;/p&gt;
+&lt;h3 id="mvcc和事务隔离级别的关系"&gt;MVCC和事务隔离级别的关系&lt;/h3&gt;
+&lt;h4 id="mvcc如何实现rr和rc的隔离级别"&gt;MVCC如何实现RR和RC的隔离级别&lt;/h4&gt;
+&lt;p&gt;在RC的隔离级别下，只要提交了都可以被其他事务读取到，每一个快照读均会生成一个最新的read view&lt;/p&gt;</description></item><item><title>picgo插件代码示例</title><link>https://www.feilewu.cn/posts/halo-posts/picgo%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/picgo%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B/</guid><description>&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;picgo&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;picgo&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// @ts-ignore
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;PluginConfig&lt;/span&gt; } &lt;span style="color:#a6e22e"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;picgo/dist/utils/interfaces&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;config&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;picgo&lt;/span&gt;)&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;PluginConfig&lt;/span&gt;[] =&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;let&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;userConfig&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;getConfig&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;picBed.imgYun&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;userConfig&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;userConfig&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; [
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;name&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;serverHost&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;type&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;input&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;default&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;userConfig&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;serverHost&lt;/span&gt; &lt;span style="color:#f92672"&gt;||&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;message&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;serverHost 不能为空&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;required&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;name&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;apiToken&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;type&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;password&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;default&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;userConfig&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;apiToken&lt;/span&gt; &lt;span style="color:#f92672"&gt;||&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;message&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;apiToken 不能为空&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;required&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;postOptions&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;fileName&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;string&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;options&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;any&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;image&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Buffer&lt;/span&gt;)&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;any&lt;/span&gt; =&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;method&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;url&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;options&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;serverHost&lt;/span&gt;&lt;span style="color:#f92672"&gt;+&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;/api/img/upload&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;headers&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;contentType&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;multipart/form-data&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;User-Agent&amp;#39;&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;PicGo&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;token&amp;#39;&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;options&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;apiToken&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;formData&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;file&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;value&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;image&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;options&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;filename&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;fileName&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;handle&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;picgo&lt;/span&gt;)&lt;span style="color:#f92672"&gt;:&lt;/span&gt; Promise&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;picgo&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; =&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;imgYunOptions&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;getConfig&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;picBed.imgYun&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;imgYunOptions&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; Error(&lt;span style="color:#e6db74"&gt;&amp;#39;imgYun 图床配置文件&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;try&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;imgList&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;output&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; (&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;img&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;of&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;imgList&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;let&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;image&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;img&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;buffer&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;image&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;img&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;base64Image&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;image&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Buffer&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;from&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;img&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;base64Image&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;base64&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;options&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;postOptions&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;img&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;fileName&lt;/span&gt;,&lt;span style="color:#a6e22e"&gt;imgYunOptions&lt;/span&gt;,&lt;span style="color:#a6e22e"&gt;image&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;let&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;body&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Request&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;request&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;options&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;body&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;JSON&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;parse&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;body&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;body&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;success&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;delete&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;img&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;base64Image&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;delete&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;img&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;buffer&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;img&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;imgUrl&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;body&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;obj&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; } &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;log&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;error&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;body&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; Error(&lt;span style="color:#e6db74"&gt;&amp;#39;Server error, please try again&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; } &lt;span style="color:#66d9ef"&gt;catch&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;err&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;err&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;picgo&lt;/span&gt;) =&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;register&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; () =&amp;gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;helper&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;uploader&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;register&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;imgYun&amp;#39;&lt;/span&gt;, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;handle&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;name&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;imgYun&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;config&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;config&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;uploader&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;imgYun&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;register&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Scala基础--关键字，数据类型，函数</title><link>https://www.feilewu.cn/posts/halo-posts/scala%E5%9F%BA%E7%A1%80--%E5%85%B3%E9%94%AE%E5%AD%97%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/scala%E5%9F%BA%E7%A1%80--%E5%85%B3%E9%94%AE%E5%AD%97%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0/</guid><description>&lt;h2 id="基础语法"&gt;基础语法&lt;/h2&gt;
+&lt;h3 id="注意点"&gt;注意点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Scala 区分大小写&lt;/li&gt;
+&lt;li&gt;类名类似于Java&lt;/li&gt;
+&lt;li&gt;方法名命名类似于Java&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;老规矩，先上Hello World&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-scala" data-lang="scala"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;object&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Demo&lt;/span&gt; &lt;span style="color:#f92672"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; main&lt;span style="color:#f92672"&gt;(&lt;/span&gt;args&lt;span style="color:#66d9ef"&gt;:&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;Array&lt;/span&gt;&lt;span style="color:#f92672"&gt;[&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;String&lt;/span&gt;&lt;span style="color:#f92672"&gt;])&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;:&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;Unit&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#f92672"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; println&lt;span style="color:#f92672"&gt;(&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;hello world&amp;#34;&lt;/span&gt;&lt;span style="color:#f92672"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="关键字"&gt;关键字&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;abstract&lt;/th&gt;
+&lt;th&gt;case&lt;/th&gt;
+&lt;th&gt;catch&lt;/th&gt;
+&lt;th&gt;class&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;def&lt;/td&gt;
+&lt;td&gt;do&lt;/td&gt;
+&lt;td&gt;else&lt;/td&gt;
+&lt;td&gt;extends&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;false&lt;/td&gt;
+&lt;td&gt;final&lt;/td&gt;
+&lt;td&gt;finally&lt;/td&gt;
+&lt;td&gt;for&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;forSome&lt;/td&gt;
+&lt;td&gt;if&lt;/td&gt;
+&lt;td&gt;implicit&lt;/td&gt;
+&lt;td&gt;import&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lazy&lt;/td&gt;
+&lt;td&gt;match&lt;/td&gt;
+&lt;td&gt;new&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;object&lt;/td&gt;
+&lt;td&gt;override&lt;/td&gt;
+&lt;td&gt;package&lt;/td&gt;
+&lt;td&gt;private&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;protected&lt;/td&gt;
+&lt;td&gt;return&lt;/td&gt;
+&lt;td&gt;sealed&lt;/td&gt;
+&lt;td&gt;super&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;this&lt;/td&gt;
+&lt;td&gt;throw&lt;/td&gt;
+&lt;td&gt;trait&lt;/td&gt;
+&lt;td&gt;try&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;td&gt;type&lt;/td&gt;
+&lt;td&gt;val&lt;/td&gt;
+&lt;td&gt;var&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;while&lt;/td&gt;
+&lt;td&gt;with&lt;/td&gt;
+&lt;td&gt;yield&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;:&lt;/td&gt;
+&lt;td&gt;=&lt;/td&gt;
+&lt;td&gt;=&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;lt;-&lt;/td&gt;
+&lt;td&gt;&amp;lt;:&lt;/td&gt;
+&lt;td&gt;&amp;lt;%&lt;/td&gt;
+&lt;td&gt;&amp;gt;:&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;#&lt;/td&gt;
+&lt;td&gt;@&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="注释"&gt;注释&lt;/h3&gt;
+&lt;p&gt;注释也和Java类似&lt;/p&gt;</description></item><item><title>shell学习笔记</title><link>https://www.feilewu.cn/posts/halo-posts/shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/shell%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid><description>&lt;h2 id="变量"&gt;变量&lt;/h2&gt;
+&lt;h3 id="使用和创建变量"&gt;使用和创建变量&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;your_name&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;qinjx&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo $your_name
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;${&lt;/span&gt;your_name&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="删除变量"&gt;删除变量&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;myStr&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;deleted string&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;unset myStr
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo $myStr
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="字符串"&gt;字符串&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;单引号和双引号的区别&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;单引号内的字符串会原样输出&lt;/li&gt;
+&lt;li&gt;双引号中的变量会进行替换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;计算字符串长度&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;string&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;abcd&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;${#&lt;/span&gt;string&lt;span style="color:#e6db74"&gt;}&lt;/span&gt; &lt;span style="color:#75715e"&gt;#输出 4&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;截断字符串&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;string&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;runoob is a great site&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;${&lt;/span&gt;string:1:4&lt;span style="color:#e6db74"&gt;}&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 输出 unoo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="数组"&gt;数组&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;数组名&lt;span style="color:#f92672"&gt;=(&lt;/span&gt;值1 值2 ... 值n&lt;span style="color:#f92672"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;array&lt;span style="color:#f92672"&gt;=(&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt; 4&lt;span style="color:#f92672"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;${&lt;/span&gt;array[1]&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="获取数组长度"&gt;获取数组长度&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;${&lt;/span&gt;array_name[@]&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 或者&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;length&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${#&lt;/span&gt;array_name[*]&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="获取数组单个元素的长度"&gt;获取数组单个元素的长度&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 取得数组单个元素的长度&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;lengthn&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${#&lt;/span&gt;array_name[n]&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="注释"&gt;注释&lt;/h2&gt;
+&lt;h3 id="单行"&gt;单行&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 注释内容&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="多行"&gt;多行&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;:&lt;span style="color:#e6db74"&gt;&amp;lt;&amp;lt;EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;注释内容...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;注释内容...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;注释内容...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;:&amp;lt;&amp;lt;&lt;span style="color:#e6db74"&gt;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;注释内容...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;注释内容...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;注释内容...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;:&amp;lt;&amp;lt;!
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;注释内容...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;注释内容...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;注释内容...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;!
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="参数接收"&gt;参数接收&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;Shell 传递参数实例！&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;执行的文件名：&lt;/span&gt;$0&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;第一个参数为：&lt;/span&gt;$1&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;第二个参数为：&lt;/span&gt;$2&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;第三个参数为：&lt;/span&gt;$3&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;.&lt;span style="color:#f92672"&gt;/&lt;/span&gt;demo.&lt;span style="color:#a6e22e"&gt;sh&lt;/span&gt; 1 2 3
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;参数处理&lt;/th&gt;
+&lt;th style="text-align: left"&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;$#&lt;/td&gt;
+&lt;td style="text-align: left"&gt;传递到脚本的参数个数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;$*&lt;/td&gt;
+&lt;td style="text-align: left"&gt;以一个单字符串显示所有向脚本传递的参数。 如&amp;quot;$*&amp;ldquo;用「&amp;quot;」括起来的情况、以&amp;rdquo;$1 $2 … $n&amp;quot;的形式输出所有参数。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;$$&lt;/td&gt;
+&lt;td style="text-align: left"&gt;脚本运行的当前进程ID号&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;$!&lt;/td&gt;
+&lt;td style="text-align: left"&gt;后台运行的最后一个进程的ID号&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;$@&lt;/td&gt;
+&lt;td style="text-align: left"&gt;与$*相同，但是使用时加引号，并在引号中返回每个参数。 如&amp;quot;$@&amp;ldquo;用「&amp;quot;」括起来的情况、以&amp;rdquo;$1&amp;quot; &amp;ldquo;$2&amp;rdquo; … &amp;ldquo;$n&amp;rdquo; 的形式输出所有参数。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;$-&lt;/td&gt;
+&lt;td style="text-align: left"&gt;显示Shell使用的当前选项，与&lt;a href="https://www.runoob.com/linux/linux-comm-set.html"&gt;set命令&lt;/a&gt;功能相同。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;$?&lt;/td&gt;
+&lt;td style="text-align: left"&gt;显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="运算符"&gt;运算符&lt;/h2&gt;
+&lt;h3 id="算数运算符"&gt;算数运算符&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;运算符&lt;/th&gt;
+&lt;th style="text-align: left"&gt;说明&lt;/th&gt;
+&lt;th style="text-align: left"&gt;举例&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;+&lt;/td&gt;
+&lt;td style="text-align: left"&gt;加法&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;expr $a + $b&lt;/code&gt; 结果为 30。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;-&lt;/td&gt;
+&lt;td style="text-align: left"&gt;减法&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;expr $a - $b&lt;/code&gt; 结果为 -10。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;*&lt;/td&gt;
+&lt;td style="text-align: left"&gt;乘法&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;expr $a \* $b&lt;/code&gt; 结果为 200。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;/&lt;/td&gt;
+&lt;td style="text-align: left"&gt;除法&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;expr $b / $a&lt;/code&gt; 结果为 2。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;%&lt;/td&gt;
+&lt;td style="text-align: left"&gt;取余&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;expr $b % $a&lt;/code&gt; 结果为 0。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;=&lt;/td&gt;
+&lt;td style="text-align: left"&gt;赋值&lt;/td&gt;
+&lt;td style="text-align: left"&gt;a=$b 将把变量 b 的值赋给 a。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;==&lt;/td&gt;
+&lt;td style="text-align: left"&gt;相等。用于比较两个数字，相同则返回 true。&lt;/td&gt;
+&lt;td style="text-align: left"&gt;[ $a == $b ] 返回 false。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;!=&lt;/td&gt;
+&lt;td style="text-align: left"&gt;不相等。用于比较两个数字，不相同则返回 true。&lt;/td&gt;
+&lt;td style="text-align: left"&gt;[ $a != $b ] 返回 true。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="关系运算符"&gt;关系运算符&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;运算符&lt;/th&gt;
+&lt;th style="text-align: left"&gt;说明&lt;/th&gt;
+&lt;th style="text-align: left"&gt;举例&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;-eq&lt;/td&gt;
+&lt;td style="text-align: left"&gt;检测两个数是否相等，相等返回 true。&lt;/td&gt;
+&lt;td style="text-align: left"&gt;[ $a -eq $b ] 返回 false。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;-ne&lt;/td&gt;
+&lt;td style="text-align: left"&gt;检测两个数是否不相等，不相等返回 true。&lt;/td&gt;
+&lt;td style="text-align: left"&gt;[ $a -ne $b ] 返回 true。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;-gt&lt;/td&gt;
+&lt;td style="text-align: left"&gt;检测左边的数是否大于右边的，如果是，则返回 true。&lt;/td&gt;
+&lt;td style="text-align: left"&gt;[ $a -gt $b ] 返回 false。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;-lt&lt;/td&gt;
+&lt;td style="text-align: left"&gt;检测左边的数是否小于右边的，如果是，则返回 true。&lt;/td&gt;
+&lt;td style="text-align: left"&gt;[ $a -lt $b ] 返回 true。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;-ge&lt;/td&gt;
+&lt;td style="text-align: left"&gt;检测左边的数是否大于等于右边的，如果是，则返回 true。&lt;/td&gt;
+&lt;td style="text-align: left"&gt;[ $a -ge $b ] 返回 false。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;-le&lt;/td&gt;
+&lt;td style="text-align: left"&gt;检测左边的数是否小于等于右边的，如果是，则返回 true。&lt;/td&gt;
+&lt;td style="text-align: left"&gt;[ $a -le $b ] 返回 true。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&amp;hellip;&lt;/p&gt;</description></item><item><title>Spark在Standalone运行架构中的运行流程</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E5%9C%A8standalone%E8%BF%90%E8%A1%8C%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E5%9C%A8standalone%E8%BF%90%E8%A1%8C%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/</guid><description>&lt;h2 id="standalone"&gt;Standalone&lt;/h2&gt;
+&lt;p&gt;Standalone模式是Spark实现的资源调度框架，其主要的节点有Client节点、Master节点和Worker节点。其中Driver既可以运行在Master节点上中， 也可以运行在本地Client端。当用spark-shell交互式工具提交Spark的Job时，Driver在Master节点上运行； 当使用spark-submit工具提交Job或者在Eclips、IDEA等开发平台上使用”new SparkConf().setMaster(“spark://master:7077”)”方式运行Spark任务时， Driver是运行在本地Client端上的。&lt;/p&gt;
+&lt;h3 id="具体流程"&gt;具体流程&lt;/h3&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/13c6323e-901a-456e-9c45-f1b29f30ac6e.png"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我们提交一个任务，任务就叫Application&lt;/li&gt;
+&lt;li&gt;初始化程序的入口SparkContext&lt;/li&gt;
+&lt;li&gt;初始化DAG Scheduler&lt;/li&gt;
+&lt;li&gt;初始化Task Scheduler&lt;/li&gt;
+&lt;li&gt;Task Scheduler向master去进行注册并申请资源（CPU Core和Memory）&lt;/li&gt;
+&lt;li&gt;Master根据SparkContext的资源申请要求和Worker心跳周期内报告的信息决定在哪个Worker上分配资源，然后在该Worker上获取资源，然后启动StandaloneExecutorBackend；顺便初始化好了一个线程池&lt;/li&gt;
+&lt;li&gt;StandaloneExecutorBackend向Driver(SparkContext)注册,这样Driver就知道哪些Executor为他进行服务了。 到这个时候其实我们的初始化过程基本完成了，我们开始执行transform、ation的代码，但是代码并不会真正的运行，直到我们遇到一个action操作。先生产一个job任务，进行stage的划分。&lt;/li&gt;
+&lt;li&gt;SparkContext将Applicaiton代码发送给StandaloneExecutorBackend；并且SparkContext解析Applicaiton代码，构建DAG图，并提交给DAG Scheduler分解成Stage（当碰到Action操作时，就会催生Job；每个Job中含有1个或多个Stage，Stage一般在获取外部数据和shuffle之前产生）。&lt;/li&gt;
+&lt;li&gt;将Stage（或者称为TaskSet）提交给Task Scheduler。Task Scheduler负责将Task分配到相应的Worker，最后提交给StandaloneExecutorBackend执行；&lt;/li&gt;
+&lt;li&gt;对task进行序列化，并根据task的分配算法，分配task&lt;/li&gt;
+&lt;li&gt;对接收过来的task进行反序列化，把task封装成一个线程&lt;/li&gt;
+&lt;li&gt;开始执行Task，并向SparkContext报告，直至Task完成。&lt;/li&gt;
+&lt;li&gt;资源注销&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Spark学习之Spark简述</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E5%AD%A6%E4%B9%A0%E4%B9%8Bspark%E7%AE%80%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E5%AD%A6%E4%B9%A0%E4%B9%8Bspark%E7%AE%80%E8%BF%B0/</guid><description>&lt;h2 id="spark生态"&gt;Spark生态&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2026/10/09/fcb444ea-c498-4e99-b20b-7d5b64c6a90e.png"&gt;
+Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以及这两者上的动作。其他Spark的库都是构建在RDD和Spark Core之上的&lt;/p&gt;
+&lt;p&gt;Spark SQL：提供通过Apache Hive的SQL变体Hive查询语言（HiveQL）与Spark进行交互的API。每个数据库表被当做一个RDD，Spark SQL查询被转换为Spark操作。&lt;/p&gt;
+&lt;p&gt;Spark Streaming：对实时数据流进行处理和控制。Spark Streaming允许程序能够像普通RDD一样处理实时数据&lt;/p&gt;
+&lt;p&gt;MLlib：一个常用机器学习算法库，算法被实现为对RDD的Spark操作。这个库包含可扩展的学习算法，比如分类、回归等需要对大量数据集进行迭代的操作。&lt;/p&gt;
+&lt;p&gt;GraphX：控制图、并行图操作和计算的一组算法和工具的集合。GraphX扩展了RDD API，包含控制图、创建子图、访问路径上所有顶点的操作。&lt;/p&gt;
+&lt;h2 id="spark的运行流程"&gt;Spark的运行流程&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2026/10/09/8b096236-1128-4ab3-a187-a3d5007b1322.png"&gt;
+构建Spark Application的运行环境，启动SparkContext&lt;/p&gt;
+&lt;p&gt;SparkContext向资源管理器（可以是Standalone，Mesos，Yarn）申请运行Executor资源，并启动StandaloneExecutorbackend，&lt;/p&gt;
+&lt;p&gt;Executor向SparkContext申请Task&lt;/p&gt;
+&lt;p&gt;SparkContext将应用程序分发给Executor&lt;/p&gt;
+&lt;p&gt;SparkContext构建成DAG图，将DAG图分解成Stage、将Taskset发送给Task Scheduler，最后由Task Scheduler将Task发送给Executor运行&lt;/p&gt;
+&lt;p&gt;Task在Executor上运行，运行完释放所有资源&lt;/p&gt;
+&lt;h2 id="spark与hadoop"&gt;Spark与Hadoop&lt;/h2&gt;
+&lt;p&gt;MapReduce采用硬盘保存临时数据，而Spark采用内存保存临时数据&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2026/10/09/1a902c9f-e51b-4b9f-86f1-8613188fc1f6.png"&gt;&lt;/p&gt;</description></item><item><title>Spark的运行原理</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/</guid><description>&lt;h2 id="spark基本概念"&gt;Spark基本概念&lt;/h2&gt;
+&lt;p&gt;RDD：是弹性分布式数据集（Resilient Distributed Dataset）的简称，是分布式内存的一个抽象概念，提供了一种高度受限的共享内存模型。
+&lt;img alt="2022-03-29-20-49-45" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-49-45.png"&gt;&lt;/p&gt;
+&lt;p&gt;DAGScheduler：有向无环图调度器基于DAG划分Stage并以TaskSet的形式提交Stage给TaskScheduler；负责将作业拆分成不同阶段的具有宽窄依赖关系的多批任务；最重要的任务之一就是：计算作业和任务的依赖关系，指定调度逻辑。在SparkContext初始化的过程中被实例化，一个SparkContext对应一个DAGScheduler。
+&lt;img alt="2022-03-29-20-50-13" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-50-13.png"&gt;&lt;/p&gt;
+&lt;p&gt;DAG：是Directed Acyclic Graph（有向无环图）的简称，反映RDD之间的依赖关系。
+&lt;img alt="2022-03-29-20-48-38" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-48-38.png"&gt;
+窄依赖：父RDD每一个分区最多被一个子RDD的分区所用；表现为一个父RDD的分区对应于一个子RDD的分区，或两个父RDD的分区对应于一个子RDD的分区。
+&lt;img alt="2021-09-21-19-40-39" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-40-39.png"&gt;&lt;/p&gt;
+&lt;p&gt;宽依赖：父RDD的每个分区都可能被多个子RDD分区所使用，子RDD分区通常对应所有的父RDD分区
+&lt;img alt="2021-09-21-19-41-36" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-41-36.png"&gt;&lt;/p&gt;
+&lt;p&gt;常见的宽窄依赖有：map、filter、union、mapPartitions、mapValues、join（父RDD是hash-partitioned：如果joinAPI之前被调用的RDD API是宽依赖【存在shuffle】，而且两个join的RDD的分区数量一致，join结果的RDD分区数量也一样，这个时候join API是窄依赖）。&lt;/p&gt;
+&lt;p&gt;常见的宽依赖有：groupByKey、partitionBy、reduceByKey、join（父RDD不是hash-partitioned：除此之外的，RDD的join API都是宽依赖）。&lt;/p&gt;
+&lt;p&gt;Driver Program：控制程序，负责为Application构建DAG图。
+&lt;img alt="2022-03-29-20-50-31" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-50-31.png"&gt;&lt;/p&gt;
+&lt;p&gt;Cluster Manager：集群资源管理中心，负责分配计算资源。&lt;/p&gt;
+&lt;p&gt;Worker Node：工作节点，负责完成具体计算。
+&lt;img alt="2022-03-29-20-50-45" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-50-45.png"&gt;&lt;/p&gt;
+&lt;p&gt;Executor：是运行在工作节点（Worker Node）上的一个进程，负责运行Task，并为应用程序存储数据。
+&lt;img alt="2022-03-29-20-51-01" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-51-01.png"&gt;&lt;/p&gt;
+&lt;p&gt;Application：用户编写的Spark应用程序，一个Application包含多个Job。
+&lt;img alt="2022-03-29-20-51-13" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-51-13.png"&gt;&lt;/p&gt;
+&lt;p&gt;Job：作业，一个Job包含多个RDD及作用于相应RDD上的各种操作。
+&lt;img alt="2022-03-29-20-51-26" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-51-26.png"&gt;&lt;/p&gt;
+&lt;p&gt;Stage：阶段，是作业的基本调度单位，一个作业会分为多组任务，每组任务被称为“阶段”。&lt;/p&gt;
+&lt;p&gt;TaskScheduler：任务调度器 将TaskSet提交给Worker（集群）运行并汇报结果；负责每个具体任务的实际物理调度。
+&lt;img alt="2022-03-29-20-51-45" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2022-03-29-20-51-45.png"&gt;&lt;/p&gt;
+&lt;p&gt;Task：任务，运行在Executor上的工作单元，是Executor中的一个线程。&lt;/p&gt;
+&lt;p&gt;TaskSet：任务集 由一组关联的，但相互之间没有Shuffle依赖关系的任务所组成的任务集。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1） 一个Stage创建一个TaskSet；&lt;/li&gt;
+&lt;li&gt;2） 为Stage的每个RDD分区创建一个Task，多个Task分装成TaskSet。
+&lt;img alt="2021-09-21-19-34-22" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-34-22.png"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总结：Application由多个Job组成，Job由多个Stage组成，Stage由多个Task组成。Stage是作业调度的基本单位。&lt;/p&gt;
+&lt;p&gt;整体结构
+&lt;img alt="2021-09-21-19-39-09" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-39-09.png"&gt;&lt;/p&gt;
+&lt;h2 id="spark作业执行过程"&gt;Spark作业执行过程&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;我们使用spark-submit提交一个Spark作业之后，这个作业就会启动一个对应的Driver进程。根据你使用的部署模式（deploy-mode）不同，Driver进程可能在本地启动，也可能在集群中某个工作节点上启动。而Driver进程要做的第一件事情，就是向集群管理器（可以是Spark Standalone集群，也可以是其他的资源管理集群，美团•大众点评使用的是YARN作为资源管理集群）申请运行Spark作业需要使用的资源，这里的资源指的就是Executor进程。YARN集群管理器会根据我们为Spark作业设置的资源参数，在各个工作节点上，启动一定数量的Executor进程，每个Executor进程都占有一定数量的内存和CPU core。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在申请到了作业执行所需的资源之后，Driver进程就会开始调度和执行我们编写的作业代码了。Driver进程会将我们编写的Spark作业代码分拆为多个stage，每个stage执行一部分代码片段，并为每个stage创建一批Task，然后将这些Task分配到各个Executor进程中执行。Task是最小的计算单元，负责执行一模一样的计算逻辑（也就是我们自己编写的某个代码片段），只是每个Task处理的数据不同而已。一个stage的所有Task都执行完毕之后，会在各个节点本地的磁盘文件中写入计算中间结果，然后Driver就会调度运行下一个stage。下一个stage的Task的输入数据就是上一个stage输出的中间结果。如此循环往复，直到将我们自己编写的代码逻辑全部执行完，并且计算完所有的数据，得到我们想要的结果为止。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Spark是根据shuffle类算子来进行stage的划分。如果我们的代码中执行了某个shuffle类算子（比如reduceByKey、join等），那么就会在该算子处，划分出一个stage界限来。可以大致理解为，shuffle算子执行之前的代码会被划分为一个stage，shuffle算子执行以及之后的代码会被划分为下一个stage。因此一个stage刚开始执行的时候，它的每个Task可能都会从上一个stage的Task所在的节点，去通过网络传输拉取需要自己处理的所有key，然后对拉取到的所有相同的key使用我们自己编写的算子函数执行聚合操作（比如reduceByKey()算子接收的函数）。这个过程就是shuffle。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当我们在代码中执行了cache/persist等持久化操作时，根据我们选择的持久化级别的不同，每个Task计算出来的数据也会保存到Executor进程的内存或者所在节点的磁盘文件中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;因此Executor的内存主要分为三块：第一块是让Task执行我们自己编写的代码时使用，默认是占Executor总内存的20%；第二块是让Task通过shuffle过程拉取了上一个stage的Task的输出后，进行聚合等操作时使用，默认也是占Executor总内存的20%；第三块是让RDD持久化时使用，默认占Executor总内存的60%。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Task的执行速度是跟每个Executor进程的CPU core数量有直接关系的。一个CPU core同一时间只能执行一个线程。而每个Executor进程上分配到的多个Task，都是以每个Task一条线程的方式，多线程并发运行的。如果CPU core数量比较充足，而且分配到的Task数量比较合理，那么通常来说，可以比较快速和高效地执行完这些Task线程。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Spark的运行模式</title><link>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spark%E7%9A%84%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h2 id="standalone模式"&gt;Standalone模式&lt;/h2&gt;
+&lt;h3 id="架构"&gt;架构&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="2021-09-21-19-47-21" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-47-21.png"&gt;&lt;/p&gt;
+&lt;h3 id="standalone运行过程"&gt;Standalone运行过程&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="2021-09-21-19-52-16" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-52-16.png"&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;SparkContext连接到Master，向Master注册并申请资源（CPU Core and Memory）。&lt;/li&gt;
+&lt;li&gt;Master根据SparkContext的资源申请要求和Worker心跳周期内报告的信息决定哪个Worker上分配资源，然后在该Worker上获取资源，然后启动Executor，Executor向SparkContext注册。&lt;/li&gt;
+&lt;li&gt;SparkContext将Application代码发送到Executor。同时，SparkContext解析Application代码，构建DAG图，并提交给DAGScheduler分解成Stage，然后以Stage（或者称为TaskSet）提交给TaskScheduler，TaskScheduler负责将Task分配到相应的Worker，最后提交给Executor执行。&lt;/li&gt;
+&lt;li&gt;Executor会建立Executor线程池，开始执行Task，并向SparkContext报告，直至Task完成。&lt;/li&gt;
+&lt;li&gt;所有Task完成后，SparkContext向Master注销，释放资源。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="spark-on-yarn模式"&gt;Spark on Yarn模式&lt;/h2&gt;
+&lt;h3 id="yarn-cluster模式"&gt;Yarn-Cluster模式&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="2021-09-21-19-53-14" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-53-14.png"&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Client向Yarn中提交应用程序，包括ApplicationMaster程序、启动ApplicationMaster的命令、需要在Executor中运行的程序等。&lt;/li&gt;
+&lt;li&gt;ResourceManager收到请求后，在集群中选择一个NodeManager，为该应用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster，其中ApplicationMaster进行SparkContext等的初始化。&lt;/li&gt;
+&lt;li&gt;ApplicationMaster向ResourceManager注册，这样用户可以直接通过ResourceManage查看应用程序的运行状态，然后它将采用轮询的方式通过RPC协议为各个任务申请资源，并监控它们的运行状态直到运行结束。&lt;/li&gt;
+&lt;li&gt;一旦ApplicationMaster申请到资源后，便与对应的NodeManager通信，要求它在获得的Container中启动Executor，启动后会向ApplicationMaster中的SparkContext注册并申请Task。&lt;/li&gt;
+&lt;li&gt;ApplicationMaster中的SparkContext分配Task给Executor执行，Executor运行Task并向ApplicationMaster汇报运行的状态和进度，以让ApplicationMaster随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务。&lt;/li&gt;
+&lt;li&gt;应用程序运行完成后，ApplicationMaster向ResourceManager申请注销并关闭自己。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="spark-on-yarn-client-模式"&gt;Spark on Yarn-Client 模式&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="2021-09-21-19-58-37" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-19-58-37.png"&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Client向Yarn的ResourceManager申请启动ApplicationMaster。同时，在SparkContext初始化中将创建DAGScheduler和TaskScheduler。&lt;/li&gt;
+&lt;li&gt;ResourceManager收到请求后，在集群中选择一个NodeManager，为该能够用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster。&lt;/li&gt;
+&lt;li&gt;Client中的SparkContext初始化完毕后，与ApplicationMaster建立通讯，向ResourceManager注册，根据任务信息向ResourceManager申请资源。&lt;/li&gt;
+&lt;li&gt;一旦ApplicationMaster申请到资源后，便与对应的NodeManager通信，要求它在获得的Container中启动Executor，启动后会向Client中的SparkContext注册并申请Task。&lt;/li&gt;
+&lt;li&gt;Client中的SparkContext分配Task给Executor执行，Executor运行Task并向Driver汇报运行的状态和进度，以让Client随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务。&lt;/li&gt;
+&lt;li&gt;应用程序运行完成后，Client的SparkContext向ResourceManager申请注销并关闭自己。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="yarn-cluster与yarn-client的区别"&gt;Yarn-Cluster与Yarn-Client的区别&lt;/h3&gt;
+&lt;p&gt;它们的区别就是ApplicationMaster的区别：Yarn-Cluster中ApplicationMaster不仅负责申请资源，并负责监控Task的运行状况，因此可以关掉Client；而Yarn-Client中ApplicationMaster仅负责申请资源，由Client中的Driver来监控调度Task的运行，因此不能关掉Client。&lt;/p&gt;
+&lt;h3 id="spark-on-yarn与mapreduce-on-yarn的区别"&gt;Spark on Yarn与MapReduce on Yarn的区别&lt;/h3&gt;
+&lt;p&gt;Spark的高性能一定程度上取决于它采用的异步并发模型（这里指server/driver端采用 的模型），这与Hadoop 2.0（包括Yarn和MapReduce）是一致的。Hadoop 2.0自己实现了类似Actor的异步并发模型，实现方式是epoll+状态机，而Spark则直接采用了开源软件Akka，该软件实现了Actor模型，性能非常高。尽管二者在server端采用了一致的并发模型，但在任务级别（特指Spark任务和MapReduce任务）上却采用了不同的并发机制：Hadoop MapReduce采用了多进程模型，而Spark采用了多线程模型。&lt;/p&gt;
+&lt;p&gt;注意，这里的多进程和多线程，指的是同一个节点上多个任务的运行模式。无论是MapReduce和Spark，整体上看，都是多进程：MapReduce应用程序是由多个独立的Task进程组成的；Spark应用成的运行环境是由多个独立的Executor进程构建的临时资源池构成的。&lt;/p&gt;
+&lt;p&gt;多进程模型便于细粒度控制每个任务占用的资源，但会消耗较多的启动时间，不适合运行低延迟类型的作业，这是MapReduce广为诟病的原因之一。而多线程模型则相反，该模型使得Spark很适合运行低延迟类型的作业。总之，Spark同节点上的任务以多线程的方式运行在一个JVM进程中，可带来以下好处：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;任务启动速度快，与之相反的是MapReduce Task进程的慢启动速度，通常需要1s左右；&lt;/li&gt;
+&lt;li&gt;同节点上所有任务运行在一个进程中，有利于共享内存。这非常适合内存密集型任务，尤其对于那些需要加载大量词典的应用程序，可大大节省内存；&lt;/li&gt;
+&lt;li&gt;同节点上所有任务可运行在一个JVM进程（Executor）中，且Executor所占资源可连续被多批任务使用，不会在运行部分任务后释放掉，这避免了每个任务重复申请资源带来的时间开销，对于任务数目非常多的应用，可大大降低运行时间。与之对比的是MapReduce中的Task：每个Task单独申请资源，用完后马上释放，不能被其他任务重用，尽管1.0支持JVM重用在一定程度上弥补了该问题，但2.0尚未支持该功能。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;尽管Spark的多线程模型带来了很多好处，但同样存在不足，主要有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;由于节点上所有任务运行在一个进程中，因此，会出现严重的资源争用，难以细粒度控制每个任务占用资源。与之相反的是MapReduce，它允许用户单独为Map Task和Reduce Task设置不同的资源，进而细粒度控制任务占用资源量，有利于大作业的正常平稳运行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="mapreduce和spark运行模型"&gt;MapReduce和Spark运行模型&lt;/h2&gt;
+&lt;h3 id="mapreduce多进程模型"&gt;MapReduce多进程模型&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="2021-09-21-20-03-00" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-20-03-00.png"&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;每个Task运行在一个独立的JVM进程中；&lt;/li&gt;
+&lt;li&gt;可单独为不同类型的Task设置不同的资源量，目前支持内存和CPU两种资源；&lt;/li&gt;
+&lt;li&gt;每个Task运行完后，释放所占用的资源，这些资源不能被其他Task复用，即使是同一个作业相同类型的Task。也就是说，每个Task都要经历“申请资源-&amp;gt;运行Task-&amp;gt;释放资源”的过程。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="spark多线程模型"&gt;Spark多线程模型&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="2021-09-21-20-03-43" loading="lazy" src="https://pic.feilewu.cn/uploads/vscode-images/2021-09-21-20-03-43.png"&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;每个节点上可以运行一个或多个Executor服务（一个节点上可以有多个Container）；&lt;/li&gt;
+&lt;li&gt;每个Executor配有一定数量的slot，表示该Executor中可以同时运行多少个ShuffleMap Task或者Reduce Task；&lt;/li&gt;
+&lt;li&gt;每个Executor单独运行在一个JVM进程中，每个Task则是运行在Executor中的一个线程（每个线程可以通过轮询的方式运行每个Task）；&lt;/li&gt;
+&lt;li&gt;同一个Executor内部的Task可共享内存，比如通过函数SparkContext.broadcast广播的文件或者数据结构只会在每个Executor中加载一次，而不会像MapReduce那样，每个Task加载一次；&lt;/li&gt;
+&lt;li&gt;Executor一旦启动后，将一直运行，且它的资源可以一直被Task复用，直到Spark程序运行完成后才释放退出。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="总结"&gt;总结&lt;/h3&gt;
+&lt;p&gt;总体上看，Spark采用的是经典的scheduler/workers模式，每个Spark应用程序运行的第一步是构建一个可重用的资源池，然后在这个资源池里运行所有的ShuffleMap Task和Reduce Task（注意，尽管Spark引擎内部只用两类Task便可表示出一个复杂的应用程序，即ShuffleMap Task和Reduce Task），而MapReduce应用程序则不同，它不会构建一个可重用的资源池，而是让每个Task动态申请资源，且运行完后马上释放资源。&lt;/p&gt;</description></item><item><title>SpringBoot配置文件——加载顺序</title><link>https://www.feilewu.cn/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F/</guid><description>&lt;h1 id="springboot配置文件加载顺序"&gt;SpringBoot配置文件——加载顺序&lt;/h1&gt;
+&lt;h3 id="配置文件所在目录"&gt;配置文件所在目录&lt;/h3&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/a9298a51-96ba-496a-9dbf-57337e30a218.png"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;file:./config/ 根目录中的config目录中&lt;/li&gt;
+&lt;li&gt;file:./ 根目录中&lt;/li&gt;
+&lt;li&gt;classpath:/config/ resource目录中的config目录下&lt;/li&gt;
+&lt;li&gt;classpath:/ resource目录下（类路径下 classpath）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="读取顺序优先级顺序"&gt;读取顺序（优先级顺序）&lt;/h3&gt;
+&lt;p&gt;如果在不同的目录中存在多个配置文件，它的读取顺序是：
+1、config/application.properties（项目根目录中config目录下）
+2、config/application.yml
+3、application.properties（项目根目录下）
+4、application.yml
+5、resources/config/application.properties（项目resources目录中config目录下）
+6、resources/config/application.yml
+7、resources/application.properties（项目的resources目录下）
+8、resources/application.yml&lt;/p&gt;
+&lt;p&gt;结论：&lt;/p&gt;
+&lt;p&gt;配置的优先级如上所示，如果同一个配置配置在多个配置文件中，则优先使用先读取到的，也就是说，1-8的优先级是由高到低的&lt;/p&gt;
+&lt;p&gt;PS：&lt;/p&gt;
+&lt;p&gt;创建SpringBoot项目时，一般的配置文件放置在项目的resources目录下，因为配置文件的修改，通过热部署不用重新启动项目，而热部署的作用范围是classpath下&lt;/p&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;p&gt;springboot官方文档：https://docs.spring.io/spring-boot/docs/2.3.3.RELEASE/reference/html/spring-boot-features.html#boot-features-external-config&lt;/p&gt;</description></item><item><title>Spring的启动流程--注解方式启动</title><link>https://www.feilewu.cn/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spring%E7%9A%84%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B--%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8/</guid><description>&lt;h2 id="bean生命周期"&gt;Bean生命周期&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/05/16/20210516163404.png"&gt;&lt;/p&gt;
+&lt;h2 id="spring的启动流程注解方式启动"&gt;Spring的启动流程&amp;ndash;注解方式启动&lt;/h2&gt;
+&lt;h3 id="1-创建annotationconfigapplicationcontext"&gt;1. 创建AnnotationConfigApplicationContext&lt;/h3&gt;
+&lt;h4 id="11-创建beanfactory"&gt;1.1 创建beanFactory&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;beanFactory&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; DefaultListableBeanFactory();
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="12-创建reader"&gt;1.2 创建Reader&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;reader&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; AnnotatedBeanDefinitionReader(&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;关注&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;/*
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;* 将一些RootBeanDefinition注册进DefaultListableBeanFactory
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;*/&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;AnnotationConfigUtils.&lt;span style="color:#a6e22e"&gt;registerAnnotationConfigProcessors&lt;/span&gt;(&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;registry&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static&lt;/span&gt; Set&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;BeanDefinitionHolder&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;registerAnnotationConfigProcessors&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; BeanDefinitionRegistry registry, &lt;span style="color:#a6e22e"&gt;@Nullable&lt;/span&gt; Object source) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; DefaultListableBeanFactory beanFactory &lt;span style="color:#f92672"&gt;=&lt;/span&gt; unwrapDefaultListableBeanFactory(registry);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (beanFactory &lt;span style="color:#f92672"&gt;!=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;null&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;(beanFactory.&lt;span style="color:#a6e22e"&gt;getDependencyComparator&lt;/span&gt;() &lt;span style="color:#66d9ef"&gt;instanceof&lt;/span&gt; AnnotationAwareOrderComparator)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; beanFactory.&lt;span style="color:#a6e22e"&gt;setDependencyComparator&lt;/span&gt;(AnnotationAwareOrderComparator.&lt;span style="color:#a6e22e"&gt;INSTANCE&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;(beanFactory.&lt;span style="color:#a6e22e"&gt;getAutowireCandidateResolver&lt;/span&gt;() &lt;span style="color:#66d9ef"&gt;instanceof&lt;/span&gt; ContextAnnotationAutowireCandidateResolver)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; beanFactory.&lt;span style="color:#a6e22e"&gt;setAutowireCandidateResolver&lt;/span&gt;(&lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ContextAnnotationAutowireCandidateResolver());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Set&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;BeanDefinitionHolder&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; beanDefs &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; LinkedHashSet&lt;span style="color:#f92672"&gt;&amp;lt;&amp;gt;&lt;/span&gt;(8);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;registry.&lt;span style="color:#a6e22e"&gt;containsBeanDefinition&lt;/span&gt;(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RootBeanDefinition def &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; RootBeanDefinition(ConfigurationClassPostProcessor.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; def.&lt;span style="color:#a6e22e"&gt;setSource&lt;/span&gt;(source);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; beanDefs.&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;registry.&lt;span style="color:#a6e22e"&gt;containsBeanDefinition&lt;/span&gt;(AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RootBeanDefinition def &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; RootBeanDefinition(AutowiredAnnotationBeanPostProcessor.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; def.&lt;span style="color:#a6e22e"&gt;setSource&lt;/span&gt;(source);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; beanDefs.&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(registerPostProcessor(registry, def, AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// Check for JSR-250 support, and if present add the CommonAnnotationBeanPostProcessor.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (jsr250Present &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style="color:#f92672"&gt;!&lt;/span&gt;registry.&lt;span style="color:#a6e22e"&gt;containsBeanDefinition&lt;/span&gt;(COMMON_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RootBeanDefinition def &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; RootBeanDefinition(CommonAnnotationBeanPostProcessor.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; def.&lt;span style="color:#a6e22e"&gt;setSource&lt;/span&gt;(source);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; beanDefs.&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(registerPostProcessor(registry, def, COMMON_ANNOTATION_PROCESSOR_BEAN_NAME));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// Check for JPA support, and if present add the PersistenceAnnotationBeanPostProcessor.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (jpaPresent &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style="color:#f92672"&gt;!&lt;/span&gt;registry.&lt;span style="color:#a6e22e"&gt;containsBeanDefinition&lt;/span&gt;(PERSISTENCE_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RootBeanDefinition def &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; RootBeanDefinition();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;try&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; def.&lt;span style="color:#a6e22e"&gt;setBeanClass&lt;/span&gt;(ClassUtils.&lt;span style="color:#a6e22e"&gt;forName&lt;/span&gt;(PERSISTENCE_ANNOTATION_PROCESSOR_CLASS_NAME,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; AnnotationConfigUtils.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;getClassLoader&lt;/span&gt;()));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;catch&lt;/span&gt; (ClassNotFoundException ex) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; IllegalStateException(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Cannot load optional framework class: &amp;#34;&lt;/span&gt; &lt;span style="color:#f92672"&gt;+&lt;/span&gt; PERSISTENCE_ANNOTATION_PROCESSOR_CLASS_NAME, ex);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; def.&lt;span style="color:#a6e22e"&gt;setSource&lt;/span&gt;(source);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; beanDefs.&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(registerPostProcessor(registry, def, PERSISTENCE_ANNOTATION_PROCESSOR_BEAN_NAME));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;registry.&lt;span style="color:#a6e22e"&gt;containsBeanDefinition&lt;/span&gt;(EVENT_LISTENER_PROCESSOR_BEAN_NAME)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RootBeanDefinition def &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; RootBeanDefinition(EventListenerMethodProcessor.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; def.&lt;span style="color:#a6e22e"&gt;setSource&lt;/span&gt;(source);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; beanDefs.&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(registerPostProcessor(registry, def, EVENT_LISTENER_PROCESSOR_BEAN_NAME));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;registry.&lt;span style="color:#a6e22e"&gt;containsBeanDefinition&lt;/span&gt;(EVENT_LISTENER_FACTORY_BEAN_NAME)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RootBeanDefinition def &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; RootBeanDefinition(DefaultEventListenerFactory.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; def.&lt;span style="color:#a6e22e"&gt;setSource&lt;/span&gt;(source);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; beanDefs.&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(registerPostProcessor(registry, def, EVENT_LISTENER_FACTORY_BEAN_NAME));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; beanDefs;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="13-创建scancer"&gt;1.3 创建Scancer&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;scanner&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ClassPathBeanDefinitionScanner(&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;关注&lt;/p&gt;</description></item><item><title>分布式锁的几种常见实现方式</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/</guid><description>&lt;h2 id="数据库乐观锁"&gt;数据库乐观锁&lt;/h2&gt;
+&lt;h3 id="实现方式"&gt;实现方式&lt;/h3&gt;
+&lt;p&gt;用表中一行记录来表示锁，其中表示锁的字段采用唯一约束&lt;/p&gt;
+&lt;p&gt;当多个线程同时执行插入语句时，只有一个能插入成功，可以认为获得到了锁，其他则会报错：ERROR 1062 (23000): Duplicate entry ‘1’ for key ‘uiq_idx_resource’），这种情况可以认为没有获得到锁&lt;/p&gt;
+&lt;p&gt;当需要释放锁时，可以删除这一条记录就可以了&lt;/p&gt;
+&lt;p&gt;这种锁的特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;锁没有失效时间，一旦锁释放失败，便会一直留在数据库中，影响其他线程获取锁。可以采用定时任务对其进行清理&lt;/li&gt;
+&lt;li&gt;锁依赖数据库，需要考虑单点故障问题。同时也要考虑给数据库性能带来的影响&lt;/li&gt;
+&lt;li&gt;锁是非阻塞的，一旦插入失败，直接便会报错，需要采用轮询的方式来实现&lt;/li&gt;
+&lt;li&gt;锁也是非可重入的，一旦一个线程获取到了锁，由于数据库中已经存在了这一条记录，其本身也不能再次获取到这个锁。这一点可以将主机和线程信息存入数据库，如果存在锁，并且锁也归属于当前线程，则可以将此锁再次分配给它&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="redis实现"&gt;Redis实现&lt;/h2&gt;
+&lt;p&gt;基本上基于setnx命令实现&lt;/p&gt;
+&lt;p&gt;SETNX 是SET if Not eXists的简写&lt;/p&gt;
+&lt;p&gt;解释：&lt;/p&gt;
+&lt;p&gt;当且仅当 key 不存在，将 key 的值设为 value，返回1；
+若给定的 key 已经存在，则 SETNX 不做任何动作，返回0。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Component&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;RedisService&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Autowired&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; RedisTemplate&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;String,String&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; redisTemplate;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;final&lt;/span&gt; String COMPARE_AND_DELETE &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;if redis.call(&amp;#39;get&amp;#39;, KEYS[1]) == ARGV[1] then return redis.call(&amp;#39;del&amp;#39;, KEYS[1]) else return 0 end&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; Boolean &lt;span style="color:#a6e22e"&gt;getLock&lt;/span&gt;(String key,String value){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; redisTemplate.&lt;span style="color:#a6e22e"&gt;opsForValue&lt;/span&gt;().&lt;span style="color:#a6e22e"&gt;setIfAbsent&lt;/span&gt;(key, value, 2, TimeUnit.&lt;span style="color:#a6e22e"&gt;MINUTES&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;releaseLock&lt;/span&gt;(String key,String value){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; List&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;String&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; keys &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Collections.&lt;span style="color:#a6e22e"&gt;singletonList&lt;/span&gt;(key);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; redisTemplate.&lt;span style="color:#a6e22e"&gt;execute&lt;/span&gt;(&lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; DefaultRedisScript&lt;span style="color:#f92672"&gt;&amp;lt;&amp;gt;&lt;/span&gt;(COMPARE_AND_DELETE,Long.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;), keys, value);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这里并没有直接使用delete命令，是为了防止删除其他线程的key。、&lt;/p&gt;</description></item><item><title>利用Redisson快速实现分布式锁--Redisson的介绍与使用</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%88%A9%E7%94%A8redisson%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81--redisson%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid><description>&lt;h2 id="什么是redisson"&gt;什么是Redisson&lt;/h2&gt;
+&lt;p&gt;Redisson 是一个使用 Java编写的Redis 客户端。 其以Redis为基础，构建了一种内存数据网格（ &lt;strong&gt;in-memory data grid&lt;/strong&gt;），并提供了redis支持的分布式Java对象和服务。包括超过50中Java对象和若干服务（Set, Multimap, SortedSet, Map, List, Queue, Deque, Semaphore, Lock, AtomicLong, Map Reduce, Publish / Subscribe, Bloom filter, Spring Cache, Tomcat, Scheduler, JCache API, Hibernate, MyBatis, RPC, local cache&amp;hellip;）。&lt;/p&gt;
+&lt;p&gt;简单来讲，Redisson可以帮助我们集中精力处理业务，而不必将过多的精力投入到redis的用法上。在项目中我们常常用它来实现redis分布式锁，替代原生redis+lua脚本的方式。&lt;/p&gt;
+&lt;h2 id="maven依赖"&gt;Maven依赖&lt;/h2&gt;
+&lt;p&gt;项目地址https://github.com/redisson/redisson&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
+&amp;lt;groupId&amp;gt;org.redisson&amp;lt;/groupId&amp;gt;
+&amp;lt;artifactId&amp;gt;redisson&amp;lt;/artifactId&amp;gt;
+&amp;lt;version&amp;gt;3.15.5&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="配置"&gt;配置&lt;/h2&gt;
+&lt;h3 id="redis配置"&gt;Redis配置&lt;/h3&gt;
+&lt;p&gt;在使用之前，首先得确保&lt;a href="https://www.feilewu.cn/?p=66"&gt;redis&lt;/a&gt;的安装与使用。在这里不做赘述。&lt;/p&gt;
+&lt;p&gt;Redisson支持如下的redis配置方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;单机模式&lt;/li&gt;
+&lt;li&gt;主从模式&lt;/li&gt;
+&lt;li&gt;哨兵模式&lt;/li&gt;
+&lt;li&gt;集群模式&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/Replication.Redis.Groups.html"&gt;复制节点&lt;/a&gt;（&lt;strong&gt;Amazon Web Services (AWS) ElastiCache Cluster and Azure Redis Cache&lt;/strong&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="java代码"&gt;Java代码&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Config config &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; Config();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;config.&lt;span style="color:#a6e22e"&gt;useSingleServer&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;setAddress&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;redis://127.0.0.1:6379&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;RedissonClient client &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Redisson.&lt;span style="color:#a6e22e"&gt;create&lt;/span&gt;(config);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;本文示例采用redis单机模式的配置，首先利用SingleServerConfig构建出单机模式下redis的配置对象，并使用setAddress 方法配置IP和端口信息，除此之外，还可以通过对应的setter方法设置retryAttempts、connectionTimeout 和 clientName等参数。然后，通过SingleServerConfig构建出Config对象，并将其传递给Redisson类的create静态方法，获得RedissonClient对象，后续我们便可以使用其进行各种业务操作。&lt;/p&gt;</description></item><item><title>当100个任务同时请求提交任务，线程池时如何工作的</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%BD%93100%E4%B8%AA%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%97%B6%E8%AF%B7%E6%B1%82%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%97%B6%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/</guid><description>&lt;h2 id="问题"&gt;问题&lt;/h2&gt;
+&lt;p&gt;如果100个任务同时往线程池（最小线程5，最大线程10，队列时LinkedBlockingDeque）提交，线程池会发生什么？线程池如何处理这些任务?&lt;/p&gt;
+&lt;h2 id="线程池"&gt;线程池&lt;/h2&gt;
+&lt;p&gt;我们首先来看看线程池的工作流程。&lt;/p&gt;
+&lt;p&gt;当线程池被创建成功后，其中是没有任何一个线程的。任务队列是作为线程池的一个构造参数传入的，如果初始队列中有任务，线程池也并不会马上执行其中的任务。&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/09/08-33-40-43da39bacb2ed462d91e2663b036f827-20180612203527437-1ad2eb"&gt;&lt;/p&gt;
+&lt;p&gt;如图所示，当应用通过execute方法往线程池提交任务时，线程池会做出如下的动作：&lt;/p&gt;
+&lt;p&gt;1、如果正在运行的线程数小于核心线程数时（corePoolSize)，通过addWorker方法创建新线程，并将此任务作为当前线程的初始任务执行&lt;/p&gt;
+&lt;p&gt;2、如果当前运行的线程数量大于或者等于核心线程数时，addWorker会return false，这时，将任务放入队列&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果队列满了，通过addWorker创建非核心线程，并立即将任务执行&lt;/li&gt;
+&lt;li&gt;如果队列满了，通过addWorker创建非核心线程失败，则通过reject方法执行失败策略&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果一个工作线程长时间无事可做，超过keepAliveTime参数设置的超时时间，如果当前运行的线程数大于核心线程数，这个线程便会执行停止策略。&lt;/p&gt;
+&lt;p&gt;那么其是如何实现的呢？&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;while&lt;/span&gt; (task &lt;span style="color:#f92672"&gt;!=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;null&lt;/span&gt; &lt;span style="color:#f92672"&gt;||&lt;/span&gt; (task &lt;span style="color:#f92672"&gt;=&lt;/span&gt; getTask()) &lt;span style="color:#f92672"&gt;!=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;null&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在getTask()方法中&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Runnable r &lt;span style="color:#f92672"&gt;=&lt;/span&gt; timed &lt;span style="color:#f92672"&gt;?&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; workQueue.&lt;span style="color:#a6e22e"&gt;poll&lt;/span&gt;(keepAliveTime, TimeUnit.&lt;span style="color:#a6e22e"&gt;NANOSECONDS&lt;/span&gt;) :
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; workQueue.&lt;span style="color:#a6e22e"&gt;take&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其实利用的是阻塞队列poll方法的超时时间，当达到超时时间，仍然没有获取到任务，便会返回null，进而Worker中的while循环跳出，结束线程。&lt;/p&gt;
+&lt;h2 id="问题解答"&gt;问题解答&lt;/h2&gt;
+&lt;p&gt;回到问题本身，当100个请求同时执行execute方法往线程池提交任务时，&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;由于一开始工作线程数是小于核心线程的，这100个任务会通过CAS争抢的方式创建新核心线程（worker），立即执行任务&lt;/li&gt;
+&lt;li&gt;如果核心线程数达到5，将任务放入队列中
+&lt;ul&gt;
+&lt;li&gt;如果放入成功，调用addWorker创建工作线程，从队列中取任务执行（工作线程数大于等于10时，会创建失败，导致任务堆积在队列中，等待其他工作线程执行）&lt;/li&gt;
+&lt;li&gt;如果放入失败，addWorker创建工作线程，立即执行该任务，如果创建失败，抛出异常&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="扩展"&gt;扩展&lt;/h2&gt;
+&lt;h3 id="线程池参数的设置策略"&gt;线程池参数的设置策略&lt;/h3&gt;
+&lt;h4 id="线程数"&gt;线程数&lt;/h4&gt;
+&lt;p&gt;一般根据业务时IO密集型还是计算密集型&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果时计算密集型，那么一般根据设置成CPU核心数，防止过多线程，导致上下文切换，降低运行效率&lt;/li&gt;
+&lt;li&gt;如果时IO密集型，考虑到充分压榨CPU的计算能力，可以设置为2倍CPU核心数，具体根据业务情况而定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="超时时间"&gt;超时时间&lt;/h4&gt;
+&lt;p&gt;根据每一个任务执行所需的时间而定，避免频繁创建和销毁线程，提高线程利用率。&lt;/p&gt;</description></item><item><title>无法将交换文件 /vmfs/volumes/.../XXXXX.vswp 从 0 KB 扩展到 6291456 KB : No space left on device</title><link>https://www.feilewu.cn/posts/halo-posts/wu-fa-jiang-jiao-huan-wen-jian-vmfsvolumesxxxxxvswpcong-0kbkuo-zhan-dao-6291456kbnospaceleftondevice/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/wu-fa-jiang-jiao-huan-wen-jian-vmfsvolumesxxxxxvswpcong-0kbkuo-zhan-dao-6291456kbnospaceleftondevice/</guid><description>&lt;p&gt;在编辑虚拟机，增加内存时，出现如下的错误&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/5334e50b-0f1d-4011-a9d8-4aa4ae865253.png"&gt;
+解决方案：&lt;/p&gt;
+&lt;p&gt;在编辑虚拟机，增加内存时，将预留内存也一并分配&lt;/p&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/35e46a35-213b-4853-86e4-4022c399d675.png"&gt;&lt;/p&gt;</description></item><item><title>策略模式</title><link>https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</guid><description>&lt;h2 id="策略模式"&gt;策略模式&lt;/h2&gt;
+&lt;p&gt;策略模式定义了一组算法，将它们逐个封装起来，并使它们可以相互替换。策略可以让算法独立于使用它们的客户而变化。&lt;/p&gt;
+&lt;h2 id="应用"&gt;应用&lt;/h2&gt;
+&lt;p&gt;在业务场景中，我们经常需要根据不同的条件而执行不同方法，这个时候便可以为每一种条件定制一类特定的方法。&lt;/p&gt;
+&lt;h2 id="类图"&gt;类图&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="img" loading="lazy" src="https://pic.feilewu.cn/uploads/2021/04/26/1151595-a728940d055ea772.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;如图所示&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Strategy: 策略接口或者策略抽象类，并且策略执行的接口&lt;/li&gt;
+&lt;li&gt;ConcreateStrategyA、ConcreateStrategyB、ConcreateStrategyC：实现策略接口的具体策略类&lt;/li&gt;
+&lt;li&gt;Context：上下文类，持有具体策略类的实例，并负责调用相关的算法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="示例"&gt;示例&lt;/h2&gt;
+&lt;h3 id="普通实现"&gt;普通实现&lt;/h3&gt;
+&lt;h4 id="定义接口"&gt;定义接口&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;PrintStrategy&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;boolean&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;support&lt;/span&gt;(String code);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;print&lt;/span&gt;(Message message);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="实现类"&gt;实现类&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;OnePrintStrategy&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;implements&lt;/span&gt; PrintStrategy {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;boolean&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;support&lt;/span&gt;(String code) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;equals&lt;/span&gt;(code);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;print&lt;/span&gt;(Message message) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; System.&lt;span style="color:#a6e22e"&gt;out&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;println&lt;/span&gt;(message.&lt;span style="color:#a6e22e"&gt;toString&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TwoPrintStrategy&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;implements&lt;/span&gt; PrintStrategy{
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;boolean&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;support&lt;/span&gt;(String code) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;2&amp;#34;&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;equals&lt;/span&gt;(code);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;print&lt;/span&gt;(Message message) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; System.&lt;span style="color:#a6e22e"&gt;out&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;println&lt;/span&gt;(message.&lt;span style="color:#a6e22e"&gt;toString&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="策略实例持有类"&gt;策略实例持有类&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;StrategyContext&lt;/span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;final&lt;/span&gt; List&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;PrintStrategy&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; strategies;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;StrategyContext&lt;/span&gt;(){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; strategies &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ArrayList&lt;span style="color:#f92672"&gt;&amp;lt;&amp;gt;&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; strategies.&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(&lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; OnePrintStrategy());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; strategies.&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(&lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; TwoPrintStrategy());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; PrintStrategy &lt;span style="color:#a6e22e"&gt;getStrategy&lt;/span&gt;(String code){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt;(PrintStrategy printStrategy:strategies){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt;(printStrategy.&lt;span style="color:#a6e22e"&gt;support&lt;/span&gt;(code)){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; printStrategy;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; RuntimeException(&lt;span style="color:#e6db74"&gt;&amp;#34;unsupported code&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="测试"&gt;测试&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Data&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@AllArgsConstructor&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Message&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; String code;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; String body;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Demo&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;(String&lt;span style="color:#f92672"&gt;[]&lt;/span&gt; args) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; StrategyContext strategyContext &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; StrategyContext();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Message message &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; Message(&lt;span style="color:#e6db74"&gt;&amp;#34;2&amp;#34;&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;&amp;#34;打印策略2&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; strategyContext.&lt;span style="color:#a6e22e"&gt;getStrategy&lt;/span&gt;(message.&lt;span style="color:#a6e22e"&gt;getCode&lt;/span&gt;()).&lt;span style="color:#a6e22e"&gt;print&lt;/span&gt;(message);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Message&lt;span style="color:#f92672"&gt;(&lt;/span&gt;code&lt;span style="color:#f92672"&gt;=&lt;/span&gt;2, body&lt;span style="color:#f92672"&gt;=&lt;/span&gt;打印策略2&lt;span style="color:#f92672"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Process finished with exit code &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="枚举实现"&gt;枚举实现&lt;/h3&gt;
+&lt;h4 id="枚举"&gt;枚举&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;enum&lt;/span&gt; PrintStrategyEnum {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ONE(&lt;span style="color:#e6db74"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;protected&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;print&lt;/span&gt;(Message message) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; System.&lt;span style="color:#a6e22e"&gt;out&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;枚举类策略1 &amp;#34;&lt;/span&gt;&lt;span style="color:#f92672"&gt;+&lt;/span&gt;message.&lt;span style="color:#a6e22e"&gt;toString&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; TWO(&lt;span style="color:#e6db74"&gt;&amp;#34;2&amp;#34;&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;protected&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;print&lt;/span&gt;(Message message) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; System.&lt;span style="color:#a6e22e"&gt;out&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;枚举类策略2 &amp;#34;&lt;/span&gt;&lt;span style="color:#f92672"&gt;+&lt;/span&gt;message.&lt;span style="color:#a6e22e"&gt;toString&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;final&lt;/span&gt; String code;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; PrintStrategyEnum(String code) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;code&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; code;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;protected&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;abstract&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;print&lt;/span&gt;(Message message);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; String &lt;span style="color:#a6e22e"&gt;getCode&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; code;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="测试-1"&gt;测试&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Demo&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;(String&lt;span style="color:#f92672"&gt;[]&lt;/span&gt; args) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; StrategyContext strategyContext &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; StrategyContext();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Message message &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; Message(&lt;span style="color:#e6db74"&gt;&amp;#34;2&amp;#34;&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;&amp;#34;打印策略2&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; strategyContext.&lt;span style="color:#a6e22e"&gt;getStrategy&lt;/span&gt;(message.&lt;span style="color:#a6e22e"&gt;getCode&lt;/span&gt;()).&lt;span style="color:#a6e22e"&gt;print&lt;/span&gt;(message);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt;(PrintStrategyEnum printStrategyEnum: PrintStrategyEnum.&lt;span style="color:#a6e22e"&gt;values&lt;/span&gt;()){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt;(printStrategyEnum.&lt;span style="color:#a6e22e"&gt;getCode&lt;/span&gt;().&lt;span style="color:#a6e22e"&gt;equals&lt;/span&gt;(message.&lt;span style="color:#a6e22e"&gt;getCode&lt;/span&gt;())){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; printStrategyEnum.&lt;span style="color:#a6e22e"&gt;print&lt;/span&gt;(message);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>设计模式之观察者模式-谈谈你对观察者模式的理解</title><link>https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/</guid><description>&lt;h2 id="定义"&gt;定义&lt;/h2&gt;
+&lt;p&gt;先来段wiki上面的定义：观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。简单来讲，就是定义了一组一对多的关系。当被观察者的状态改变，会通知观察者做出相应的动作。&lt;/p&gt;
+&lt;p&gt;在开发过程中，常常会遇到如下的场景：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;游戏开发中，当人物走到某个格子，触发加血、战斗等动作&lt;/li&gt;
+&lt;li&gt;微信公众号，当用户关注了某公众号，一旦公众号更新了文章，便可以给用户进行推送&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在这种情况下，我们该如何实现符合开闭原则的代码呢，观察者模式便是一个很好的选择。&lt;/p&gt;
+&lt;h2 id="模式结构及实现"&gt;模式结构及实现&lt;/h2&gt;
+&lt;p&gt;下图便是观察者模式的模式结构。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="观察者设计模式的结构" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/09/11-00-28-ef3193f5c9eb5ade053e92e2e8a4dd79-structure-6479ae.png"&gt;&lt;/p&gt;
+&lt;p&gt;从图中可以看出，观察者模式主要结构主要包括发布者和订阅者两个行为对象，发布者持有所有订阅者的集合，当需要发布事件或者消息时，通知订阅者做出相应的动作。&lt;/p&gt;
+&lt;h3 id="代码"&gt;代码&lt;/h3&gt;
+&lt;p&gt;定义事件接口，作为观察者与被观察者之间交互的媒介&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Event&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;定义Subscriber接口，作为观察者的接口&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Subscriber&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;update&lt;/span&gt;(Event event);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Subscriber的两个简单实现类&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ReadSubscriber&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;implements&lt;/span&gt; Subscriber{
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;update&lt;/span&gt;(Event e) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; System.&lt;span style="color:#a6e22e"&gt;out&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;ReadSubscriber&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;WriteSubscriber&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;implements&lt;/span&gt; Subscriber{
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;update&lt;/span&gt;(Event e) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; System.&lt;span style="color:#a6e22e"&gt;out&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;WriteSubscriber&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;定义Publisher接口，作为被观察者的接口&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Publisher&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;subscribe&lt;/span&gt;(Subscriber subscriber);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;unsubscribe&lt;/span&gt;(Subscriber subscriber);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notifySubscribers&lt;/span&gt;(Event event);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Publisher接口实现类&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;DefaultPublisher&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;implements&lt;/span&gt; Publisher{
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;final&lt;/span&gt; List&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;Subscriber&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; subscribers &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ArrayList&lt;span style="color:#f92672"&gt;&amp;lt;&amp;gt;&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;subscribe&lt;/span&gt;(Subscriber subscriber) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; subscribers.&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(subscriber);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;unsubscribe&lt;/span&gt;(Subscriber subscriber) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; subscribers.&lt;span style="color:#a6e22e"&gt;remove&lt;/span&gt;(subscriber);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notifySubscribers&lt;/span&gt;(Event event) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt;(Subscriber subscriber:subscribers){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; subscriber.&lt;span style="color:#a6e22e"&gt;update&lt;/span&gt;(event);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Demo测试&lt;/p&gt;</description></item><item><title>限流的方式-几种限流算法的介绍与对比</title><link>https://www.feilewu.cn/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E9%99%90%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%87%A0%E7%A7%8D%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%AF%B9%E6%AF%94/</guid><description>&lt;h2 id="简述"&gt;简述&lt;/h2&gt;
+&lt;p&gt;java限流大体可以分为3个方面。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;合法性
+&lt;ul&gt;
+&lt;li&gt;验证码&lt;/li&gt;
+&lt;li&gt;黑名单&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;容器限流
+&lt;ul&gt;
+&lt;li&gt;tomcat&lt;/li&gt;
+&lt;li&gt;nginx&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;算法限流
+&lt;ul&gt;
+&lt;li&gt;固定时间窗口算法&lt;/li&gt;
+&lt;li&gt;滑动时间窗口算法&lt;/li&gt;
+&lt;li&gt;漏桶算法&lt;/li&gt;
+&lt;li&gt;令牌桶算法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="算法限流"&gt;算法限流&lt;/h2&gt;
+&lt;h3 id="固定时间窗口"&gt;固定时间窗口&lt;/h3&gt;
+&lt;p&gt;这是限流算法中最简单也是最暴力的一种朴素算法。既然我们的目标是让APP在一分钟内只能被调用N次。那么我们便可以统计这一分钟内接口被调用的次数，一旦调用的次数超过我们设置的阈值，则拒绝提供服务。这种算法的优势是逻辑容易理解，实现也很容易。劣势则是由于时间窗口是固定的，可能在某些时间段服务器会承受超过设定阈值的请求。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="img" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/04/18-06-28-559b545b0733ae423df16b1bd6dfd19d-270324-20180926164026888-2038067154-1622786470763-8f93e5.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;如图所示，比如我们设置一分钟只能提供100次访问服务，如果某个应用在某一分钟后半部访问了100次，在下一分钟前半步访问了100次，看似符合窗口限制条件，实际上，服务器在0 :30~1:30这个时间区间上提供了200次服务（已经超出了服务器的设置的阈值）。并且，这个用户在瞬间耗光了两个时间窗口区间的服务定额，导致其他用户均不能访问了，这在业务上也是不能接受的。&lt;/p&gt;
+&lt;h3 id="滑动时间窗口算法"&gt;滑动时间窗口算法&lt;/h3&gt;
+&lt;p&gt;滑动时间窗口算法可以认为是对固定时间窗口的改进。也可被称为精度不够，时间来凑。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="img" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/04/18-06-20-9290cf45b7ffe3b319f8dae11db7f16a-270324-20180926164034427-1114283823-281b70.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;如图所示，将一分钟分为10个更加小的时间区间，每个小时间区间都有其自己的计数器，对其自身小时间区间进行控制。除此以外，若干个小时间区间组成一个时间窗口，并且随着时间的推移，时间窗口也随之右移。每个一段时间删除最左端的小区间，在最右端添加小区间，对整个时间窗口的总流量也进行控制。如果恶意用户分时间窗口进行大量请求，也能被检测出来。最后，我们也可以得出结论，时间区块分配的越精细，流量控制也会随之更加精细。&lt;/p&gt;
+&lt;p&gt;dubbo有使用&lt;/p&gt;
+&lt;h3 id="漏桶算法"&gt;漏桶算法&lt;/h3&gt;
+&lt;p&gt;漏桶算法(Leaky Bucket)是网络世界中流量整形（Traffic Shaping）或速率限制（Rate Limiting）时经常使用的一种算法，它的主要目的是控制数据注入到网络的速率，平滑网络上的突发流量。漏桶算法提供了一种机制，通过它，突发流量可以被整形以便为网络提供一个稳定的流量。这是漏桶算法的基本定义。&lt;/p&gt;
+&lt;p&gt;形象一点的解释的话：&lt;/p&gt;
+&lt;p&gt;漏桶可以看作是一个队列，将客户端的请求依次放入队列中，服务端以一定的速率从队列中获取请求进行处理，如果某一时刻收到了客户端发起的大量请求，队列放不下了，则丢弃数据包。可以用来平滑网络上的突发流量。有点类似于消息队列的作用。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="img" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/04/20-16-06-983e9c2cdfddc1a7051995fb2f0cf500-5954965-89baba58bcc16e37-e8d95a"&gt;&lt;/p&gt;
+&lt;p&gt;如图所示，请求好比水流，出水速度好比服务端处理请求的速率，一旦大量水流冲击过来，当桶装不下时水变回溢出，体现为直接拒绝客户端的请求。&lt;/p&gt;
+&lt;h3 id="令牌桶算法"&gt;令牌桶算法&lt;/h3&gt;
+&lt;p&gt;令牌桶是一种用于分组交换计算机网络和电信网络的算法。它可用于检查数据包形式的数据传输是否符合定义的带宽和突发性限制（流量不均匀或变化的度量）。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="img" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/06/04/20-16-11-b7c76bef41f63a895f9af5130a11fc9d-5954965-3416cefc78f0fe49-646033"&gt;&lt;/p&gt;
+&lt;p&gt;其原理就是，以一定的速率将令牌放入池子中，当请求到来时，就从池子中获取令牌，持有令牌才能进行后续的访问，获取不到令牌则直接拒绝访问。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当请求的速率等于令牌生成速率时，每一个请求能无延迟的通过令牌池&lt;/li&gt;
+&lt;li&gt;当请求的速率小于令牌生成速率时，每一个请求能无延迟的通过令牌池，并且多余的令牌会在池子中积累起来，供后续的突发流量使用&lt;/li&gt;
+&lt;li&gt;当请求的速率大于令牌生成速率时，当前面请求消耗完池子中的令牌后，后续请求获取不到令牌，不能获得服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="特点总结"&gt;特点总结&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;漏桶能强制以一定的速率消费请求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;令牌桶既能限制请求的平均速率，也能应对突发流量情况&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;固定时间窗口不能实现高精度的控制&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>CAP定理</title><link>https://www.feilewu.cn/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/cap%E5%AE%9A%E7%90%86/</guid><description>&lt;h1 id="概述"&gt;概述&lt;/h1&gt;
+&lt;p&gt;1998年，加州大学的计算机科学家 Eric Brewer 提出，分布式系统有三个指标。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Consistency&lt;/li&gt;
+&lt;li&gt;Availability&lt;/li&gt;
+&lt;li&gt;Partition tolerance&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这三个指标不可能全部做到。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="bg2018071607" loading="lazy" src="https://pic.feilewu.cn/uploads/img/bg2018071607_1618843236535.jpg"&gt;&lt;/p&gt;
+&lt;h2 id="partition-tolerance"&gt;Partition tolerance&lt;/h2&gt;
+&lt;p&gt;分区容错性&lt;/p&gt;
+&lt;p&gt;大多数分布式系统都分布在多个子网络。每个子网络就叫做一个区（partition）。分区容错的意思是，区间通信可能失败。&lt;/p&gt;
+&lt;p&gt;（数据同步失败）&lt;/p&gt;
+&lt;p&gt;&lt;img alt="bg2018071601" loading="lazy" src="https://pic.feilewu.cn/uploads/img/bg2018071601_1618843236538.png"&gt;&lt;/p&gt;
+&lt;h2 id="consistency"&gt;Consistency&lt;/h2&gt;
+&lt;p&gt;一致性&lt;/p&gt;
+&lt;p&gt;不管客户端向哪个节点发送请求，得到的结果应该是一致的。&lt;/p&gt;
+&lt;h2 id="availability"&gt;Availability&lt;/h2&gt;
+&lt;p&gt;可用性&lt;/p&gt;
+&lt;p&gt;用户只要向集群中任一节点发送了请求，就必须收到响应，否则就不满足可用性。&lt;/p&gt;
+&lt;h1 id="为什么三者不能同时满足"&gt;为什么三者不能同时满足&lt;/h1&gt;
+&lt;p&gt;一致性和可用性，为什么不可能同时成立？答案很简单，因为可能通信失败（即出现分区容错）。&lt;/p&gt;
+&lt;p&gt;如果保证 G2 的一致性，那么 G1 必须在写操作时，锁定 G2 的读操作和写操作。只有数据同步后，才能重新开放读写。锁定期间，G2 不能读写，没有可用性。&lt;/p&gt;
+&lt;p&gt;如果保证 G2 的可用性，那么势必不能锁定 G2，所以一致性不成立。&lt;/p&gt;
+&lt;p&gt;综上所述，G2 无法同时做到一致性和可用性。系统设计时只能选择一个目标。如果追求一致性，那么无法保证所有节点的可用性；如果追求所有节点的可用性，那就没法做到一致性。&lt;/p&gt;
+&lt;h1 id="参考"&gt;参考&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://www.zhihu.com/question/54105974"&gt;https://www.zhihu.com/question/54105974&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.ruanyifeng.com/blog/2018/07/cap.html"&gt;http://www.ruanyifeng.com/blog/2018/07/cap.html&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dubbo笔记-概述</title><link>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/dubbo%E7%AC%94%E8%AE%B0-%E6%A6%82%E8%BF%B0/</guid><description>&lt;h1 id="dubbo-学习"&gt;dubbo 学习&lt;/h1&gt;
+&lt;p&gt;Apache Dubbo 是一款高性能、轻量级的开源Java RPC框架，它提供了三大核心能力：面向接口的远程方法调用，智能容错和负载均衡，以及服务自动注册和发现。&lt;/p&gt;
+&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
+&lt;h3 id="常见的架构"&gt;常见的架构&lt;/h3&gt;
+&lt;p&gt;随着互联网的发展，网站应用的规模不断扩大，应用的架构也在不断的迭代发展。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;单一应用架构&lt;/p&gt;
+&lt;p&gt;当网站流量很小时，只需一个应用，将所有功能都部署在一起，以减少部署节点和成本。此时，用于简化增删改查工作量的数据访问框架(ORM)是关键。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;垂直应用架构&lt;/p&gt;
+&lt;p&gt;当访问量逐渐增大，单一应用增加机器带来的加速度越来越小，提升效率的方法之一是将应用拆成互不相干的几个应用，以提升效率。此时，用于加速前端页面开发的Web框架(MVC)是关键。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;分布式服务架构&lt;/p&gt;
+&lt;p&gt;当垂直应用越来越多，应用之间交互不可避免，将核心业务抽取出来，作为独立的服务，逐渐形成稳定的服务中心，使前端应用能更快速的响应多变的市场需求。此时，用于提高业务复用及整合的分布式服务框架(RPC)是关键。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;流动计算架构&lt;/p&gt;
+&lt;p&gt;当服务越来越多，容量的评估，小服务资源的浪费等问题逐渐显现，此时需增加一个调度中心基于访问压力实时管理集群容量，提高集群利用率。此时，用于提高机器利用率的资源调度和治理中心(SOA)是关键。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="需求"&gt;需求&lt;/h2&gt;
+&lt;p&gt;随着服务的不断增多，暴露出诸多的问题。如服务URL配置管理变得非常困难、服务间依赖关系错踪复杂、服务的容量无法快速准确估计等。&lt;/p&gt;
+&lt;p&gt;dubbo服务的诞生便是应对如上的几个需求。
+&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/2fb5b125-4974-4578-bbaf-892ff9d905cf.png"&gt;&lt;/p&gt;
+&lt;h2 id="dubbo架构"&gt;dubbo架构&lt;/h2&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/09/30/7f0d10b6-fa00-4c73-8819-c357013c2727.png"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;服务提供者（Provider）：暴露服务的服务提供方，服务提供者在启动时，向注册中心注册自己提供的服务。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;服务消费者（Consumer）: 调用远程服务的服务消费方，服务消费者在启动时，向注册中心订阅自己所需的服务，服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;注册中心（Registry）：注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;监控中心（Monitor）：服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;调用关系&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务容器负责启动，加载，运行服务提供者。&lt;/li&gt;
+&lt;li&gt;服务提供者在启动时，向注册中心注册自己提供的服务。&lt;/li&gt;
+&lt;li&gt;服务消费者在启动时，向注册中心订阅自己所需的服务。&lt;/li&gt;
+&lt;li&gt;注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。&lt;/li&gt;
+&lt;li&gt;服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。&lt;/li&gt;
+&lt;li&gt;服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="使用"&gt;使用&lt;/h2&gt;</description></item><item><title>Java注解-元注解</title><link>https://www.feilewu.cn/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/java%E6%B3%A8%E8%A7%A3-%E5%85%83%E6%B3%A8%E8%A7%A3/</guid><description>&lt;h2 id="元注解"&gt;元注解&lt;/h2&gt;
+&lt;h3 id="retention"&gt;@Retention&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;@interface&lt;/span&gt; Retention {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;/**
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; * Returns the retention policy.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; * @return the retention policy
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RetentionPolicy &lt;span style="color:#a6e22e"&gt;value&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此注解表明了注解的生命周期&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;enum&lt;/span&gt; RetentionPolicy {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;/**
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; * Annotations are to be discarded by the compiler.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; SOURCE,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;/**
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; * Annotations are to be recorded in the class file by the compiler
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; * but need not be retained by the VM at run time. This is the default
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; * behavior.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; CLASS,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;/**
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; * Annotations are to be recorded in the class file by the compiler and
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; * retained by the VM at run time, so they may be read reflectively.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; *
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; * @see java.lang.reflect.AnnotatedElement
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt; */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RUNTIME
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有三种，分别是源代码、字节码、和运行时&lt;/p&gt;</description></item><item><title>Mysql查询优化</title><link>https://www.feilewu.cn/posts/halo-posts/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/mysql%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</guid><description>&lt;h2 id="查询执行流程"&gt;查询执行流程&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="1627131-20190326142945691-999174680" loading="lazy" src="https://pic.feilewu.cn/uploads/img/1627131-20190326142945691-999174680_1619025212512.png"&gt;
+如图所示，mysql的查询一般分为如下步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;客服端发送一条查询给服务器&lt;/li&gt;
+&lt;li&gt;服务器先检查查询缓存，如果命中缓存，则立刻返回存储在缓存中的结果。否则进入下一个阶段。&lt;/li&gt;
+&lt;li&gt;服务器端进行SQL解析、预处理，在由优化器生成对应的执行计划。&lt;/li&gt;
+&lt;li&gt;MySQL根据优化器生成的执行计划，调用存储引擎的API来执行查询&lt;/li&gt;
+&lt;li&gt;将结果返回给客户端&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="注意点"&gt;注意点&lt;/h2&gt;
+&lt;h3 id="字段"&gt;字段&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;尽量使用TINYINT、SMALLINT、MEDIUM_INT作为整数类型而非INT，如果非负则加上UNSIGNED&lt;/li&gt;
+&lt;li&gt;VARCHAR的长度只分配真正需要的空间&lt;/li&gt;
+&lt;li&gt;使用枚举或整数代替字符串类型&lt;/li&gt;
+&lt;li&gt;尽量使用TIMESTAMP而非DATETIME，&lt;/li&gt;
+&lt;li&gt;单表不要有太多字段，建议在20以内&lt;/li&gt;
+&lt;li&gt;避免使用NULL字段，很难查询优化且占用额外索引空间&lt;/li&gt;
+&lt;li&gt;用整型来存IP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="索引"&gt;索引&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;索引并不是越多越好，要根据查询有针对性的创建，考虑在WHERE和ORDER BY命令上涉及的列建立索引，可根据EXPLAIN来查看是否用了索引还是全表扫描&lt;/li&gt;
+&lt;li&gt;应尽量避免在WHERE子句中对字段进行NULL值判断，否则将导致引擎放弃使用索引而进行全表扫描&lt;/li&gt;
+&lt;li&gt;值分布很稀少的字段不适合建索引，例如&amp;quot;性别&amp;quot;这种只有两三个值的字段&lt;/li&gt;
+&lt;li&gt;字符字段最好不要做主键&lt;/li&gt;
+&lt;li&gt;不用外键，由程序保证约束&lt;/li&gt;
+&lt;li&gt;尽量不用UNIQUE，由程序保证约束&lt;/li&gt;
+&lt;li&gt;使用多列索引时主意顺序和查询条件保持一致，同时删除不必要的单列索引&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="sql"&gt;SQL&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;可通过开启慢查询日志来找出较慢的SQL&lt;/li&gt;
+&lt;li&gt;不做列运算：SELECT id WHERE age + 1 = 10，任何对列的操作都将导致表扫描，它包括数据库教程函数、计算表达式等等，查询时要尽可能将操作移至等号右边&lt;/li&gt;
+&lt;li&gt;sql语句尽可能简单：一条sql只能在一个cpu运算;大语句拆小语句，减少锁时间;一条大sql可以堵死整个库&lt;/li&gt;
+&lt;li&gt;不用SELECT *&lt;/li&gt;
+&lt;li&gt;OR改写成IN：OR的效率是n级别，IN的效率是log(n)级别，in的个数建议控制在200以内&lt;/li&gt;
+&lt;li&gt;不用函数和触发器，在应用程序实现&lt;/li&gt;
+&lt;li&gt;避免%xxx式查询&lt;/li&gt;
+&lt;li&gt;少用JOIN&lt;/li&gt;
+&lt;li&gt;使用同类型进行比较，比如用'123&amp;rsquo;和'123&amp;rsquo;比，123和123比&lt;/li&gt;
+&lt;li&gt;尽量避免在WHERE子句中使用!=或&amp;lt;&amp;gt;操作符，否则将引擎放弃使用索引而进行全表扫描&lt;/li&gt;
+&lt;li&gt;对于连续数值，使用BETWEEN不用IN：SELECT id FROM t WHERE num BETWEEN 1 AND 5&lt;/li&gt;
+&lt;li&gt;列表数据不要拿全表，要使用LIMIT来分页，每页数量也不要太大&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Redis笔记-数据类型</title><link>https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</guid><description>&lt;h2 id="基本数据类型及应用场景"&gt;基本数据类型及应用场景&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;类型&lt;/th&gt;
+&lt;th&gt;简介&lt;/th&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;场景&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;String(字符串)&lt;/td&gt;
+&lt;td&gt;二进制安全&lt;/td&gt;
+&lt;td&gt;可以包含任何数据,比如jpg图片或者序列化的对象,一个键最大能存储512M&lt;/td&gt;
+&lt;td&gt;&amp;mdash;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Hash(字典)&lt;/td&gt;
+&lt;td&gt;键值对集合,即编程语言中的Map类型&lt;/td&gt;
+&lt;td&gt;适合存储对象,并且可以像数据库中update一个属性一样只修改某一项属性值(Memcached中需要取出整个字符串反序列化成对象修改完再序列化存回去)&lt;/td&gt;
+&lt;td&gt;存储、读取、修改用户属性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;List(列表)&lt;/td&gt;
+&lt;td&gt;链表(双向链表)&lt;/td&gt;
+&lt;td&gt;增删快,提供了操作某一段元素的API&lt;/td&gt;
+&lt;td&gt;1,最新消息排行等功能(比如朋友圈的时间线) 2,消息队列&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Set(集合)&lt;/td&gt;
+&lt;td&gt;哈希表实现,元素不重复&lt;/td&gt;
+&lt;td&gt;1、添加、删除,查找的复杂度都是O(1) 2、为集合提供了求交集、并集、差集等操作&lt;/td&gt;
+&lt;td&gt;1、共同好友 2、利用唯一性,统计访问网站的所有独立ip 3、好友推荐时,根据tag求交集,大于某个阈值就可以推荐&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Sorted Set(有序集合)&lt;/td&gt;
+&lt;td&gt;将Set中的元素增加一个权重参数score,元素按score有序排列&lt;/td&gt;
+&lt;td&gt;数据插入集合时,已经进行天然排序&lt;/td&gt;
+&lt;td&gt;1、排行榜 2、带权重的消息队列&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2021/04/20/98105977-58e24f050b6ba.png"&gt;&lt;/p&gt;
+&lt;h3 id="字符串string"&gt;字符串（String）&lt;/h3&gt;
+&lt;h4 id="设置值"&gt;设置值&lt;/h4&gt;
+&lt;p&gt;set命令:为键设置值.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;set key value
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setex命令:为键设置值,并设置秒级的过期时间.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;setex key value seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setpx命令:为键设置值,并设置毫秒秒级的过期时间.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;setpx key value millisecond
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setnx命令:向键设置值前判断键是否存在,不存在则设置值存在则不设置.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;setnx key value
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setxx命令:与setnx相反,向键设置值前判断键是否存在,存在则设置值存在则不设置.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;setxx key value
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setnx和setxx的使用场景:由于redis是单线程命令处理机制,如果多个客户端同时向redis服务使用setnx命令也只会有一个客户端执行成功.setnx可以用于分布式锁的一个解决方案.&lt;/p&gt;
+&lt;h4 id="计数"&gt;计数&lt;/h4&gt;
+&lt;p&gt;incr命令:用于对键的值进行自增操作,返回结果为三种:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;值不是整数,返回错误.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;值是整数,返回自增后的结果.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;值不存在,按照值为&lt;code&gt;0&lt;/code&gt;自增,返回&lt;code&gt;1&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;incr key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;incrby命令:用于对键的值进行指定自增量的自增操作,返回结果与incr相同.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;incrby key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;incrbyfloat命令:用于对键的值进行指定浮点型自增量的自增操作.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;incrbyfloat key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;decr命令:用于对键的值进行自减操作.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;decr key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;decrby命令:用于对键的值进行指定值进行减值操作.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;decrby key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;append命令:用于对键的值进行追加操作,返回追加后的值的得长度.&lt;/p&gt;</description></item><item><title>spring boot运行非web项目</title><link>https://www.feilewu.cn/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/spring-boot%E8%BF%90%E8%A1%8C%E9%9D%9Eweb%E9%A1%B9%E7%9B%AE/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
+&lt;p&gt;一直以来，一直使用springboot来创建基于web的项目，今天突然想到，springboot是否可以用于非web项目的使用。&lt;/p&gt;
+&lt;h2 id="非web运行办法"&gt;非web运行办法&lt;/h2&gt;
+&lt;h3 id="启动类main方法后面执行"&gt;启动类main方法后面执行&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@SpringBootApplication&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;StudyLockApp&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;(String&lt;span style="color:#f92672"&gt;[]&lt;/span&gt; args) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ConfigurableApplicationContext configurableApplicationContext &lt;span style="color:#f92672"&gt;=&lt;/span&gt; SpringApplication.&lt;span style="color:#a6e22e"&gt;run&lt;/span&gt;(StudyLockApp.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;, args);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RedisService redisService &lt;span style="color:#f92672"&gt;=&lt;/span&gt; configurableApplicationContext.&lt;span style="color:#a6e22e"&gt;getBean&lt;/span&gt;(RedisService.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Boolean lock &lt;span style="color:#f92672"&gt;=&lt;/span&gt; redisService.&lt;span style="color:#a6e22e"&gt;getLock&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;lock&amp;#34;&lt;/span&gt;, 1);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; System.&lt;span style="color:#a6e22e"&gt;out&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;println&lt;/span&gt;(lock);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;通过SpringApplication.run拿到bean容器&lt;/li&gt;
+&lt;li&gt;获取到已经注入进去的业务bean&lt;/li&gt;
+&lt;li&gt;执行相应的方法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="实现applicationrunner接口"&gt;实现ApplicationRunner接口&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@SpringBootApplication&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;StudyLockApp&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;implements&lt;/span&gt; ApplicationRunner, ApplicationContextAware {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; ApplicationContext applicationContext;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;(String&lt;span style="color:#f92672"&gt;[]&lt;/span&gt; args) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; SpringApplication.&lt;span style="color:#a6e22e"&gt;run&lt;/span&gt;(StudyLockApp.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;, args);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;run&lt;/span&gt;(ApplicationArguments args) &lt;span style="color:#66d9ef"&gt;throws&lt;/span&gt; Exception {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RedisService redisService &lt;span style="color:#f92672"&gt;=&lt;/span&gt; applicationContext.&lt;span style="color:#a6e22e"&gt;getBean&lt;/span&gt;(RedisService.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt;(&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; i &lt;span style="color:#f92672"&gt;=&lt;/span&gt; 0;i&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;10;i&lt;span style="color:#f92672"&gt;++&lt;/span&gt;){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Thread thread &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; Thread(&lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ConsumerThread(i,redisService));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; thread.&lt;span style="color:#a6e22e"&gt;start&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;setApplicationContext&lt;/span&gt;(ApplicationContext applicationContext) &lt;span style="color:#66d9ef"&gt;throws&lt;/span&gt; BeansException {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;applicationContext&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; applicationContext;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="实现commandlinerunner接口"&gt;实现CommandLineRunner接口&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@SpringBootApplication&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;StudyLockApp&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;implements&lt;/span&gt; CommandLineRunner, ApplicationContextAware {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; ApplicationContext applicationContext;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;(String&lt;span style="color:#f92672"&gt;[]&lt;/span&gt; args) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; SpringApplication.&lt;span style="color:#a6e22e"&gt;run&lt;/span&gt;(StudyLockApp.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;, args);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;setApplicationContext&lt;/span&gt;(ApplicationContext applicationContext) &lt;span style="color:#66d9ef"&gt;throws&lt;/span&gt; BeansException {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;applicationContext&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; applicationContext;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Override&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;run&lt;/span&gt;(String... args) &lt;span style="color:#66d9ef"&gt;throws&lt;/span&gt; Exception {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; RedisService redisService &lt;span style="color:#f92672"&gt;=&lt;/span&gt; applicationContext.&lt;span style="color:#a6e22e"&gt;getBean&lt;/span&gt;(RedisService.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt;(&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; i &lt;span style="color:#f92672"&gt;=&lt;/span&gt; 0;i&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;10;i&lt;span style="color:#f92672"&gt;++&lt;/span&gt;){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Thread thread &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; Thread(&lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ConsumerThread(i,redisService));
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; thread.&lt;span style="color:#a6e22e"&gt;start&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="springboot源码"&gt;Springboot源码&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; ConfigurableApplicationContext &lt;span style="color:#a6e22e"&gt;run&lt;/span&gt;(String... args) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; StopWatch stopWatch &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; StopWatch();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; stopWatch.&lt;span style="color:#a6e22e"&gt;start&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ConfigurableApplicationContext context &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;null&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Collection&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;SpringBootExceptionReporter&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; exceptionReporters &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ArrayList&lt;span style="color:#f92672"&gt;&amp;lt;&amp;gt;&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; configureHeadlessProperty();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; SpringApplicationRunListeners listeners &lt;span style="color:#f92672"&gt;=&lt;/span&gt; getRunListeners(args);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; listeners.&lt;span style="color:#a6e22e"&gt;starting&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;try&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ApplicationArguments applicationArguments &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; DefaultApplicationArguments(args);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ConfigurableEnvironment environment &lt;span style="color:#f92672"&gt;=&lt;/span&gt; prepareEnvironment(listeners, applicationArguments);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; configureIgnoreBeanInfo(environment);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; Banner printedBanner &lt;span style="color:#f92672"&gt;=&lt;/span&gt; printBanner(environment);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; context &lt;span style="color:#f92672"&gt;=&lt;/span&gt; createApplicationContext();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; exceptionReporters &lt;span style="color:#f92672"&gt;=&lt;/span&gt; getSpringFactoriesInstances(SpringBootExceptionReporter.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; Class&lt;span style="color:#f92672"&gt;[]&lt;/span&gt; { ConfigurableApplicationContext.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt; }, context);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; prepareContext(context, environment, listeners, applicationArguments, printedBanner);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; refreshContext(context);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; afterRefresh(context, applicationArguments);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; stopWatch.&lt;span style="color:#a6e22e"&gt;stop&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;logStartupInfo&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; StartupInfoLogger(&lt;span style="color:#66d9ef"&gt;this&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;mainApplicationClass&lt;/span&gt;).&lt;span style="color:#a6e22e"&gt;logStarted&lt;/span&gt;(getApplicationLog(), stopWatch);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; listeners.&lt;span style="color:#a6e22e"&gt;started&lt;/span&gt;(context);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; callRunners(context, applicationArguments);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;catch&lt;/span&gt; (Throwable ex) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; handleRunFailure(context, ex, exceptionReporters, listeners);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; IllegalStateException(ex);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;try&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; listeners.&lt;span style="color:#a6e22e"&gt;running&lt;/span&gt;(context);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;catch&lt;/span&gt; (Throwable ex) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; handleRunFailure(context, ex, exceptionReporters, &lt;span style="color:#66d9ef"&gt;null&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; IllegalStateException(ex);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; context;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;callRunners&lt;/span&gt;(ApplicationContext context, ApplicationArguments args) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; List&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;Object&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; runners &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; ArrayList&lt;span style="color:#f92672"&gt;&amp;lt;&amp;gt;&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; runners.&lt;span style="color:#a6e22e"&gt;addAll&lt;/span&gt;(context.&lt;span style="color:#a6e22e"&gt;getBeansOfType&lt;/span&gt;(ApplicationRunner.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;).&lt;span style="color:#a6e22e"&gt;values&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; runners.&lt;span style="color:#a6e22e"&gt;addAll&lt;/span&gt;(context.&lt;span style="color:#a6e22e"&gt;getBeansOfType&lt;/span&gt;(CommandLineRunner.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;).&lt;span style="color:#a6e22e"&gt;values&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; AnnotationAwareOrderComparator.&lt;span style="color:#a6e22e"&gt;sort&lt;/span&gt;(runners);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; (Object runner : &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; LinkedHashSet&lt;span style="color:#f92672"&gt;&amp;lt;&amp;gt;&lt;/span&gt;(runners)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (runner &lt;span style="color:#66d9ef"&gt;instanceof&lt;/span&gt; ApplicationRunner) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; callRunner((ApplicationRunner) runner, args);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (runner &lt;span style="color:#66d9ef"&gt;instanceof&lt;/span&gt; CommandLineRunner) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; callRunner((CommandLineRunner) runner, args);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;callRunner&lt;/span&gt;(ApplicationRunner runner, ApplicationArguments args) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;try&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (runner).&lt;span style="color:#a6e22e"&gt;run&lt;/span&gt;(args);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;catch&lt;/span&gt; (Exception ex) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; IllegalStateException(&lt;span style="color:#e6db74"&gt;&amp;#34;Failed to execute ApplicationRunner&amp;#34;&lt;/span&gt;, ex);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;callRunner&lt;/span&gt;(CommandLineRunner runner, ApplicationArguments args) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;try&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (runner).&lt;span style="color:#a6e22e"&gt;run&lt;/span&gt;(args.&lt;span style="color:#a6e22e"&gt;getSourceArgs&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;catch&lt;/span&gt; (Exception ex) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;throw&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; IllegalStateException(&lt;span style="color:#e6db74"&gt;&amp;#34;Failed to execute CommandLineRunner&amp;#34;&lt;/span&gt;, ex);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其实就是在执行容器初始化后再调用实现的run方法而已。&lt;/p&gt;</description></item><item><title>Zookeeper概述与安装</title><link>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</guid><description>&lt;h2 id="特性"&gt;特性&lt;/h2&gt;
+&lt;h3 id="zookeeper-解决的本质问题"&gt;ZooKeeper 解决的本质问题&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;消息传递：延迟性，先发送的消息，不一定先到达；&lt;/li&gt;
+&lt;li&gt;消息传递：丢失性，发送的消息，可能丢失；&lt;/li&gt;
+&lt;li&gt;节点崩溃：分布式系统内，任何一个节点都可能崩溃。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="如何保证分布式一致性"&gt;如何保证分布式一致性&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;顺序一致性：同一个 Client 发起的事务请求，严格按照发起顺序执行&lt;/li&gt;
+&lt;li&gt;原子性：事务请求，要么应用到所有节点，要么一个节点都没有应用&lt;/li&gt;
+&lt;li&gt;单一视图：Client 无论连接到哪个节点，看到的服务端数据都是一致的（Note：不准确，其实是最终一致性）&lt;/li&gt;
+&lt;li&gt;可靠性：事务一旦执行成功，状态永久保留&lt;/li&gt;
+&lt;li&gt;实时性：事务一旦执行成功，Client 并不能立即看到最新数据，但 ZooKeeper 保证最终一致性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;官方文档：&lt;a href="https://zookeeper.apache.org/doc/r3.6.2/zookeeperStarted.html"&gt;https://zookeeper.apache.org/doc/r3.6.2/zookeeperStarted.html&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="安装centos-7"&gt;安装（centos 7）&lt;/h2&gt;
+&lt;h3 id="下载"&gt;下载&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.6.2/apache-zookeeper-3.6.2-bin.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tar zvxf apache-zookeeper-3.6.2-bin.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd apache-zookeeper-3.6.2-bin
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="配置"&gt;配置&lt;/h3&gt;
+&lt;h4 id="单机模式"&gt;单机模式&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;创建配置文件 conf/zoo.cfg&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;vi conf/zoo.cfg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;写入配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tickTime&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2000&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataDir&lt;span style="color:#f92672"&gt;=&lt;/span&gt;/var/lib/zookeeper
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;clientPort&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2181&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;em&gt;tickTime&lt;/em&gt;&lt;/strong&gt; : the basic time unit in milliseconds used by ZooKeeper. It is used to do heartbeats and the minimum session timeout will be twice the tickTime.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;em&gt;dataDir&lt;/em&gt;&lt;/strong&gt; : the location to store the in-memory database snapshots and, unless specified otherwise, the transaction log of updates to the database.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;em&gt;clientPort&lt;/em&gt;&lt;/strong&gt; : the port to listen for client connections&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;启动&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bin/zkServer.sh start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="4"&gt;
+&lt;li&gt;连接&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bin/zkCli.sh -server 127.0.0.1:2181
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Connecting to localhost:2181
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;log4j:WARN No appenders could be found &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; logger &lt;span style="color:#f92672"&gt;(&lt;/span&gt;org.apache.zookeeper.ZooKeeper&lt;span style="color:#f92672"&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;log4j:WARN Please initialize the log4j system properly.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Welcome to ZooKeeper!
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;JLine support is enabled
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;[&lt;/span&gt;zkshell: 0&lt;span style="color:#f92672"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>联系我</title><link>https://www.feilewu.cn/contact/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.feilewu.cn/contact/</guid><description>&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id="联系我"&gt;联系我&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h3 id="-社交与联系方式"&gt;📬 社交与联系方式&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;📧 &lt;strong&gt;电子邮箱&lt;/strong&gt;: &lt;a href="mailto:pfxuchn@gmail.com"&gt;pfxuchn@gmail.com&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id="-快速跳转"&gt;💬 快速跳转&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;🏡 &lt;a href="https://www.feilewu.cn/"&gt;返回博客首页&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;✍️ &lt;a href="https://www.feilewu.cn/posts/"&gt;浏览所有文章&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

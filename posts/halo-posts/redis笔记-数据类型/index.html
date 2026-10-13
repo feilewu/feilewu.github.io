@@ -1,0 +1,175 @@
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Redis笔记-数据类型 | 飞乐</title><meta name=keywords content="redis,中间件"><meta name=description content="基本数据类型及应用场景
+
+  
+      
+          类型
+          简介
+          特性
+          场景
+      
+  
+  
+      
+          String(字符串)
+          二进制安全
+          可以包含任何数据,比如jpg图片或者序列化的对象,一个键最大能存储512M
+          &mdash;
+      
+      
+          Hash(字典)
+          键值对集合,即编程语言中的Map类型
+          适合存储对象,并且可以像数据库中update一个属性一样只修改某一项属性值(Memcached中需要取出整个字符串反序列化成对象修改完再序列化存回去)
+          存储、读取、修改用户属性
+      
+      
+          List(列表)
+          链表(双向链表)
+          增删快,提供了操作某一段元素的API
+          1,最新消息排行等功能(比如朋友圈的时间线) 2,消息队列
+      
+      
+          Set(集合)
+          哈希表实现,元素不重复
+          1、添加、删除,查找的复杂度都是O(1) 2、为集合提供了求交集、并集、差集等操作
+          1、共同好友 2、利用唯一性,统计访问网站的所有独立ip 3、好友推荐时,根据tag求交集,大于某个阈值就可以推荐
+      
+      
+          Sorted Set(有序集合)
+          将Set中的元素增加一个权重参数score,元素按score有序排列
+          数据插入集合时,已经进行天然排序
+          1、排行榜 2、带权重的消息队列
+      
+      
+          
+          
+          
+          
+      
+  
+
+
+字符串（String）
+设置值
+set命令:为键设置值.
+set key value
+setex命令:为键设置值,并设置秒级的过期时间.
+setex key value seconds
+setpx命令:为键设置值,并设置毫秒秒级的过期时间.
+setpx key value millisecond
+setnx命令:向键设置值前判断键是否存在,不存在则设置值存在则不设置.
+setnx key value
+setxx命令:与setnx相反,向键设置值前判断键是否存在,存在则设置值存在则不设置.
+setxx key value
+setnx和setxx的使用场景:由于redis是单线程命令处理机制,如果多个客户端同时向redis服务使用setnx命令也只会有一个客户端执行成功.setnx可以用于分布式锁的一个解决方案.
+计数
+incr命令:用于对键的值进行自增操作,返回结果为三种:
+
+
+值不是整数,返回错误.
+
+
+值是整数,返回自增后的结果.
+
+
+值不存在,按照值为0自增,返回1.
+
+
+incr key   
+incrby命令:用于对键的值进行指定自增量的自增操作,返回结果与incr相同.
+incrby key
+incrbyfloat命令:用于对键的值进行指定浮点型自增量的自增操作.
+incrbyfloat key
+decr命令:用于对键的值进行自减操作.
+decr key
+decrby命令:用于对键的值进行指定值进行减值操作.
+decrby key
+append命令:用于对键的值进行追加操作,返回追加后的值的得长度."><meta name=author content><link rel=canonical href=https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/><link crossorigin=anonymous href=/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as=style><link rel=icon href=https://www.feilewu.cn/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://www.feilewu.cn/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://www.feilewu.cn/favicon-32x32.png><link rel=apple-touch-icon href=https://www.feilewu.cn/apple-touch-icon.png><link rel=mask-icon href=https://www.feilewu.cn/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/"><meta property="og:site_name" content="飞乐"><meta property="og:title" content="Redis笔记-数据类型"><meta property="og:description" content="基本数据类型及应用场景 类型 简介 特性 场景 String(字符串) 二进制安全 可以包含任何数据,比如jpg图片或者序列化的对象,一个键最大能存储512M — Hash(字典) 键值对集合,即编程语言中的Map类型 适合存储对象,并且可以像数据库中update一个属性一样只修改某一项属性值(Memcached中需要取出整个字符串反序列化成对象修改完再序列化存回去) 存储、读取、修改用户属性 List(列表) 链表(双向链表) 增删快,提供了操作某一段元素的API 1,最新消息排行等功能(比如朋友圈的时间线) 2,消息队列 Set(集合) 哈希表实现,元素不重复 1、添加、删除,查找的复杂度都是O(1) 2、为集合提供了求交集、并集、差集等操作 1、共同好友 2、利用唯一性,统计访问网站的所有独立ip 3、好友推荐时,根据tag求交集,大于某个阈值就可以推荐 Sorted Set(有序集合) 将Set中的元素增加一个权重参数score,元素按score有序排列 数据插入集合时,已经进行天然排序 1、排行榜 2、带权重的消息队列 字符串（String） 设置值 set命令:为键设置值.
+set key value setex命令:为键设置值,并设置秒级的过期时间.
+setex key value seconds setpx命令:为键设置值,并设置毫秒秒级的过期时间.
+setpx key value millisecond setnx命令:向键设置值前判断键是否存在,不存在则设置值存在则不设置.
+setnx key value setxx命令:与setnx相反,向键设置值前判断键是否存在,存在则设置值存在则不设置.
+setxx key value setnx和setxx的使用场景:由于redis是单线程命令处理机制,如果多个客户端同时向redis服务使用setnx命令也只会有一个客户端执行成功.setnx可以用于分布式锁的一个解决方案.
+计数 incr命令:用于对键的值进行自增操作,返回结果为三种:
+值不是整数,返回错误.
+值是整数,返回自增后的结果.
+值不存在,按照值为0自增,返回1.
+incr key incrby命令:用于对键的值进行指定自增量的自增操作,返回结果与incr相同.
+incrby key incrbyfloat命令:用于对键的值进行指定浮点型自增量的自增操作.
+incrbyfloat key decr命令:用于对键的值进行自减操作.
+decr key decrby命令:用于对键的值进行指定值进行减值操作.
+decrby key append命令:用于对键的值进行追加操作,返回追加后的值的得长度."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-09-27T19:10:52+08:00"><meta property="article:modified_time" content="2024-09-27T19:10:52+08:00"><meta property="article:tag" content="Redis"><meta property="article:tag" content="中间件"><meta name=twitter:card content="summary"><meta name=twitter:title content="Redis笔记-数据类型"><meta name=twitter:description content="基本数据类型及应用场景 类型 简介 特性 场景 String(字符串) 二进制安全 可以包含任何数据,比如jpg图片或者序列化的对象,一个键最大能存储512M — Hash(字典) 键值对集合,即编程语言中的Map类型 适合存储对象,并且可以像数据库中update一个属性一样只修改某一项属性值(Memcached中需要取出整个字符串反序列化成对象修改完再序列化存回去) 存储、读取、修改用户属性 List(列表) 链表(双向链表) 增删快,提供了操作某一段元素的API 1,最新消息排行等功能(比如朋友圈的时间线) 2,消息队列 Set(集合) 哈希表实现,元素不重复 1、添加、删除,查找的复杂度都是O(1) 2、为集合提供了求交集、并集、差集等操作 1、共同好友 2、利用唯一性,统计访问网站的所有独立ip 3、好友推荐时,根据tag求交集,大于某个阈值就可以推荐 Sorted Set(有序集合) 将Set中的元素增加一个权重参数score,元素按score有序排列 数据插入集合时,已经进行天然排序 1、排行榜 2、带权重的消息队列 字符串（String） 设置值 set命令:为键设置值.
+set key value setex命令:为键设置值,并设置秒级的过期时间.
+setex key value seconds setpx命令:为键设置值,并设置毫秒秒级的过期时间.
+setpx key value millisecond setnx命令:向键设置值前判断键是否存在,不存在则设置值存在则不设置.
+setnx key value setxx命令:与setnx相反,向键设置值前判断键是否存在,存在则设置值存在则不设置.
+setxx key value setnx和setxx的使用场景:由于redis是单线程命令处理机制,如果多个客户端同时向redis服务使用setnx命令也只会有一个客户端执行成功.setnx可以用于分布式锁的一个解决方案.
+计数 incr命令:用于对键的值进行自增操作,返回结果为三种:
+值不是整数,返回错误.
+值是整数,返回自增后的结果.
+值不存在,按照值为0自增,返回1.
+incr key incrby命令:用于对键的值进行指定自增量的自增操作,返回结果与incr相同.
+incrby key incrbyfloat命令:用于对键的值进行指定浮点型自增量的自增操作.
+incrbyfloat key decr命令:用于对键的值进行自减操作.
+decr key decrby命令:用于对键的值进行指定值进行减值操作.
+decrby key append命令:用于对键的值进行追加操作,返回追加后的值的得长度."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://www.feilewu.cn/posts/"},{"@type":"ListItem","position":2,"name":"Redis笔记-数据类型","item":"https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Redis笔记-数据类型","name":"Redis笔记-数据类型","description":"基本数据类型及应用场景 类型 简介 特性 场景 String(字符串) 二进制安全 可以包含任何数据,比如jpg图片或者序列化的对象,一个键最大能存储512M \u0026mdash; Hash(字典) 键值对集合,即编程语言中的Map类型 适合存储对象,并且可以像数据库中update一个属性一样只修改某一项属性值(Memcached中需要取出整个字符串反序列化成对象修改完再序列化存回去) 存储、读取、修改用户属性 List(列表) 链表(双向链表) 增删快,提供了操作某一段元素的API 1,最新消息排行等功能(比如朋友圈的时间线) 2,消息队列 Set(集合) 哈希表实现,元素不重复 1、添加、删除,查找的复杂度都是O(1) 2、为集合提供了求交集、并集、差集等操作 1、共同好友 2、利用唯一性,统计访问网站的所有独立ip 3、好友推荐时,根据tag求交集,大于某个阈值就可以推荐 Sorted Set(有序集合) 将Set中的元素增加一个权重参数score,元素按score有序排列 数据插入集合时,已经进行天然排序 1、排行榜 2、带权重的消息队列 字符串（String） 设置值 set命令:为键设置值.\nset key value setex命令:为键设置值,并设置秒级的过期时间.\nsetex key value seconds setpx命令:为键设置值,并设置毫秒秒级的过期时间.\nsetpx key value millisecond setnx命令:向键设置值前判断键是否存在,不存在则设置值存在则不设置.\nsetnx key value setxx命令:与setnx相反,向键设置值前判断键是否存在,存在则设置值存在则不设置.\nsetxx key value setnx和setxx的使用场景:由于redis是单线程命令处理机制,如果多个客户端同时向redis服务使用setnx命令也只会有一个客户端执行成功.setnx可以用于分布式锁的一个解决方案.\n计数 incr命令:用于对键的值进行自增操作,返回结果为三种:\n值不是整数,返回错误.\n值是整数,返回自增后的结果.\n值不存在,按照值为0自增,返回1.\nincr key incrby命令:用于对键的值进行指定自增量的自增操作,返回结果与incr相同.\nincrby key incrbyfloat命令:用于对键的值进行指定浮点型自增量的自增操作.\nincrbyfloat key decr命令:用于对键的值进行自减操作.\ndecr key decrby命令:用于对键的值进行指定值进行减值操作.\ndecrby key append命令:用于对键的值进行追加操作,返回追加后的值的得长度.\n","keywords":["redis","中间件"],"articleBody":"基本数据类型及应用场景 类型 简介 特性 场景 String(字符串) 二进制安全 可以包含任何数据,比如jpg图片或者序列化的对象,一个键最大能存储512M — Hash(字典) 键值对集合,即编程语言中的Map类型 适合存储对象,并且可以像数据库中update一个属性一样只修改某一项属性值(Memcached中需要取出整个字符串反序列化成对象修改完再序列化存回去) 存储、读取、修改用户属性 List(列表) 链表(双向链表) 增删快,提供了操作某一段元素的API 1,最新消息排行等功能(比如朋友圈的时间线) 2,消息队列 Set(集合) 哈希表实现,元素不重复 1、添加、删除,查找的复杂度都是O(1) 2、为集合提供了求交集、并集、差集等操作 1、共同好友 2、利用唯一性,统计访问网站的所有独立ip 3、好友推荐时,根据tag求交集,大于某个阈值就可以推荐 Sorted Set(有序集合) 将Set中的元素增加一个权重参数score,元素按score有序排列 数据插入集合时,已经进行天然排序 1、排行榜 2、带权重的消息队列 字符串（String） 设置值 set命令:为键设置值.\nset key value setex命令:为键设置值,并设置秒级的过期时间.\nsetex key value seconds setpx命令:为键设置值,并设置毫秒秒级的过期时间.\nsetpx key value millisecond setnx命令:向键设置值前判断键是否存在,不存在则设置值存在则不设置.\nsetnx key value setxx命令:与setnx相反,向键设置值前判断键是否存在,存在则设置值存在则不设置.\nsetxx key value setnx和setxx的使用场景:由于redis是单线程命令处理机制,如果多个客户端同时向redis服务使用setnx命令也只会有一个客户端执行成功.setnx可以用于分布式锁的一个解决方案.\n计数 incr命令:用于对键的值进行自增操作,返回结果为三种:\n值不是整数,返回错误.\n值是整数,返回自增后的结果.\n值不存在,按照值为0自增,返回1.\nincr key incrby命令:用于对键的值进行指定自增量的自增操作,返回结果与incr相同.\nincrby key incrbyfloat命令:用于对键的值进行指定浮点型自增量的自增操作.\nincrbyfloat key decr命令:用于对键的值进行自减操作.\ndecr key decrby命令:用于对键的值进行指定值进行减值操作.\ndecrby key append命令:用于对键的值进行追加操作,返回追加后的值的得长度.\nappend key strlen命令:用于查看键的值得长度.\nstrlen key setrange命令:用于键的值内指定索引字符的替换,如果参数是多个字符则从指定位置开始逐个替换,返回替换后值的长度.\nsetrange key offset value getrange命令:用于获取键的值指定索引的内容.\ngetrange key start end 哈希（Hash） 常用操作 插入key-field\nhget key field 删除field\nhdel key field [field1...] 计算field数量\nhlen key 批量设置或获取field-value\nhmset key field [field...] hmget key field [field...] 判断field是否存在\nhexists key field 获取所有field\nhkeys key 获取所有value\nhvals key 获取所有的field-value\nhgetall key 列表（List） 1.常规插入与移除 如上图所示，lpush和lpop表示从列表的头部插入和移除；rpush和rpop则从列表尾部插入和移除。\n2.查询 范围查询\nlrange key start end 按索引查询\nlindex key index 求长度\nllen key 删除指定元素\nlrem key count value lrem命令会从列表中找到等于value的元素进行删除,根据count的不同分为三种:\ncount\u003e0,从列表中删除指定数量(count)的元素. count\u003c0,从列表中删除count绝对值数量的元素. count=0,删除所有. 3.阻塞操作 移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。\nBLPOP key1 [key2 ] timeout 移出并获取列表的最后一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。\nBRPOP key1 [key2 ] timeout 4. 使用场景 1.消息队列 redis的lpush-brpop命令组合即可实现阻塞队列,生产者客户端使用lpush命令向列表插入元素.消费者客户端使用brpop命令阻塞式的\"抢\"列表中的尾部元素.多个客户端保证消息的负载均衡与可用性.\n2. 文章列表 每个用户都有属于自己的列表，并且是有序的，也支持按范围查询\n集合（set） 集合(set)类型也是用来保存多个的字符串元素,但和列表不同的是:它的元素是无序且不可重复的,不能通过索引获取元素.如下图,集合user:1:follows中包含着\"his\"、“it”、“sports”、“music\"四个元素,一个集合最多可以存储(2的32次方-1)个元素. 集合内操作 添加元素(返回添加的元素个数)\nsadd key value [value...] 删除元素(返回成功的元素个数)\nsrem key value [value...] 获取元素个数\nscard key 判断元素是否在集合中(如果元素存在于集合内则返回1,反之返回0)\nsismember key value 随机从集合中返回指定个数元素\nsrandmember key [count] 从集合中随机弹出元素\nspop key 获取集合的所有元素\nsmembers key 集合间操作 求交集\nsinter key [key...] 求并集\nsunion key [key...] 求差集\nsdiff key [key...] 应用场景 集合类型比较典型的使用场景是标签(tag).例如一个用户可能对音乐感兴趣,另一个用户对新闻感兴趣,这些想去点就是标签.有了这些数据就可以获得喜欢同一个标签的人,以及用户的共同喜好的标签,这些数据对于用户体验来说比较重要.\n有序集合（sorted set） 集合内操作 添加成员\nzadd key score member [score member ...] 获取成员个数\nzcard key 获取某个成员的分数\nzscore key member 获取成员排名(zrank命令是从分数从低到高返回排名,zrevrank反之,排名从0开始)\nzrank key member zrevrank key member 删除成员\nzrem key member [member...] 增加成员分数\nzincrby key score member 获取指定范围的元素(有序集合是按照分值排名的,zrange是由低到高返回,zrevrange反之Z)\nzrange key start end [withscores] zrevrange key start end [withscores] 返回指定分数范围的成员\nzrangebyscore key min max [withscores] [limit offset count] zrevrangebyscore key min max [withscores] [limit offset count] 返回指定分数范围成员个数\nzcount key min max 删除指定排名内的升序元素\nzremrangebyrank key start end 删除指定分数范围的成员\nzremrangebyscore key min max 集合间操作 交集\nzinterstore storeKey keyNum key [key ...] [weights weight [weight...]] [aggregate sum|min|max] storeKey:交集计算结果保存到这个键下. keyNum:需要做交集的键的个数. key[key ...]:需要做交集的键. weights weight [weight...]:每个键的权重,在做交集计算时,每个键中的每个member的分值会和这个权重相乘,每个键的权重默认为1. aggregate sum|min|sum:计算成员交集后,分值可以按照sum(和)、min(最小值)、max(最大值)做汇总.默认值为sum. 并集\nzunionstore storeKey keyNum key [key...] [weights weight [weight...]] [aggregate sum|min|max] 参数类似于交集\n字符编码 ","wordCount":"332","inLanguage":"en","datePublished":"2024-09-27T19:10:52+08:00","dateModified":"2024-09-27T19:10:52+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/"},"publisher":{"@type":"Organization","name":"飞乐","logo":{"@type":"ImageObject","url":"https://www.feilewu.cn/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://www.feilewu.cn/ accesskey=h title="飞乐 (Alt + H)">飞乐</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://www.feilewu.cn/ title=home><span>home</span></a></li><li><a href=https://www.feilewu.cn/categories/ title=categories><span>categories</span></a></li><li><a href=https://www.feilewu.cn/tags/ title=tags><span>tags</span></a></li><li><a href=https://www.feilewu.cn/contact/ title=contact><span>contact</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Redis笔记-数据类型</h1><div class=post-meta><span title='2024-09-27 19:10:52 +0800 CST'>September 27, 2024</span></div></header><details class=toc open><summary accesskey=c title="(Alt + C)"><span class=title>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#基本数据类型及应用场景>基本数据类型及应用场景</a><ul><li><a href=#字符串string>字符串（String）</a></li><li><a href=#哈希hash>哈希（Hash）</a></li><li><a href=#列表list>列表（List）</a></li><li><a href=#集合set>集合（set）</a></li><li><a href=#有序集合sorted-set>有序集合（sorted set）</a></li></ul></li><li><a href=#字符编码>字符编码</a></li></ul></nav></div></details><div class="post-content md-content"><h2 id=基本数据类型及应用场景>基本数据类型及应用场景<a hidden class=anchor aria-hidden=true href=#基本数据类型及应用场景>#</a></h2><table><thead><tr><th>类型</th><th>简介</th><th>特性</th><th>场景</th></tr></thead><tbody><tr><td>String(字符串)</td><td>二进制安全</td><td>可以包含任何数据,比如jpg图片或者序列化的对象,一个键最大能存储512M</td><td>&mdash;</td></tr><tr><td>Hash(字典)</td><td>键值对集合,即编程语言中的Map类型</td><td>适合存储对象,并且可以像数据库中update一个属性一样只修改某一项属性值(Memcached中需要取出整个字符串反序列化成对象修改完再序列化存回去)</td><td>存储、读取、修改用户属性</td></tr><tr><td>List(列表)</td><td>链表(双向链表)</td><td>增删快,提供了操作某一段元素的API</td><td>1,最新消息排行等功能(比如朋友圈的时间线) 2,消息队列</td></tr><tr><td>Set(集合)</td><td>哈希表实现,元素不重复</td><td>1、添加、删除,查找的复杂度都是O(1) 2、为集合提供了求交集、并集、差集等操作</td><td>1、共同好友 2、利用唯一性,统计访问网站的所有独立ip 3、好友推荐时,根据tag求交集,大于某个阈值就可以推荐</td></tr><tr><td>Sorted Set(有序集合)</td><td>将Set中的元素增加一个权重参数score,元素按score有序排列</td><td>数据插入集合时,已经进行天然排序</td><td>1、排行榜 2、带权重的消息队列</td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table><p><img loading=lazy src=https://pic.feilewu.cn/uploads/2021/04/20/98105977-58e24f050b6ba.png></p><h3 id=字符串string>字符串（String）<a hidden class=anchor aria-hidden=true href=#字符串string>#</a></h3><h4 id=设置值>设置值<a hidden class=anchor aria-hidden=true href=#设置值>#</a></h4><p>set命令:为键设置值.</p><pre tabindex=0><code>set key value
+</code></pre><p>setex命令:为键设置值,并设置秒级的过期时间.</p><pre tabindex=0><code>setex key value seconds
+</code></pre><p>setpx命令:为键设置值,并设置毫秒秒级的过期时间.</p><pre tabindex=0><code>setpx key value millisecond
+</code></pre><p>setnx命令:向键设置值前判断键是否存在,不存在则设置值存在则不设置.</p><pre tabindex=0><code>setnx key value
+</code></pre><p>setxx命令:与setnx相反,向键设置值前判断键是否存在,存在则设置值存在则不设置.</p><pre tabindex=0><code>setxx key value
+</code></pre><p>setnx和setxx的使用场景:由于redis是单线程命令处理机制,如果多个客户端同时向redis服务使用setnx命令也只会有一个客户端执行成功.setnx可以用于分布式锁的一个解决方案.</p><h4 id=计数>计数<a hidden class=anchor aria-hidden=true href=#计数>#</a></h4><p>incr命令:用于对键的值进行自增操作,返回结果为三种:</p><ul><li><p>值不是整数,返回错误.</p></li><li><p>值是整数,返回自增后的结果.</p></li><li><p>值不存在,按照值为<code>0</code>自增,返回<code>1</code>.</p></li></ul><pre tabindex=0><code>incr key   
+</code></pre><p>incrby命令:用于对键的值进行指定自增量的自增操作,返回结果与incr相同.</p><pre tabindex=0><code>incrby key
+</code></pre><p>incrbyfloat命令:用于对键的值进行指定浮点型自增量的自增操作.</p><pre tabindex=0><code>incrbyfloat key
+</code></pre><p>decr命令:用于对键的值进行自减操作.</p><pre tabindex=0><code>decr key
+</code></pre><p>decrby命令:用于对键的值进行指定值进行减值操作.</p><pre tabindex=0><code>decrby key
+</code></pre><p>append命令:用于对键的值进行追加操作,返回追加后的值的得长度.</p><pre tabindex=0><code>append key
+</code></pre><p>strlen命令:用于查看键的值得长度.</p><pre tabindex=0><code>strlen key
+</code></pre><p>setrange命令:用于键的值内指定索引字符的替换,如果参数是多个字符则从指定位置开始逐个替换,返回替换后值的长度.</p><pre tabindex=0><code>setrange key offset value
+</code></pre><p>getrange命令:用于获取键的值指定索引的内容.</p><pre tabindex=0><code>getrange key start end
+</code></pre><h3 id=哈希hash>哈希（Hash）<a hidden class=anchor aria-hidden=true href=#哈希hash>#</a></h3><h4 id=常用操作>常用操作<a hidden class=anchor aria-hidden=true href=#常用操作>#</a></h4><p>插入key-field</p><pre tabindex=0><code>hget key field
+</code></pre><p>删除field</p><pre tabindex=0><code>hdel key field [field1...]
+</code></pre><p>计算field数量</p><pre tabindex=0><code>hlen key
+</code></pre><p>批量设置或获取field-value</p><pre tabindex=0><code>hmset key field [field...]
+hmget key field [field...]
+</code></pre><p>判断field是否存在</p><pre tabindex=0><code>hexists key field
+</code></pre><p>获取所有field</p><pre tabindex=0><code>hkeys key
+</code></pre><p>获取所有value</p><pre tabindex=0><code>hvals key
+</code></pre><p>获取所有的field-value</p><pre tabindex=0><code>hgetall key
+</code></pre><h3 id=列表list>列表（List）<a hidden class=anchor aria-hidden=true href=#列表list>#</a></h3><p><img loading=lazy src=https://pic.feilewu.cn/uploads/2021/04/20/3044188535-58ea3f8ac1e54.png></p><h4 id=1常规插入与移除>1.常规插入与移除<a hidden class=anchor aria-hidden=true href=#1常规插入与移除>#</a></h4><p>如上图所示，lpush和lpop表示从列表的头部插入和移除；rpush和rpop则从列表尾部插入和移除。</p><h4 id=2查询>2.查询<a hidden class=anchor aria-hidden=true href=#2查询>#</a></h4><p>范围查询</p><pre tabindex=0><code>lrange key start end
+</code></pre><p>按索引查询</p><pre tabindex=0><code>lindex key index
+</code></pre><p>求长度</p><pre tabindex=0><code>llen key
+</code></pre><p>删除指定元素</p><pre tabindex=0><code>lrem key count value
+</code></pre><p><code>lrem</code>命令会从列表中找到等于<code>value</code>的元素进行删除,根据<code>count</code>的不同分为三种:</p><ol><li><code>count>0</code>,从列表中删除指定数量(<code>count</code>)的元素.</li><li><code>count&lt;0</code>,从列表中删除<code>count</code>绝对值数量的元素.</li><li><code>count=0</code>,删除所有.</li></ol><h4 id=3阻塞操作>3.阻塞操作<a hidden class=anchor aria-hidden=true href=#3阻塞操作>#</a></h4><p>移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</p><pre tabindex=0><code>BLPOP key1 [key2 ] timeout
+</code></pre><p>移出并获取列表的最后一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</p><pre tabindex=0><code>BRPOP key1 [key2 ] timeout
+</code></pre><h4 id=4-使用场景>4. 使用场景<a hidden class=anchor aria-hidden=true href=#4-使用场景>#</a></h4><h5 id=1消息队列>1.消息队列<a hidden class=anchor aria-hidden=true href=#1消息队列>#</a></h5><p><code>redis</code>的<code>lpush-brpop</code>命令组合即可实现阻塞队列,生产者客户端使用<code>lpush</code>命令向列表插入元素.消费者客户端使用<code>brpop</code>命令阻塞式的"抢"列表中的尾部元素.多个客户端保证消息的负载均衡与可用性.</p><p><img loading=lazy src=https://pic.feilewu.cn/uploads/2021/04/20/2640374334-58fc50a7b5afd.png></p><h5 id=2-文章列表>2. 文章列表<a hidden class=anchor aria-hidden=true href=#2-文章列表>#</a></h5><p>每个用户都有属于自己的列表，并且是有序的，也支持按范围查询</p><h3 id=集合set>集合（set）<a hidden class=anchor aria-hidden=true href=#集合set>#</a></h3><p>集合(set)类型也是用来保存多个的字符串元素,但和列表不同的是:它的元素是无序且不可重复的,不能通过索引获取元素.如下图,集合user:1:follows中包含着"his"、&ldquo;it&rdquo;、&ldquo;sports&rdquo;、&ldquo;music"四个元素,一个集合最多可以存储(2的32次方-1)个元素.
+<img loading=lazy src=https://pic.feilewu.cn/uploads/2021/04/20/2126708661-58fc57b1428ea.png></p><h4 id=集合内操作>集合内操作<a hidden class=anchor aria-hidden=true href=#集合内操作>#</a></h4><p>添加元素(返回添加的元素个数)</p><pre tabindex=0><code>sadd key value [value...]
+</code></pre><p>删除元素(返回成功的元素个数)</p><pre tabindex=0><code>srem key value [value...]
+</code></pre><p>获取元素个数</p><pre tabindex=0><code>scard key
+</code></pre><p>判断元素是否在集合中(如果元素存在于集合内则返回1,反之返回0)</p><pre tabindex=0><code>sismember key value
+</code></pre><p>随机从集合中返回指定个数元素</p><pre tabindex=0><code>srandmember key [count]
+</code></pre><p>从集合中随机弹出元素</p><pre tabindex=0><code>spop key
+</code></pre><p>获取集合的所有元素</p><pre tabindex=0><code>smembers key
+</code></pre><h4 id=集合间操作>集合间操作<a hidden class=anchor aria-hidden=true href=#集合间操作>#</a></h4><p>求交集</p><pre tabindex=0><code>sinter key [key...]
+</code></pre><p>求并集</p><pre tabindex=0><code>sunion key [key...]
+</code></pre><p>求差集</p><pre tabindex=0><code>sdiff key [key...]
+</code></pre><h4 id=应用场景>应用场景<a hidden class=anchor aria-hidden=true href=#应用场景>#</a></h4><p>集合类型比较典型的使用场景是标签(tag).例如一个用户可能对音乐感兴趣,另一个用户对新闻感兴趣,这些想去点就是标签.有了这些数据就可以获得喜欢同一个标签的人,以及用户的共同喜好的标签,这些数据对于用户体验来说比较重要.</p><h3 id=有序集合sorted-set>有序集合（sorted set）<a hidden class=anchor aria-hidden=true href=#有序集合sorted-set>#</a></h3><h4 id=集合内操作-1>集合内操作<a hidden class=anchor aria-hidden=true href=#集合内操作-1>#</a></h4><p>添加成员</p><pre tabindex=0><code>zadd key score member [score member ...]
+</code></pre><p>获取成员个数</p><pre tabindex=0><code>zcard key
+</code></pre><p>获取某个成员的分数</p><pre tabindex=0><code>zscore key member
+</code></pre><p>获取成员排名(zrank命令是从分数从低到高返回排名,zrevrank反之,排名从0开始)</p><pre tabindex=0><code>zrank key member
+zrevrank key member
+</code></pre><p>删除成员</p><pre tabindex=0><code>zrem key member [member...]
+</code></pre><p>增加成员分数</p><pre tabindex=0><code>zincrby key score member
+</code></pre><p>获取指定范围的元素(有序集合是按照分值排名的,zrange是由低到高返回,zrevrange反之Z)</p><pre tabindex=0><code>zrange key start end [withscores] 
+zrevrange key start end [withscores]
+</code></pre><p>返回指定分数范围的成员</p><pre tabindex=0><code>zrangebyscore key min max [withscores] [limit offset count]
+zrevrangebyscore key min max [withscores] [limit offset count]
+</code></pre><p>返回指定分数范围成员个数</p><pre tabindex=0><code>zcount key min max
+</code></pre><p>删除指定排名内的升序元素</p><pre tabindex=0><code>zremrangebyrank key start end
+</code></pre><p>删除指定分数范围的成员</p><pre tabindex=0><code>zremrangebyscore key min max
+</code></pre><h4 id=集合间操作-1>集合间操作<a hidden class=anchor aria-hidden=true href=#集合间操作-1>#</a></h4><p>交集</p><pre tabindex=0><code>zinterstore storeKey keyNum key [key ...] [weights weight [weight...]] [aggregate sum|min|max]
+</code></pre><ul><li><code>storeKey</code>:交集计算结果保存到这个键下.</li><li><code>keyNum</code>:需要做交集的键的个数.</li><li><code>key[key ...]</code>:需要做交集的键.</li><li><code>weights weight [weight...]</code>:每个键的权重,在做交集计算时,每个键中的每个<code>member</code>的分值会和这个权重相乘,每个键的权重默认为<code>1</code>.</li><li><code>aggregate sum|min|sum</code>:计算成员交集后,分值可以按照<code>sum</code>(和)、<code>min</code>(最小值)、<code>max</code>(最大值)做汇总.默认值为<code>sum</code>.</li></ul><p>并集</p><pre tabindex=0><code>zunionstore storeKey keyNum key [key...] [weights weight [weight...]] [aggregate sum|min|max]
+</code></pre><p>参数类似于交集</p><h2 id=字符编码>字符编码<a hidden class=anchor aria-hidden=true href=#字符编码>#</a></h2><p><img loading=lazy src=https://pic.feilewu.cn/uploads/2021/04/20/1753739797-58e256966df9b.png></p></div><footer class=post-footer><ul class=post-tags><li><a href=https://www.feilewu.cn/tags/redis/>Redis</a></li><li><a href=https://www.feilewu.cn/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/>中间件</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://www.feilewu.cn/>飞乐</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg></a><div class=feian style=text-align:center;font-size:13px;margin-top:2px;opacity:.8;line-height:1.2><a href=https://beian.miit.gov.cn/ target=_blank style=color:var(--secondary);text-decoration:none>苏ICP备2021016520号-1</a></div><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

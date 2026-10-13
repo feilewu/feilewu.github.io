@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>算法 on 飞乐</title><link>https://www.feilewu.cn/tags/%E7%AE%97%E6%B3%95/</link><description>Recent content in 算法 on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 27 Sep 2024 19:10:53 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml"/><item><title>LRU算法</title><link>https://www.feilewu.cn/posts/halo-posts/lru%E7%AE%97%E6%B3%95/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/lru%E7%AE%97%E6%B3%95/</guid><description>&lt;h2 id="lru算法"&gt;LRU算法&lt;/h2&gt;
+&lt;h3 id="简述"&gt;简述&lt;/h3&gt;
+&lt;p&gt;LRU是Least Recently Used的缩写，即最近最少使用，是一种常用的页面置换算法，选择最近最久未使用的页面予以淘汰。 该算法赋予每个页面一个访问字段，用来记录一个页面自上次被访问以来所经历的时间t，当须淘汰一个页面时，选择现有页面中其t 值最大的，即最近最少使用的页面予以淘汰。&lt;/p&gt;
+&lt;h3 id="需求"&gt;需求&lt;/h3&gt;
+&lt;p&gt;实现一个缓存功能，使得插入、删除、修改的操作都是O(1)的，并且当需要清除缓存时，需要从最少使用的开始清除。&lt;/p&gt;
+&lt;h3 id="实现"&gt;实现&lt;/h3&gt;
+&lt;p&gt;思考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一般的，要实现O(1)的时间复杂度，考虑使用hash来实现&lt;/li&gt;
+&lt;li&gt;需要从最少的元素开始删起，一种朴素的想法就是将每个元素使用时间记录下来，按时间顺序排好序，然后需要删除时，从最久未使用的元素开始删除&lt;/li&gt;
+&lt;li&gt;进而可以想到，使用链表将哈希表串联起来，头部表示使用最近使用的，尾部表示最久未使用的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img alt="image-20210527220814816" loading="lazy" src="https://pic.feilewu.cn/uploads/img/2021/05/27/20210527221138.png"&gt;&lt;/p&gt;
+&lt;p&gt;如图所示：&lt;/p&gt;
+&lt;p&gt;最左边为Head，表示最近使用的；最右边未Tail，表示最久未使用的&lt;/p&gt;
+&lt;p&gt;当对节点进行操作：&lt;/p&gt;
+&lt;p&gt;删除：将节点从链表中移除&lt;/p&gt;
+&lt;p&gt;增加：将节点移动到head处&lt;/p&gt;
+&lt;p&gt;修改：将节点移动到head处&lt;/p&gt;
+&lt;p&gt;查询：将节点移动到head处&lt;/p&gt;</description></item></channel></rss>

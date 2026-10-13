@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Redis on 飞乐</title><link>https://www.feilewu.cn/tags/redis/</link><description>Recent content in Redis on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 27 Sep 2024 19:10:53 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/tags/redis/index.xml" rel="self" type="application/rss+xml"/><item><title>分布式锁的几种常见实现方式</title><link>https://www.feilewu.cn/posts/halo-posts/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/</link><pubDate>Fri, 27 Sep 2024 19:10:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/</guid><description>&lt;h2 id="数据库乐观锁"&gt;数据库乐观锁&lt;/h2&gt;
+&lt;h3 id="实现方式"&gt;实现方式&lt;/h3&gt;
+&lt;p&gt;用表中一行记录来表示锁，其中表示锁的字段采用唯一约束&lt;/p&gt;
+&lt;p&gt;当多个线程同时执行插入语句时，只有一个能插入成功，可以认为获得到了锁，其他则会报错：ERROR 1062 (23000): Duplicate entry ‘1’ for key ‘uiq_idx_resource’），这种情况可以认为没有获得到锁&lt;/p&gt;
+&lt;p&gt;当需要释放锁时，可以删除这一条记录就可以了&lt;/p&gt;
+&lt;p&gt;这种锁的特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;锁没有失效时间，一旦锁释放失败，便会一直留在数据库中，影响其他线程获取锁。可以采用定时任务对其进行清理&lt;/li&gt;
+&lt;li&gt;锁依赖数据库，需要考虑单点故障问题。同时也要考虑给数据库性能带来的影响&lt;/li&gt;
+&lt;li&gt;锁是非阻塞的，一旦插入失败，直接便会报错，需要采用轮询的方式来实现&lt;/li&gt;
+&lt;li&gt;锁也是非可重入的，一旦一个线程获取到了锁，由于数据库中已经存在了这一条记录，其本身也不能再次获取到这个锁。这一点可以将主机和线程信息存入数据库，如果存在锁，并且锁也归属于当前线程，则可以将此锁再次分配给它&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="redis实现"&gt;Redis实现&lt;/h2&gt;
+&lt;p&gt;基本上基于setnx命令实现&lt;/p&gt;
+&lt;p&gt;SETNX 是SET if Not eXists的简写&lt;/p&gt;
+&lt;p&gt;解释：&lt;/p&gt;
+&lt;p&gt;当且仅当 key 不存在，将 key 的值设为 value，返回1；
+若给定的 key 已经存在，则 SETNX 不做任何动作，返回0。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@Component&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;RedisService&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@Autowired&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; RedisTemplate&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;String,String&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; redisTemplate;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;private&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;static&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;final&lt;/span&gt; String COMPARE_AND_DELETE &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;if redis.call(&amp;#39;get&amp;#39;, KEYS[1]) == ARGV[1] then return redis.call(&amp;#39;del&amp;#39;, KEYS[1]) else return 0 end&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; Boolean &lt;span style="color:#a6e22e"&gt;getLock&lt;/span&gt;(String key,String value){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; redisTemplate.&lt;span style="color:#a6e22e"&gt;opsForValue&lt;/span&gt;().&lt;span style="color:#a6e22e"&gt;setIfAbsent&lt;/span&gt;(key, value, 2, TimeUnit.&lt;span style="color:#a6e22e"&gt;MINUTES&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;public&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;void&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;releaseLock&lt;/span&gt;(String key,String value){
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; List&lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt;String&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; keys &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Collections.&lt;span style="color:#a6e22e"&gt;singletonList&lt;/span&gt;(key);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; redisTemplate.&lt;span style="color:#a6e22e"&gt;execute&lt;/span&gt;(&lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; DefaultRedisScript&lt;span style="color:#f92672"&gt;&amp;lt;&amp;gt;&lt;/span&gt;(COMPARE_AND_DELETE,Long.&lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;), keys, value);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这里并没有直接使用delete命令，是为了防止删除其他线程的key。、&lt;/p&gt;</description></item><item><title>Redis笔记-数据类型</title><link>https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/redis%E7%AC%94%E8%AE%B0-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</guid><description>&lt;h2 id="基本数据类型及应用场景"&gt;基本数据类型及应用场景&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;类型&lt;/th&gt;
+&lt;th&gt;简介&lt;/th&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;场景&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;String(字符串)&lt;/td&gt;
+&lt;td&gt;二进制安全&lt;/td&gt;
+&lt;td&gt;可以包含任何数据,比如jpg图片或者序列化的对象,一个键最大能存储512M&lt;/td&gt;
+&lt;td&gt;&amp;mdash;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Hash(字典)&lt;/td&gt;
+&lt;td&gt;键值对集合,即编程语言中的Map类型&lt;/td&gt;
+&lt;td&gt;适合存储对象,并且可以像数据库中update一个属性一样只修改某一项属性值(Memcached中需要取出整个字符串反序列化成对象修改完再序列化存回去)&lt;/td&gt;
+&lt;td&gt;存储、读取、修改用户属性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;List(列表)&lt;/td&gt;
+&lt;td&gt;链表(双向链表)&lt;/td&gt;
+&lt;td&gt;增删快,提供了操作某一段元素的API&lt;/td&gt;
+&lt;td&gt;1,最新消息排行等功能(比如朋友圈的时间线) 2,消息队列&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Set(集合)&lt;/td&gt;
+&lt;td&gt;哈希表实现,元素不重复&lt;/td&gt;
+&lt;td&gt;1、添加、删除,查找的复杂度都是O(1) 2、为集合提供了求交集、并集、差集等操作&lt;/td&gt;
+&lt;td&gt;1、共同好友 2、利用唯一性,统计访问网站的所有独立ip 3、好友推荐时,根据tag求交集,大于某个阈值就可以推荐&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Sorted Set(有序集合)&lt;/td&gt;
+&lt;td&gt;将Set中的元素增加一个权重参数score,元素按score有序排列&lt;/td&gt;
+&lt;td&gt;数据插入集合时,已经进行天然排序&lt;/td&gt;
+&lt;td&gt;1、排行榜 2、带权重的消息队列&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2021/04/20/98105977-58e24f050b6ba.png"&gt;&lt;/p&gt;
+&lt;h3 id="字符串string"&gt;字符串（String）&lt;/h3&gt;
+&lt;h4 id="设置值"&gt;设置值&lt;/h4&gt;
+&lt;p&gt;set命令:为键设置值.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;set key value
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setex命令:为键设置值,并设置秒级的过期时间.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;setex key value seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setpx命令:为键设置值,并设置毫秒秒级的过期时间.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;setpx key value millisecond
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setnx命令:向键设置值前判断键是否存在,不存在则设置值存在则不设置.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;setnx key value
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setxx命令:与setnx相反,向键设置值前判断键是否存在,存在则设置值存在则不设置.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;setxx key value
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;setnx和setxx的使用场景:由于redis是单线程命令处理机制,如果多个客户端同时向redis服务使用setnx命令也只会有一个客户端执行成功.setnx可以用于分布式锁的一个解决方案.&lt;/p&gt;
+&lt;h4 id="计数"&gt;计数&lt;/h4&gt;
+&lt;p&gt;incr命令:用于对键的值进行自增操作,返回结果为三种:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;值不是整数,返回错误.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;值是整数,返回自增后的结果.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;值不存在,按照值为&lt;code&gt;0&lt;/code&gt;自增,返回&lt;code&gt;1&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;incr key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;incrby命令:用于对键的值进行指定自增量的自增操作,返回结果与incr相同.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;incrby key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;incrbyfloat命令:用于对键的值进行指定浮点型自增量的自增操作.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;incrbyfloat key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;decr命令:用于对键的值进行自减操作.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;decr key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;decrby命令:用于对键的值进行指定值进行减值操作.&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;decrby key
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;append命令:用于对键的值进行追加操作,返回追加后的值的得长度.&lt;/p&gt;</description></item></channel></rss>

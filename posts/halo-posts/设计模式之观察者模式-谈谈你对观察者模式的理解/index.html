@@ -1,0 +1,154 @@
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>设计模式之观察者模式-谈谈你对观察者模式的理解 | 飞乐</title><meta name=keywords content="java,发布订阅,设计模式"><meta name=description content='定义
+先来段wiki上面的定义：观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。简单来讲，就是定义了一组一对多的关系。当被观察者的状态改变，会通知观察者做出相应的动作。
+在开发过程中，常常会遇到如下的场景：
+
+游戏开发中，当人物走到某个格子，触发加血、战斗等动作
+微信公众号，当用户关注了某公众号，一旦公众号更新了文章，便可以给用户进行推送
+
+在这种情况下，我们该如何实现符合开闭原则的代码呢，观察者模式便是一个很好的选择。
+模式结构及实现
+下图便是观察者模式的模式结构。
+
+从图中可以看出，观察者模式主要结构主要包括发布者和订阅者两个行为对象，发布者持有所有订阅者的集合，当需要发布事件或者消息时，通知订阅者做出相应的动作。
+代码
+定义事件接口，作为观察者与被观察者之间交互的媒介
+public interface Event {
+}
+定义Subscriber接口，作为观察者的接口
+public interface Subscriber {
+
+    void update(Event event);
+
+}
+Subscriber的两个简单实现类
+public class ReadSubscriber implements Subscriber{
+    @Override
+    public void update(Event e) {
+        System.out.println("ReadSubscriber");
+    }
+}
+public class WriteSubscriber implements Subscriber{
+    @Override
+    public void update(Event e) {
+        System.out.println("WriteSubscriber");
+    }
+}
+定义Publisher接口，作为被观察者的接口
+public interface Publisher {
+
+    void subscribe(Subscriber subscriber);
+
+    void unsubscribe(Subscriber subscriber);
+
+    void notifySubscribers(Event event);
+
+}
+Publisher接口实现类
+public class DefaultPublisher implements Publisher{
+
+    private final List<Subscriber> subscribers = new ArrayList<>();
+
+    @Override
+    public void subscribe(Subscriber subscriber) {
+        subscribers.add(subscriber);
+    }
+
+    @Override
+    public void unsubscribe(Subscriber subscriber) {
+        subscribers.remove(subscriber);
+    }
+
+    @Override
+    public void notifySubscribers(Event event) {
+        for(Subscriber subscriber:subscribers){
+            subscriber.update(event);
+        }
+    }
+}
+Demo测试'><meta name=author content><link rel=canonical href=https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/><link crossorigin=anonymous href=/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as=style><link rel=icon href=https://www.feilewu.cn/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://www.feilewu.cn/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://www.feilewu.cn/favicon-32x32.png><link rel=apple-touch-icon href=https://www.feilewu.cn/apple-touch-icon.png><link rel=mask-icon href=https://www.feilewu.cn/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/"><meta property="og:site_name" content="飞乐"><meta property="og:title" content="设计模式之观察者模式-谈谈你对观察者模式的理解"><meta property="og:description" content='定义 先来段wiki上面的定义：观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。简单来讲，就是定义了一组一对多的关系。当被观察者的状态改变，会通知观察者做出相应的动作。
+在开发过程中，常常会遇到如下的场景：
+游戏开发中，当人物走到某个格子，触发加血、战斗等动作 微信公众号，当用户关注了某公众号，一旦公众号更新了文章，便可以给用户进行推送 在这种情况下，我们该如何实现符合开闭原则的代码呢，观察者模式便是一个很好的选择。
+模式结构及实现 下图便是观察者模式的模式结构。
+从图中可以看出，观察者模式主要结构主要包括发布者和订阅者两个行为对象，发布者持有所有订阅者的集合，当需要发布事件或者消息时，通知订阅者做出相应的动作。
+代码 定义事件接口，作为观察者与被观察者之间交互的媒介
+public interface Event { } 定义Subscriber接口，作为观察者的接口
+public interface Subscriber { void update(Event event); } Subscriber的两个简单实现类
+public class ReadSubscriber implements Subscriber{ @Override public void update(Event e) { System.out.println("ReadSubscriber"); } } public class WriteSubscriber implements Subscriber{ @Override public void update(Event e) { System.out.println("WriteSubscriber"); } } 定义Publisher接口，作为被观察者的接口
+public interface Publisher { void subscribe(Subscriber subscriber); void unsubscribe(Subscriber subscriber); void notifySubscribers(Event event); } Publisher接口实现类
+public class DefaultPublisher implements Publisher{ private final List<Subscriber> subscribers = new ArrayList<>(); @Override public void subscribe(Subscriber subscriber) { subscribers.add(subscriber); } @Override public void unsubscribe(Subscriber subscriber) { subscribers.remove(subscriber); } @Override public void notifySubscribers(Event event) { for(Subscriber subscriber:subscribers){ subscriber.update(event); } } } Demo测试'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-09-27T19:10:53+08:00"><meta property="article:modified_time" content="2024-09-27T19:10:53+08:00"><meta property="article:tag" content="Java"><meta property="article:tag" content="发布订阅"><meta property="article:tag" content="设计模式"><meta name=twitter:card content="summary"><meta name=twitter:title content="设计模式之观察者模式-谈谈你对观察者模式的理解"><meta name=twitter:description content='定义 先来段wiki上面的定义：观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。简单来讲，就是定义了一组一对多的关系。当被观察者的状态改变，会通知观察者做出相应的动作。
+在开发过程中，常常会遇到如下的场景：
+游戏开发中，当人物走到某个格子，触发加血、战斗等动作 微信公众号，当用户关注了某公众号，一旦公众号更新了文章，便可以给用户进行推送 在这种情况下，我们该如何实现符合开闭原则的代码呢，观察者模式便是一个很好的选择。
+模式结构及实现 下图便是观察者模式的模式结构。
+从图中可以看出，观察者模式主要结构主要包括发布者和订阅者两个行为对象，发布者持有所有订阅者的集合，当需要发布事件或者消息时，通知订阅者做出相应的动作。
+代码 定义事件接口，作为观察者与被观察者之间交互的媒介
+public interface Event { } 定义Subscriber接口，作为观察者的接口
+public interface Subscriber { void update(Event event); } Subscriber的两个简单实现类
+public class ReadSubscriber implements Subscriber{ @Override public void update(Event e) { System.out.println("ReadSubscriber"); } } public class WriteSubscriber implements Subscriber{ @Override public void update(Event e) { System.out.println("WriteSubscriber"); } } 定义Publisher接口，作为被观察者的接口
+public interface Publisher { void subscribe(Subscriber subscriber); void unsubscribe(Subscriber subscriber); void notifySubscribers(Event event); } Publisher接口实现类
+public class DefaultPublisher implements Publisher{ private final List<Subscriber> subscribers = new ArrayList<>(); @Override public void subscribe(Subscriber subscriber) { subscribers.add(subscriber); } @Override public void unsubscribe(Subscriber subscriber) { subscribers.remove(subscriber); } @Override public void notifySubscribers(Event event) { for(Subscriber subscriber:subscribers){ subscriber.update(event); } } } Demo测试'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://www.feilewu.cn/posts/"},{"@type":"ListItem","position":2,"name":"设计模式之观察者模式-谈谈你对观察者模式的理解","item":"https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"设计模式之观察者模式-谈谈你对观察者模式的理解","name":"设计模式之观察者模式-谈谈你对观察者模式的理解","description":"定义 先来段wiki上面的定义：观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。简单来讲，就是定义了一组一对多的关系。当被观察者的状态改变，会通知观察者做出相应的动作。\n在开发过程中，常常会遇到如下的场景：\n游戏开发中，当人物走到某个格子，触发加血、战斗等动作 微信公众号，当用户关注了某公众号，一旦公众号更新了文章，便可以给用户进行推送 在这种情况下，我们该如何实现符合开闭原则的代码呢，观察者模式便是一个很好的选择。\n模式结构及实现 下图便是观察者模式的模式结构。\n从图中可以看出，观察者模式主要结构主要包括发布者和订阅者两个行为对象，发布者持有所有订阅者的集合，当需要发布事件或者消息时，通知订阅者做出相应的动作。\n代码 定义事件接口，作为观察者与被观察者之间交互的媒介\npublic interface Event { } 定义Subscriber接口，作为观察者的接口\npublic interface Subscriber { void update(Event event); } Subscriber的两个简单实现类\npublic class ReadSubscriber implements Subscriber{ @Override public void update(Event e) { System.out.println(\u0026#34;ReadSubscriber\u0026#34;); } } public class WriteSubscriber implements Subscriber{ @Override public void update(Event e) { System.out.println(\u0026#34;WriteSubscriber\u0026#34;); } } 定义Publisher接口，作为被观察者的接口\npublic interface Publisher { void subscribe(Subscriber subscriber); void unsubscribe(Subscriber subscriber); void notifySubscribers(Event event); } Publisher接口实现类\npublic class DefaultPublisher implements Publisher{ private final List\u0026lt;Subscriber\u0026gt; subscribers = new ArrayList\u0026lt;\u0026gt;(); @Override public void subscribe(Subscriber subscriber) { subscribers.add(subscriber); } @Override public void unsubscribe(Subscriber subscriber) { subscribers.remove(subscriber); } @Override public void notifySubscribers(Event event) { for(Subscriber subscriber:subscribers){ subscriber.update(event); } } } Demo测试\n","keywords":["java","发布订阅","设计模式"],"articleBody":"定义 先来段wiki上面的定义：观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。简单来讲，就是定义了一组一对多的关系。当被观察者的状态改变，会通知观察者做出相应的动作。\n在开发过程中，常常会遇到如下的场景：\n游戏开发中，当人物走到某个格子，触发加血、战斗等动作 微信公众号，当用户关注了某公众号，一旦公众号更新了文章，便可以给用户进行推送 在这种情况下，我们该如何实现符合开闭原则的代码呢，观察者模式便是一个很好的选择。\n模式结构及实现 下图便是观察者模式的模式结构。\n从图中可以看出，观察者模式主要结构主要包括发布者和订阅者两个行为对象，发布者持有所有订阅者的集合，当需要发布事件或者消息时，通知订阅者做出相应的动作。\n代码 定义事件接口，作为观察者与被观察者之间交互的媒介\npublic interface Event { } 定义Subscriber接口，作为观察者的接口\npublic interface Subscriber { void update(Event event); } Subscriber的两个简单实现类\npublic class ReadSubscriber implements Subscriber{ @Override public void update(Event e) { System.out.println(\"ReadSubscriber\"); } } public class WriteSubscriber implements Subscriber{ @Override public void update(Event e) { System.out.println(\"WriteSubscriber\"); } } 定义Publisher接口，作为被观察者的接口\npublic interface Publisher { void subscribe(Subscriber subscriber); void unsubscribe(Subscriber subscriber); void notifySubscribers(Event event); } Publisher接口实现类\npublic class DefaultPublisher implements Publisher{ private final List\u003cSubscriber\u003e subscribers = new ArrayList\u003c\u003e(); @Override public void subscribe(Subscriber subscriber) { subscribers.add(subscriber); } @Override public void unsubscribe(Subscriber subscriber) { subscribers.remove(subscriber); } @Override public void notifySubscribers(Event event) { for(Subscriber subscriber:subscribers){ subscriber.update(event); } } } Demo测试\npublic class Demo { public static void main(String[] args) { DefaultPublisher defaultPublisher = new DefaultPublisher(); defaultPublisher.subscribe(new ReadSubscriber()); defaultPublisher.subscribe(new WriteSubscriber()); Event event = new Event() { }; defaultPublisher.notifySubscribers(event); } } 结果\nReadSubscriber WriteSubscriber 观察者模式的优缺点 优点：\n符合开闭原则，降低了模块之间的耦合，方便根据业务进行扩展 可以在运行时进行动态改变观察者集合 缺点：\n当被观察者持有了大量的观察者，会导致事件的发布变得耗时 注意事项 一般采用异步的方式，一方面提高系统响应时间，另一方面防止由于某个观察者出现错误而导致事件发布卡壳，乃至失败 防止循环依赖（如果观察者与被观察者之间有循环依赖的话，将会导致互相调用，致使系统崩溃） 具体应用 Spring中的应用 在spring中，事件的订阅与发布使用到了观察者模式\n通过ApplicationEvent 、ApplicationListener、ApplicationContext、ApplicationEventMulticaster四个组件实现了项目中最常使用的事件监听器。具体代码可参照源码，再次不做扩展了。\n","wordCount":"157","inLanguage":"en","datePublished":"2024-09-27T19:10:53+08:00","dateModified":"2024-09-27T19:10:53+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.feilewu.cn/posts/halo-posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/"},"publisher":{"@type":"Organization","name":"飞乐","logo":{"@type":"ImageObject","url":"https://www.feilewu.cn/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://www.feilewu.cn/ accesskey=h title="飞乐 (Alt + H)">飞乐</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://www.feilewu.cn/ title=home><span>home</span></a></li><li><a href=https://www.feilewu.cn/categories/ title=categories><span>categories</span></a></li><li><a href=https://www.feilewu.cn/tags/ title=tags><span>tags</span></a></li><li><a href=https://www.feilewu.cn/contact/ title=contact><span>contact</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">设计模式之观察者模式-谈谈你对观察者模式的理解</h1><div class=post-meta><span title='2024-09-27 19:10:53 +0800 CST'>September 27, 2024</span></div></header><details class=toc open><summary accesskey=c title="(Alt + C)"><span class=title>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#定义>定义</a></li><li><a href=#模式结构及实现>模式结构及实现</a><ul><li><a href=#代码>代码</a></li></ul></li><li><a href=#观察者模式的优缺点>观察者模式的优缺点</a><ul><li><a href=#注意事项>注意事项</a></li></ul></li><li><a href=#具体应用>具体应用</a><ul><li><a href=#spring中的应用>Spring中的应用</a></li></ul></li></ul></nav></div></details><div class="post-content md-content"><h2 id=定义>定义<a hidden class=anchor aria-hidden=true href=#定义>#</a></h2><p>先来段wiki上面的定义：观察者模式是软件设计模式的一种。在此种模式中，一个目标对象管理所有相依于它的观察者对象，并且在它本身的状态改变时主动发出通知。这通常透过呼叫各观察者所提供的方法来实现。此种模式通常被用来实时事件处理系统。简单来讲，就是定义了一组一对多的关系。当被观察者的状态改变，会通知观察者做出相应的动作。</p><p>在开发过程中，常常会遇到如下的场景：</p><ul><li>游戏开发中，当人物走到某个格子，触发加血、战斗等动作</li><li>微信公众号，当用户关注了某公众号，一旦公众号更新了文章，便可以给用户进行推送</li></ul><p>在这种情况下，我们该如何实现符合开闭原则的代码呢，观察者模式便是一个很好的选择。</p><h2 id=模式结构及实现>模式结构及实现<a hidden class=anchor aria-hidden=true href=#模式结构及实现>#</a></h2><p>下图便是观察者模式的模式结构。</p><p><img alt=观察者设计模式的结构 loading=lazy src=https://pic.feilewu.cn/uploads/img/2021/06/09/11-00-28-ef3193f5c9eb5ade053e92e2e8a4dd79-structure-6479ae.png></p><p>从图中可以看出，观察者模式主要结构主要包括发布者和订阅者两个行为对象，发布者持有所有订阅者的集合，当需要发布事件或者消息时，通知订阅者做出相应的动作。</p><h3 id=代码>代码<a hidden class=anchor aria-hidden=true href=#代码>#</a></h3><p>定义事件接口，作为观察者与被观察者之间交互的媒介</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Event</span> {
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>定义Subscriber接口，作为观察者的接口</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Subscriber</span> {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>update</span>(Event event);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Subscriber的两个简单实现类</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ReadSubscriber</span> <span style=color:#66d9ef>implements</span> Subscriber{
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>update</span>(Event e) {
+</span></span><span style=display:flex><span>        System.<span style=color:#a6e22e>out</span>.<span style=color:#a6e22e>println</span>(<span style=color:#e6db74>&#34;ReadSubscriber&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>WriteSubscriber</span> <span style=color:#66d9ef>implements</span> Subscriber{
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>update</span>(Event e) {
+</span></span><span style=display:flex><span>        System.<span style=color:#a6e22e>out</span>.<span style=color:#a6e22e>println</span>(<span style=color:#e6db74>&#34;WriteSubscriber&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>定义Publisher接口，作为被观察者的接口</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Publisher</span> {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>subscribe</span>(Subscriber subscriber);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>unsubscribe</span>(Subscriber subscriber);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>notifySubscribers</span>(Event event);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Publisher接口实现类</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DefaultPublisher</span> <span style=color:#66d9ef>implements</span> Publisher{
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>final</span> List<span style=color:#f92672>&lt;</span>Subscriber<span style=color:#f92672>&gt;</span> subscribers <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>&lt;&gt;</span>();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>subscribe</span>(Subscriber subscriber) {
+</span></span><span style=display:flex><span>        subscribers.<span style=color:#a6e22e>add</span>(subscriber);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>unsubscribe</span>(Subscriber subscriber) {
+</span></span><span style=display:flex><span>        subscribers.<span style=color:#a6e22e>remove</span>(subscriber);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@Override</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>notifySubscribers</span>(Event event) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span>(Subscriber subscriber:subscribers){
+</span></span><span style=display:flex><span>            subscriber.<span style=color:#a6e22e>update</span>(event);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Demo测试</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Demo</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span>(String<span style=color:#f92672>[]</span> args) {
+</span></span><span style=display:flex><span>        DefaultPublisher defaultPublisher <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> DefaultPublisher();
+</span></span><span style=display:flex><span>        defaultPublisher.<span style=color:#a6e22e>subscribe</span>(<span style=color:#66d9ef>new</span> ReadSubscriber());
+</span></span><span style=display:flex><span>        defaultPublisher.<span style=color:#a6e22e>subscribe</span>(<span style=color:#66d9ef>new</span> WriteSubscriber());
+</span></span><span style=display:flex><span>        Event event <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Event() {
+</span></span><span style=display:flex><span>        };
+</span></span><span style=display:flex><span>        defaultPublisher.<span style=color:#a6e22e>notifySubscribers</span>(event);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>结果</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-java data-lang=java><span style=display:flex><span>ReadSubscriber
+</span></span><span style=display:flex><span>WriteSubscriber
+</span></span></code></pre></div><h2 id=观察者模式的优缺点>观察者模式的优缺点<a hidden class=anchor aria-hidden=true href=#观察者模式的优缺点>#</a></h2><p>优点：</p><ul><li>符合开闭原则，降低了模块之间的耦合，方便根据业务进行扩展</li><li>可以在运行时进行动态改变观察者集合</li></ul><p>缺点：</p><ul><li>当被观察者持有了大量的观察者，会导致事件的发布变得耗时</li></ul><h3 id=注意事项>注意事项<a hidden class=anchor aria-hidden=true href=#注意事项>#</a></h3><ul><li>一般采用异步的方式，一方面提高系统响应时间，另一方面防止由于某个观察者出现错误而导致事件发布卡壳，乃至失败</li><li>防止循环依赖（如果观察者与被观察者之间有循环依赖的话，将会导致互相调用，致使系统崩溃）</li></ul><h2 id=具体应用>具体应用<a hidden class=anchor aria-hidden=true href=#具体应用>#</a></h2><h3 id=spring中的应用>Spring中的应用<a hidden class=anchor aria-hidden=true href=#spring中的应用>#</a></h3><p>在spring中，事件的订阅与发布使用到了观察者模式</p><p>通过<strong>ApplicationEvent</strong> 、<strong>ApplicationListener</strong>、<strong>ApplicationContext</strong>、<strong>ApplicationEventMulticaster</strong>四个组件实现了项目中最常使用的事件监听器。具体代码可参照源码，再次不做扩展了。</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://www.feilewu.cn/tags/java/>Java</a></li><li><a href=https://www.feilewu.cn/tags/%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85/>发布订阅</a></li><li><a href=https://www.feilewu.cn/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/>设计模式</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://www.feilewu.cn/>飞乐</a></span> ·
+<span>Powered by
+<a href="https://gohugo.io/?utm_source=papermod" rel=noopener target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg></a><div class=feian style=text-align:center;font-size:13px;margin-top:2px;opacity:.8;line-height:1.2><a href=https://beian.miit.gov.cn/ target=_blank style=color:var(--secondary);text-decoration:none>苏ICP备2021016520号-1</a></div><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

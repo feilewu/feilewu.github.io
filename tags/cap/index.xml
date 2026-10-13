@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cap on 飞乐</title><link>https://www.feilewu.cn/tags/cap/</link><description>Recent content in Cap on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 27 Sep 2024 19:10:52 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/tags/cap/index.xml" rel="self" type="application/rss+xml"/><item><title>Zookeeper概述与安装</title><link>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</link><pubDate>Fri, 27 Sep 2024 19:10:52 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/zookeeper%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%AE%89%E8%A3%85/</guid><description>&lt;h2 id="特性"&gt;特性&lt;/h2&gt;
+&lt;h3 id="zookeeper-解决的本质问题"&gt;ZooKeeper 解决的本质问题&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;消息传递：延迟性，先发送的消息，不一定先到达；&lt;/li&gt;
+&lt;li&gt;消息传递：丢失性，发送的消息，可能丢失；&lt;/li&gt;
+&lt;li&gt;节点崩溃：分布式系统内，任何一个节点都可能崩溃。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="如何保证分布式一致性"&gt;如何保证分布式一致性&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;顺序一致性：同一个 Client 发起的事务请求，严格按照发起顺序执行&lt;/li&gt;
+&lt;li&gt;原子性：事务请求，要么应用到所有节点，要么一个节点都没有应用&lt;/li&gt;
+&lt;li&gt;单一视图：Client 无论连接到哪个节点，看到的服务端数据都是一致的（Note：不准确，其实是最终一致性）&lt;/li&gt;
+&lt;li&gt;可靠性：事务一旦执行成功，状态永久保留&lt;/li&gt;
+&lt;li&gt;实时性：事务一旦执行成功，Client 并不能立即看到最新数据，但 ZooKeeper 保证最终一致性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;官方文档：&lt;a href="https://zookeeper.apache.org/doc/r3.6.2/zookeeperStarted.html"&gt;https://zookeeper.apache.org/doc/r3.6.2/zookeeperStarted.html&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="安装centos-7"&gt;安装（centos 7）&lt;/h2&gt;
+&lt;h3 id="下载"&gt;下载&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.6.2/apache-zookeeper-3.6.2-bin.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tar zvxf apache-zookeeper-3.6.2-bin.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd apache-zookeeper-3.6.2-bin
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="配置"&gt;配置&lt;/h3&gt;
+&lt;h4 id="单机模式"&gt;单机模式&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;创建配置文件 conf/zoo.cfg&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;vi conf/zoo.cfg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;写入配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tickTime&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2000&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataDir&lt;span style="color:#f92672"&gt;=&lt;/span&gt;/var/lib/zookeeper
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;clientPort&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2181&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;em&gt;tickTime&lt;/em&gt;&lt;/strong&gt; : the basic time unit in milliseconds used by ZooKeeper. It is used to do heartbeats and the minimum session timeout will be twice the tickTime.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;em&gt;dataDir&lt;/em&gt;&lt;/strong&gt; : the location to store the in-memory database snapshots and, unless specified otherwise, the transaction log of updates to the database.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;em&gt;clientPort&lt;/em&gt;&lt;/strong&gt; : the port to listen for client connections&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;启动&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bin/zkServer.sh start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="4"&gt;
+&lt;li&gt;连接&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bin/zkCli.sh -server 127.0.0.1:2181
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Connecting to localhost:2181
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;log4j:WARN No appenders could be found &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; logger &lt;span style="color:#f92672"&gt;(&lt;/span&gt;org.apache.zookeeper.ZooKeeper&lt;span style="color:#f92672"&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;log4j:WARN Please initialize the log4j system properly.
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Welcome to ZooKeeper!
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;JLine support is enabled
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;[&lt;/span&gt;zkshell: 0&lt;span style="color:#f92672"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>

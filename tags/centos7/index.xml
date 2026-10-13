@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Centos7 on 飞乐</title><link>https://www.feilewu.cn/tags/centos7/</link><description>Recent content in Centos7 on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 06 Oct 2024 22:00:46 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/tags/centos7/index.xml" rel="self" type="application/rss+xml"/><item><title>centos7编译安装python3.11</title><link>https://www.feilewu.cn/posts/halo-posts/centos7%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python3.11/</link><pubDate>Sun, 06 Oct 2024 22:00:46 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/centos7%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python3.11/</guid><description>&lt;pre tabindex="0"&gt;&lt;code&gt;sudo yum install gcc openssl-devel bzip2-devel libffi-devel wget
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;wget https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tgz
+tar -xvf Python-3.11.4.tgz
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;# 安装源码编译需要的编译环境
+yum -y install gcc zlib zlib-devel libffi libffi-devel readline-devel
+# 安装openssl11，后期的pip3安装网络相关模块需要用到ssl模块
+yum install openssl-devel openssl11 openssl11-devel
+# 设置编译FLAG，以便使用最新的openssl库
+export CFLAGS=$(pkg-config --cflags openssl11)
+export LDFLAGS=$(pkg-config --libs openssl11)
+# 进入刚解压缩的目录
+cd /home/hadoop/opt/Python-3.11.4
+#指定python3的安装目录为 /usr/python 并使用ssl模块，指定目录好处是后期删除此文件夹就可以完全删除软件了。
+./configure --prefix=/usr/local/python3.11.4/python3.11.4 --with-ssl # 源码编译并安装,时间会持续几分钟
+make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;sudo ln -s /usr/local/python3.11.4/bin/python3.11 /usr/bin/python3.11
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;# 以下可选
+# 可以删除，也可备份，按需操作即可
+sudo rm -f /usr/bin/python
+sudo rm -f /usr/bin/pip
+sudo ln -s /home/hadoop/opt/python3.11.4/bin/pip3 /usr/bin/pip3
+sudo ln -s /home/hadoop/opt/python3.11.4/bin/python3 /usr/bin/python
+sudo ln -s /home/hadoop/opt/python3.11.4/bin/pip3 /usr/bin/pip
+&lt;/code&gt;&lt;/pre&gt;</description></item></channel></rss>

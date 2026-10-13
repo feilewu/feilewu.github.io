@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Rust on 飞乐</title><link>https://www.feilewu.cn/tags/rust/</link><description>Recent content in Rust on 飞乐</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 01 Oct 2024 13:46:53 +0800</lastBuildDate><atom:link href="https://www.feilewu.cn/tags/rust/index.xml" rel="self" type="application/rss+xml"/><item><title>Rust工具链安装</title><link>https://www.feilewu.cn/posts/halo-posts/rust%E5%B7%A5%E5%85%B7%E9%93%BE%E5%AE%89%E8%A3%85/</link><pubDate>Tue, 01 Oct 2024 13:46:53 +0800</pubDate><guid>https://www.feilewu.cn/posts/halo-posts/rust%E5%B7%A5%E5%85%B7%E9%93%BE%E5%AE%89%E8%A3%85/</guid><description>&lt;h1 id="windows"&gt;Windows&lt;/h1&gt;
+&lt;h2 id="安装msys2"&gt;安装MSYS2&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://www.msys2.org/"&gt;https://www.msys2.org/&lt;/a&gt;
+&lt;img loading="lazy" src="https://pic.feilewu.cn/uploads/2024/10/01/3d4baffe-c22f-41ce-9f1b-44227a2332a1.png"&gt;&lt;/p&gt;
+&lt;p&gt;安装工具链&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pacman -S mingw-w64-ucrt-x86_64-gcc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;查看gcc版本&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;gcc --version
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="安装rust"&gt;安装Rust&lt;/h2&gt;
+&lt;h3 id="配置windows环境变量"&gt;配置windows环境变量&lt;/h3&gt;
+&lt;p&gt;将下面述地址配置到windows系统环境变量&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;C:\msys64\ucrt64\bin
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="执行安装rust"&gt;执行安装Rust&lt;/h3&gt;
+&lt;p&gt;MSYS2终端内执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl https://sh.rustup.rs -sSf | sh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一些选择&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;Current installation options:
+default host triple: x86_64-pc-windows-msvc
+default toolchain: stable (default)
+profile: default
+modify PATH variable: yes
+1) Proceed with standard installation (default - just press enter)
+2) Customize installation
+3) Cancel installation
+&amp;gt;2
+I&amp;#39;m going to ask you the value of each of these installation options.
+You may simply press the Enter key to leave unchanged.
+Default host triple? [x86_64-pc-windows-msvc]
+# 手动填写
+x86_64-pc-windows-gnu
+Default toolchain? (stable/beta/nightly/none) [stable]
+Profile (which tools and data to install)? (minimal/default/complete) [default]
+Modify PATH variable? (Y/n)
+y
+Current installation options:
+default host triple: x86_64-pc-windows-gnu
+default toolchain: stable
+profile: default
+modify PATH variable: yes
+1) Proceed with selected options (default - just press enter)
+2) Customize installation
+3) Cancel installation
+&amp;gt;1
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="检验安装结果"&gt;检验安装结果&lt;/h3&gt;
+&lt;p&gt;windows终端执行&lt;/p&gt;</description></item></channel></rss>
